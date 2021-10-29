@@ -2025,6 +2025,22 @@ class api{
 			})
 		})
 	}
+	//发票帮助中心列表
+	getBillHelpList(query) {
+	  return new Promise(resolve => {
+	    get('/ds/invoiceSupport/apis/page?query=' + query).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//发票帮助中心详情
+	getBillHelpDetail(query) {
+	  return new Promise(resolve => {
+	    get('/ds/invoiceSupport/apis/info/' + query).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
 }
 
 

@@ -168,6 +168,7 @@
     import person21 from '@/assets/img/person/p21.png'
 	import person23 from './img/船舶展示.png'
 	import person24 from './img/船舶档案.png'
+	import person25 from '@/assets/img/person/person25.png'
 	import {mapState} from "vuex";
     export default {
         data() {
@@ -332,7 +333,11 @@
 						url:'../person/repair.html',
 					},{img:person8,
 						nm:'我的消息',
-						url:'../person/message.html',},
+						url:'../person/message.html',
+					},{img:person25,
+						nm:'我的发票',
+						url:'../person/myBill.html',
+					}
 
 				],
 				toolList2:[
