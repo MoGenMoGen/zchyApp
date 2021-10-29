@@ -1,0 +1,149 @@
+body {
+  -webkit-user-select: none; // 禁止页面文字选择 ，此属性不继承，一般加在body上规定整个body的文字都不会自动调整
+  //-webkit-text-size-adjust: none; //禁止文字自动调整大小(默认情况下旋转设备的时候文字大小会发生变化)，此属性也不继承，一般加在body上规定整个body的文字都不会自动调整
+  -webkit-touch-callout: none; // 禁用长按页面时的弹出菜单
+  -webkit-overflow-scrolling: touch; // 局部滚动(仅iOS 5以上支持)
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); //透明度设置为0，去掉点击链接和文本框对象时默认的灰色半透明覆盖层(iOS)或者虚框(Android)
+  //-webkit-tap-highlight-color:rgba(255,0,0,0.5);   //利用此属性，设置touch时链接区域高亮为50%的透明红，只在ios上起作用。android上只要使用了此属性就表现为边框。在body上加此属性，这样就保证body的点击区域效果一致了
+}
+
+//不同type的input使用这个属性之后表现不一。text、button无样式，radio、checkbox直接消失
+button, input[type=text], input[type=button] ,select{
+  background-color: #fff;
+  -webkit-appearance: none; //消除输入框和按钮的原生外观，在iOS上加上这个属性才能给按钮和输入框自定义样式
+}
+
+//取消chrome下默认的文本框聚焦样式
+input,button,select,textarea{ outline:none;}
+textarea{resize:none;}
+@color:#66a4f8;
+.checked{
+  color: #66a4f8 !important;
+}
+.green{
+  color: #24A664 !important;
+}
+.gray{
+  color: #999999 !important;
+}
+.red{
+  color: #FF3000 !important;
+}
+.yellow{
+	color: #FFFF00  !important;
+}
+.noData{
+  text-align: center;
+  padding: 0.1rem;
+}
+//内阴影
+.borderShadow{
+  box-sizing: border-box;
+  padding: 0.2rem;
+  width:100%;
+  background:rgba(255,255,255,1);
+  box-shadow:0px 0px 0.06rem 0px rgba(81,92,137,0.5) inset;
+  border-radius:0.04rem;
+  font-size: 0.24rem;
+  color: #999999;
+}
+//外阴影
+.borderShadow3{
+  width:100%;
+  background:rgba(255,255,255,1);
+  box-shadow:0px 0.01rem 0.16rem 0 rgba(47,73,154,0.08);
+  border-radius:0.06rem;
+}
+.borderShadow2{
+  width:96%;
+  margin: 0 auto;
+  box-shadow:0px 0.01rem 0.16rem 0px rgba(47,73,154,0.3);
+  border-radius:0.06rem;
+  background: #FFFFFF;
+}
+@themeColor:#2778BE;
+@redColor:#fe3001;
+@borderColor:#e4e4e4;
+@backgroundColor:#efefef;
+.btn{
+  width: 100%;
+  display: flex;
+  display: -webkit-flex;
+  p{
+    flex: 1;
+    border-top: 0.01rem solid @themeColor;
+    text-align: center;
+    height: 0.7rem;
+    line-height: 0.7rem;
+  }
+  p:first-of-type{
+      background: #ffffff;
+    color: @themeColor;
+  }
+  p:last-of-type{
+    background: @themeColor;
+    color: #ffffff;
+  }
+  .noTong{
+	  background: #EE8A92 !important;
+	  color: #FFFFFF !important;
+	  border: none;
+  }
+  .youBack{
+	  background: #ffffff;
+	  color: @themeColor;
+	  border: 0.01rem solid @themeColor;
+  }
+}
+.mint-radiolist-label{
+	display: flex;
+	align-items: center;
+
+}
+.mint-radiolist-label .mint-radio-label{
+	margin-left: 10px;
+}
+
+/*表格*/
+.tableCommon{
+  width: 100%;
+  tr{
+    &:last-of-type{
+      td:first-of-type{
+        border-bottom-left-radius: 0.06rem;
+      }
+      td:last-of-type{
+        border-bottom-right-radius: 0.06rem;
+      }
+    }
+    td{
+      padding: 0.15rem;
+      font-size: 0.24rem;
+      &:not(:last-of-type){
+        border-right: 1px solid rgba(181, 189, 221, 0.4);
+      }
+    }
+  }
+  thead{
+    tr{
+      td{
+          background: @themeColor;
+          color: #ffffff;
+      }
+    }
+  }
+  tbody{
+    tr{
+      &:nth-of-type(2n){
+        td{
+          background: rgba(245, 244, 249, 1);
+        }
+      }
+      td{
+        color: @themeColor;
+      }
+    }
+  }
+}
+
+
