@@ -169,6 +169,7 @@
 	import person23 from './img/船舶展示.png'
 	import person24 from './img/船舶档案.png'
 	import person25 from '@/assets/img/person/person25.png'
+	import person26 from '@/assets/img/person/p26.png'
 	import {mapState} from "vuex";
     export default {
         data() {
@@ -393,6 +394,11 @@
 						nm:'船舶档案',
 						url:'../shipDesign/shipFile.html',
 					},
+					{
+						img:person26,
+					    nm:'整改单',
+						url:'../person/rectify.html',
+					}
                 ],
                 toolList13:[ //监理监造机构
                     {img:person13,
@@ -414,7 +420,12 @@
                         url:'../shipControl/controlList.html',
                     },{img:person15,
                         nm:'子账户维护',
-                        url:'../person/accountList.html',}
+                        url:'../person/accountList.html',},
+						{
+							img:person26,
+						    nm:'整改单',
+							url:'../person/rectify.html',
+						}
                 ],
                 toolList15:[ //供应商
                     {img:person13,
