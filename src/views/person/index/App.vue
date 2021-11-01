@@ -397,7 +397,7 @@
 					{
 						img:person26,
 					    nm:'整改单',
-						url:'../person/rectify.html',
+						url:'../person/rectifyList.html',
 					}
                 ],
                 toolList13:[ //监理监造机构
@@ -424,7 +424,7 @@
 						{
 							img:person26,
 						    nm:'整改单',
-							url:'../person/rectify.html',
+							url:'../person/rectifyList.html',
 						}
                 ],
                 toolList15:[ //供应商
