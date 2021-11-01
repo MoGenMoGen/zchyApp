@@ -269,17 +269,11 @@ class api {
 	//上传图片
 	uploadImg2(e) {
 
-<<<<<<< Updated upstream
 		// let param = new FormData();
 		// param.append('file',e);
 		return new Promise(resolve => {
 			post('/general/oss/upload',e).then(res=>{
-=======
-		let param = new FormData();
-		param.append('file', e);
-		return new Promise(resolve => {
-			post('/general/oss/upload', param).then(res => {
->>>>>>> Stashed changes
+
 				resolve(res.data)
 			})
 		})
