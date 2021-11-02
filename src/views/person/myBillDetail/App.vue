@@ -1,8 +1,41 @@
 <template>
 	<!--	我的船舶-->
 	<div id="container">
-		<pen-header title="我的发票"></pen-header>
+		<pen-header title="发票详情"></pen-header>
 		<div class="body">
+			<div class="info-box" v-for="(item,index) in list" :key="index">
+				<div class="classTitle">
+					<img :src="tradingL">
+					<p>发票信息</p>
+					<img :src="tradingR">
+				</div>
+				<van-row class="row" align="center" type="flex">
+				    <van-col offset="1"><p class="row-label">发票状态：{{item.statusMsg}}</p></van-col>
+				</van-row>
+				<van-row class="row" align="center" type="flex">
+				    <van-col offset="1"><p class="row-label">发票类型：{{item.invoiceKind}}</p></van-col>
+				</van-row>
+				<van-row class="row" align="center" type="flex">
+				    <van-col offset="1"><p class="row-label">发票抬头：{{item.payerName}}</p></van-col>
+				</van-row>
+				<van-row class="row" align="center" type="flex">
+				    <van-col offset="1"><p class="row-label">发票代码：{{item.invoiceCode}}</p></van-col>
+				</van-row>
+				<van-row class="row" align="center" type="flex">
+				    <van-col offset="1"><p class="row-label">发票号码：{{item.invoiceNo}}</p></van-col>
+				</van-row>
+				<van-row class="row" align="center" type="flex">
+				    <van-col offset="1"><p class="row-label">微信扫码获取电子普通发票：</p></van-col>
+				</van-row>
+				<van-row class="row" align="center" type="flex">
+				    <van-col offset="1"><vue-qr :text="item.qrCode" :size="200"></vue-qr></van-col>
+				</van-row>
+				<van-row class="row" align="center" type="flex">
+				    <van-col offset="1" @click="downLoadImg(item.pdfUrl)">
+						<p class="row-label"><img :src="download" class="download" style="width: 0.27rem;height: 0.27rem;" >下载电子普通发票</p>
+					</van-col>
+				</van-row>
+			</div>
 		</div>
 	</div>
 </template>
@@ -10,6 +43,10 @@
 <script>
 	import penHeader from "../../../components/personal/penHeader";
 	import download from "@/assets/img/person/下载.png";
+	import tradingL from '@/assets/img/tradingL.png'
+	import tradingR from '@/assets/img/tradingR.png'
+	import { Toast } from 'vant';
+	import vueQr from 'vue-qr'
 	import {
 		mixins
 	} from "../mixins/mixins"
@@ -20,11 +57,16 @@
 		mixins: [mixins],
 		data() {
 			return {
-				download
+				tradingL,
+				tradingR,
+				download,
+				id: '',
+				isOver: true,
+				list: []
 			};
 		},
 		components: {
-			penHeader,
+			penHeader,vueQr
 		},
 		computed: {
 			...mapState([
@@ -39,6 +81,11 @@
 			window.onresize = () => {
 				this.changeDevice()
 			}
+			this.id = this.until.getQueryString('orderCd')
+			this.api.getInvoiceResult({orderNo:this.id}).then(res => {
+			  console.log(res)
+			  this.list = res.list
+			})
 		},
 		methods: {
 			//切换设备
@@ -49,6 +96,9 @@
 					window.location.href = window.location.origin + this.serverAddr + '/personal/myContract'
 				}
 			},
+			downLoadImg(url) {
+			  window.open(url)
+			}
 		},
 
 	};
@@ -61,51 +111,57 @@
 			font-size: 0.29rem;
 			background: @backgroundColor;
 			padding: 0 0.2rem 0.2rem 0.2rem;
-			.header-place {
-				height: 1rem;
-			}
-			.list-place {
-				position: fixed;
-				top: 1rem;
-				left: 0.2rem;
-				right: 0.2rem;
-				padding-top: 0.2rem;
-				z-index: 9;
-				background-color: @backgroundColor;
-			}
-			.list-header {
-				background: white;
-				border-top-left-radius: 5px;
-				border-top-right-radius: 5px;
-				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-				margin: 0 auto;
-				ul {
-					width: 100%;
+			.info-box {
+				width: 100%;
+				padding: 0.4rem 0.5rem;
+				box-sizing: border-box;
+				background-color: #fff;
+				border-radius: 5px;
+				margin-top: 0.1rem;
+				.classTitle{
 					display: flex;
-					height: 0.8rem;
-
-					li {
-						height: 100%;
-						flex: 1;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-
-						span {
-							color: #666666;
-							height: 100%;
-							display: flex;
-							align-items: center;
-							justify-content: center;
-						}
+					align-items: center;
+					justify-content: center;
+					font-size: 0.3rem;
+					color: #303030;
+					position: relative;
+					img{
+						width: 1.2rem;
+					}
+					p {
+						margin: 0 0.3rem;
 					}
 				}
 			}
+			.row{
+			    padding: 0.2rem 0;
+			    flex-shrink: 0;
+				font-size: 0.24rem;
+			    input{
+			        border: 1px solid #DDDDDD;
+			        padding: 0.1rem 0.2rem;
+			        width: 85%;
+					font-size: 0.22rem;
+			    }
+				.row-label{
+				    color: #333333;
+				}
+			    input::-webkit-input-placeholder {
+			        color: #B8B8B8;
+			    }
+			    input::-moz-placeholder {
+			        /* Mozilla Firefox 19+ */
+			        color: #B8B8B8;
+			    }
+			    input:-moz-placeholder {
+			        /* Mozilla Firefox 4 to 18 */
+			        color: #B8B8B8;
+			    }
+			    input:-ms-input-placeholder {
+			        /* Internet Explorer 10-11 */
+			        color: #B8B8B8;
+			    }
+			}
 		}
-	}
-
-	.active {
-		color: #343434 !important;
-		border-bottom: 3px solid #2878BE;
 	}
 </style>

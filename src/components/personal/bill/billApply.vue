@@ -5,11 +5,13 @@
 			<img :src="imgTip">
 		</div>
         <van-list  v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList" :immediate-check="immediate">
-			<div class="list-item" v-for="item in list" :key="item.id" @click="toDetail(item.id)">
+			<div class="list-item" v-for="item in list" :key="item.id">
 				<div class="list-item-top">
 					<div><img src="../../../assets/img/trading/shopName.png"><span>店铺：{{item.shopNm}}</span></div>
 					<span v-if="item.invoiceType==0" style="color: #E4393C;">未开票</span>
-					<span v-if="item.invoiceType==1" style="color: #2778BE;">已开票</span>
+					<span v-if="item.invoiceType==1" style="color: #E4393C;">已提交开票申请</span>
+					<span v-if="item.invoiceType==2" style="color: #E4393C;">部分开票</span>
+					<span v-if="item.invoiceType==3" style="color: #2778BE;">已开票</span>
 				</div>
 				<div class="list-shop-item" v-for="newItem in item.itms" :key="newItem.id">
 					<img :src="newItem.goodsImgUrl">
@@ -27,8 +29,8 @@
 				<div class="list-item-bottom">
 					<div></div>
 					<div>
-						<span v-if="item.invoiceType!=0&&item.invoiceType!=1" @click="bidDetail(item.id)">发票详情</span>
-						<span v-if="item.invoiceType!=3" class="apply-btn" @click="applyBid(item.id)">申请开票</span>
+						<span v-if="item.invoiceType!=0&&item.invoiceType!=1" @click="bidDetail(item)">发票详情</span>
+						<span v-if="item.invoiceType!=3" class="apply-btn" @click="applyBid(item)">申请开票</span>
 					</div>
 				</div>
 			</div>
@@ -69,11 +71,11 @@
 					this.pageNo++
 				})
 			},
-			bidDetail(id) {
-				this.until.href("./myBillDetail.html?id="+id)
+			bidDetail(item) {
+				this.until.href(`./myBillDetail.html?id=${item.id}&orderCd=${item.orderCd}`)
 			},
-			applyBid(id) {
-				this.until.href("./myBillApply.html?id="+id)
+			applyBid(item) {
+				this.until.href(`./myBillApply.html?id=${item.id}&orderCd=${item.orderCd}`)
 			}
         },
 		created() {
@@ -118,7 +120,7 @@
 				div {
 					display: flex;
 					align-items: center;
-					width: 85%;
+					width: 80%;
 					img {
 						width: 0.25rem;
 						height: 0.23rem;
@@ -179,7 +181,7 @@
 						color: #2778BE;
 						border: 1px solid #2778BE;
 						box-sizing: border-box;
-						margin-left: 0.1rem;
+						margin-top: 0.15rem;
 					}
 				}
 			}
