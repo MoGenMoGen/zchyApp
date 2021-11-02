@@ -1,5 +1,5 @@
 <template>
-  <!--	资金管理-付款记录-->
+  <!--	整改单列表-->
   <div id="container">
     <pen-header title="整改单"></pen-header>
     <!-- <van-pull-refresh
@@ -29,6 +29,7 @@
             class="datebox"
             readonly
             clickable
+            clearable
             label=""
             v-model="searchInfo.IssueDate"
             placeholder="下发日期"
@@ -47,6 +48,7 @@
           <van-field
             class="inputbox"
             clickable
+            clearable
             label=""
             v-model="searchInfo.content"
             placeholder="整改单号、整改内容"
@@ -96,28 +98,14 @@
             <div class="row">
               <div class="left">当前状态:</div>
               <!-- 待执行 -->
-              <div
-                class="right"
-                v-if="item.state == 2"
-                style="
-                  color: #ff3c00;
-                  border: 1px solid #ff3c00;
-                  width: 50px;
-                  text-align: center;
-                "
-              >
+              <div class="right" v-if="item.state == 2" style="color: #ff3c00">
                 待执行
               </div>
               <!-- 待结案 -->
               <div
                 class="right"
                 v-else-if="item.state == 3"
-                style="
-                  color: #2778be;
-                  border: 1px solid #2778be;
-                  width: 50px;
-                  text-align: center;
-                "
+                style="color: #2778be"
               >
                 待结案
               </div>
@@ -221,7 +209,7 @@ export default {
       }
     },
     handleIssue(e) {
-      this.searchInfo.IssueDate = moment(e).format("YYYY-MM-DD HH:mm:ss");
+      this.searchInfo.IssueDate = moment(e).format("YYYY-MM-DD");
       this.showPicker = false;
     },
     // 上拉加载
@@ -244,40 +232,48 @@ export default {
       }
     },
     async getList(isall) {
-      let query = "";
-      let p = { p: { n: this.pageNo, s: this.pageSize } };
-      let r = {
-        r: [
-          {
-            n: "a1",
-            t: "and",
-            w: [
-              { k: "orgEnterId", v: this.currentRole.id.toString(), m: "EQ" },
-              { k: "state", v: this.state, m: "EQ" },
-            ],
-          },
-        ],
-      };
-      // 根据登陆者的identityCd判断，30则是orgEnterId，50为orgTestEnterId
-      // 船厂
-      if (this.currentRole.identityCd == "identity30") {
-        if (isall) {
-          r.r[0].w.pop();
-        }
-        query = encodeURIComponent(JSON.stringify({ ...r, ...p }));
-      } else if (this.currentRole.identityCd == "identity50") {
-        r.r[0].w[0].k = "orgTestEnterId";
-        if (isall) {
-          r.r[0].w.pop();
-        }
-        query = encodeURIComponent(JSON.stringify({ ...r, ...p }));
+      let qry = this.query.new();
+      this.query.toP(qry, this.pageNo, this.pageSize);
+      this.query.toW(qry, "status", "0", "EQ");
+      if (this.state !== 1) {
+        this.query.toW(qry, "state", this.state, "EQ");
       }
-      let data = await this.api.getrectifyList(query, this.searchInfo.content);
+      if (this.currentRole.identityCd == "identity30") {
+        this.query.toW(qry, "orgEnterId", this.currentRole.id.toString(), "EQ");
+      } else if (this.currentRole.identityCd == "identity50") {
+        this.query.toW(
+          qry,
+          "orgTestEnterId",
+          this.currentRole.id.toString(),
+          "EQ"
+        );
+      }
+      let query=this.query.toEncode(qry)
+
+      // // 根据登陆者的identityCd判断，30则是orgEnterId，50为orgTestEnterId
+      // // 船厂
+      // if (this.currentRole.identityCd == "identity30") {
+      //   if (isall) {
+      //     r.r[0].w.pop();
+      //   }
+      //   query = encodeURIComponent(JSON.stringify({ ...r, ...p }));
+      // } else if (this.currentRole.identityCd == "identity50") {
+      //   r.r[0].w[0].k = "orgTestEnterId";
+      //   if (isall) {
+      //     r.r[0].w.pop();
+      //   }
+      //   query = encodeURIComponent(JSON.stringify({ ...r, ...p }));
+      // }
+      let data = await this.api.getrectifyList(
+        query,
+        this.searchInfo.content,
+        this.searchInfo.IssueDate
+      );
       this.list = [...data.data.list, ...this.list];
       this.total = data.page.total;
     },
     toDetail(id) {
-      //   this.until.href("/views/customermagt/detail.html?id=" + id);
+      this.until.href("/views/person/rectifyDetail.html?id=" + id);
     },
     Search() {
       this.pageNo = 1;

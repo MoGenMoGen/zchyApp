@@ -24,6 +24,7 @@ axios.defaults.transformRequest.unshift((params) => {
 	return params
 })
 const hostUrl = 'https://www.ship88.cn'
+// const hostUrl = 'http://lwkacgr.nat.ipyingshe.com'
 //ajax请求
 function get(url, data, header, cache = true) {
 	let headers = null
@@ -272,7 +273,7 @@ class api {
 		// let param = new FormData();
 		// param.append('file',e);
 		return new Promise(resolve => {
-			post('/general/oss/upload',e).then(res=>{
+			post('/general/oss/upload', e).then(res => {
 
 				resolve(res.data)
 			})
@@ -2043,9 +2044,9 @@ class api {
 		})
 	}
 	// 整改单列表
-	getrectifyList(condition, msg) {
+	getrectifyList(condition, msg, issueTm) {
 		return new Promise(resolve => {
-			get("/ship/docsRectify/apis/page?query=" + condition + "&msg=" + msg).then(res => {
+			get("/ship/docsRectify/apis/page?query=" + condition + "&msg=" + msg + "&issueTm=" + issueTm).then(res => {
 				resolve(res)
 			})
 		})
@@ -2122,6 +2123,22 @@ class api {
 	    })
 	  })
 	}
+	// 整改上报
+	handleRectifyReport(body) {
+		return new Promise(resolve => {
+			post("/ship/docsRectify/apis/rectifyReport", body).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 整改确认结案
+	handlerectifyClose(body) {
+		return new Promise(resolve => {
+		  post("/ship/docsRectify/apis/rectifyClose", body).then(res => {
+			resolve(res)
+		  })
+		})
+	  }
 }
 
 
