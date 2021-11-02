@@ -27,8 +27,8 @@
 				<div class="list-item-bottom">
 					<div></div>
 					<div>
-						<span v-if="item.invoiceType!=0&&item.invoiceType!=1">发票详情</span>
-						<span v-if="item.invoiceType!=3" class="apply-btn">申请开票</span>
+						<span v-if="item.invoiceType!=0&&item.invoiceType!=1" @click="bidDetail(item.id)">发票详情</span>
+						<span v-if="item.invoiceType!=3" class="apply-btn" @click="applyBid(item.id)">申请开票</span>
 					</div>
 				</div>
 			</div>
@@ -69,7 +69,11 @@
 					this.pageNo++
 				})
 			},
-			toDetail(id) {
+			bidDetail(id) {
+				this.until.href("./myBillDetail.html?id="+id)
+			},
+			applyBid(id) {
+				this.until.href("./myBillApply.html?id="+id)
 			}
         },
 		created() {

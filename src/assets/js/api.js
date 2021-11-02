@@ -2058,6 +2058,62 @@ class api {
 			})
 		})
 	}
+	//开票资料详情
+	getQualiInfo(data) {
+	  return new Promise(resolve => {
+	    get("/ds/invoiceInfo/apis/infoByOrgEnterId", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//开票资料新增
+	qualiAdd(data) {
+	  return new Promise(resolve => {
+	    post("/ds/invoiceInfo/apis/add", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//开票资料更新
+	qualiUpd(data) {
+	  return new Promise(resolve => {
+	    post("/ds/invoiceInfo/apis/upd", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//开票资料删除
+	qualiDel(data) {
+	  return new Promise(resolve => {
+	    get("/ds/invoiceInfo/apis/del", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//开票资料新增
+	qualiAddrAdd(data) {
+	  return new Promise(resolve => {
+	    post("/ds/invoiceAddr/apis/add", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//开票资料更新
+	qualiAddrUpd(data) {
+	  return new Promise(resolve => {
+	    post("/ds/invoiceAddr/apis/upd", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//开票资料详情
+	getQualiAddrInfo(data) {
+	  return new Promise(resolve => {
+	    get("/ds/invoiceAddr/apis/listByOrderId", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
 }
 
 
