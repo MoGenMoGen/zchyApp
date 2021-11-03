@@ -26,16 +26,17 @@
 					  readonly
 					  clickable
 					  :value="value2"
-					  placeholder="选择城市"
+					  placeholder="选择整改单位"
 					  @click="showPicker = true"
 					  style="font-size: 0.22rem;"
 					/>
 					<van-popup v-model="showPicker" round position="bottom">
 					  <van-picker
 					    show-toolbar
-					    :columns="columns"
+						value-key="company"
+					    :columns="options"
 					    @cancel="showPicker = false"
-					    @confirm="onConfirm"
+					    @confirm="onConfirm1"
 					  />
 					</van-popup>
 				</div>
@@ -75,15 +76,16 @@
 					  clickable
 					  :value="value5"
 					  placeholder="选择责任整改人"
-					  @click="showPicker = true"
+					  @click="showPicker2 = true"
 					  style="font-size: 0.22rem;"
 					/>
-					<van-popup v-model="showPicker" round position="bottom">
+					<van-popup v-model="showPicker2" round position="bottom">
 					  <van-picker
 					    show-toolbar
-					    :columns="columns"
-					    @cancel="showPicker = false"
-					    @confirm="onConfirm"
+						value-key="realNm"
+					    :columns="optionsTwo"
+					    @cancel="showPicker2 = false"
+					    @confirm="onConfirm2"
 					  />
 					</van-popup>
 				</div>
@@ -121,9 +123,8 @@
 				  v-model="currentDate"
 				  type="date"
 				  title="选择年月日"
-				  :min-date="minDate"
-				  :max-date="maxDate"
 				   @cancel="showPickerTwo = false"
+				   @confirm="onConfirm3"
 				/>
 					</van-popup>
 				</div>
@@ -158,7 +159,7 @@
 						整改单号：
 					</div>
 					<div class="listRight">
-						ZG20210330001
+						{{Numbers}}
 					</div>
 				</div>
 			</div>
@@ -213,14 +214,14 @@
 				</div>
 			</div>
 			<div class="bodyContent">
-				<div class="contentList">
-					
-				
-					<div class="listLeft">
+				<div class="contentList" style="display: flex; flex-direction: column;">
+					<div class="listLeft" style="width: 2rem;">
 						整改负责人签字：
 					</div>
-					<div class="listRight">
-						
+					<div class="listRight"style="margin: 0 auto;">
+						<signature ref='s1' v-show="!sign"/>
+						<img :src="sign" class="signImg" v-if="sign" style="border: 0.01rem solid #cccccc; box-sizing: border-box;">
+						<p class="signBtn"> <span @click="clear">重签</span> <span style="margin-left: 0.3rem" @click="confirm">确定</span></p>
 					</div>
 					</div>
 			</div>
@@ -240,18 +241,17 @@
 					   	/>
 					   	<van-popup v-model="showPickerThree" round position="bottom">
 					   <van-datetime-picker
-					     v-model="currentDate"
+					     v-model="currentDate2"
 					     type="date"
 					     title="选择年月日"
-					     :min-date="minDate"
-					     :max-date="maxDate"
 					      @cancel="showPickerThree = false"
+						   @confirm="onConfirm4"
 					   />
 					   	</van-popup>
 					</div>
 				</div>
 			</div>
-			<div class="bodyContent">
+		<!-- 	<div class="bodyContent">
 				<div class="contentList">
 					<div class="listLeft">
 						复查情况：
@@ -260,14 +260,16 @@
 						<textarea rows="" cols="" placeholder="请输入复查情况" v-model="value9"></textarea>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<div class="bodyContent">
-				<div class="contentList">
+				<div class="contentList" style="display: flex; flex-direction: column;">
 					<div class="listLeft">
 						复查人签字：
 					</div>
-					<div class="listRight">
-						
+					<div class="listRight" style="margin: 0 auto;" >
+						<signature ref='s2' v-show="!sign2"/>
+						<img :src="sign2" class="signImg" v-if="sign2" style="border: 0.01rem solid #cccccc; box-sizing: border-box;">
+						<p class="signBtn"> <span @click="clear2">重签</span> <span style="margin-left: 0.3rem" @click="confirm2">确定</span></p>
 					</div>
 					</div>
 			</div>
@@ -277,7 +279,7 @@
 						隐患图片:
 					</div>
 					<div class="listRightImg" >
-						<img :src="item" v-for="(item,index) in imgListUpd" :key="index" >
+						<img :src="item" v-for="(item,index) in imgListUpd" :key="index" @click="preview(index)">
 					</div>
 					</div>
 			</div>
@@ -287,7 +289,7 @@
 			<div class="leftBtn" @click="lastStep">
 				上一步
 			</div>
-			<div class="rightBtn" @click="lastStep">
+			<div class="rightBtn" @click="confirmTo">
 			     确认
 			</div>
 		</div>
@@ -296,6 +298,8 @@
 </template>
 
 <script>
+	import { ImagePreview } from 'vant';
+    import signature from "../../../components/personal/signature";
     import penHeader from "../../../components/personal/penHeader";
     import bButton from "../../../components/personal/bButton";
     import searchView from "../../../components/personal/searchView";
@@ -309,10 +313,15 @@
 		mixins:[mixins],
         data() {
             return {
+				sign:'',
+				sign2:'',
+				Numbers:'',
 				tradingL,
 				tradingR,
 				imgListUpd:[],
 				imgList:[],
+				currentDate:'',
+				currentDate2:'',
 				value1:'',//整改名称
 				value2:'',//整改单位
 				value3:'',//检查区域
@@ -322,17 +331,24 @@
 				value7:'',//整改期限
 				value8:'',//复查日期
 				value9:'',//复查情况
+				orgEnterId:'',//整改单位id
+				rectifyer:'',//整改负责人id
+				currentRoleId:'',
 				showPicker:false,
+				showPicker2:false,
 				showPickerTwo:false,
 				showPickerThree:false,
+				options:[],
+				optionsTwo:[],
+				optionsThree:[],
 				columns:[
-					'姚峰',
-					'摩根'
+					
 				],
 				showNext:false
             };
         },
         components:{
+			signature,
             penHeader,
             bButton,
             searchView,
@@ -358,6 +374,24 @@
 			window.onresize = () => {
 				this.changeDevice()
 			}
+			this.api.getDocsRectifyCd().then(res=>{
+			   this.Numbers=res.data
+			})
+			//获取整改单位列表
+			this.currentRoleId = JSON.parse(this.until.loGet('currentRole')).id
+			let qry1 = this.query.new()
+			let qry3 = this.query.new()
+			this.query.toW(qry1, 'identityCd', 'identity30', 'EQ')
+			this.query.toW(qry1, 'audit', '2', 'EQ')
+			this.query.toW(qry3, 'identityCd', 'identity50', 'EQ')
+			this.query.toW(qry3, 'audit', '2', 'EQ')
+			this.api.getRecitifyList(this.query.toEncode(qry1)).then(res => {
+			  this.options = res.data.list
+			})
+			this.api.getRecitifyList(this.query.toEncode(qry3)).then(res => {
+			  this.optionsThree = res.data.list
+			})
+			this.currentDate=new Date(new Date().getTime())
 		},
 		methods: {
 			//切换设备
@@ -393,7 +427,7 @@
 					file.forEach(item=>{
 						let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
 						　　formData.append('file', item.file); //接口需要传的参数
-						this.api.uploadImg2(formData).then(res=>{
+						this.api.uploadImg3(formData).then(res=>{
 							　　	console.log(res,111111);
 								this.imgListUpd.push(res)
 								console.log(this.imgList);
@@ -403,7 +437,7 @@
 				else{
 					let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
 					　　formData.append('file', file.file); //接口需要传的参数
-					this.api.uploadImg2(formData).then(res=>{
+					this.api.uploadImg3(formData).then(res=>{
 						　　	console.log(res,111111);
 							this.imgListUpd.push(res)
 							console.log(this.imgListUpd);
@@ -421,7 +455,145 @@
 				this.until.back()
 			},
 			nextStep(){
+				if(!this.value1){
+					Toast('整改名称不能为空')
+					return false
+				}
+				if(!this.value2){
+					Toast('整改单位不能为空')
+					return false
+				}
+				if(!this.value3){
+					Toast('检查区域不能为空')
+					return false
+				}
+				if(!this.value4){
+					Toast('隐患说明不能为空')
+					return false
+				}
+				if(!this.value5){
+					Toast('责任整改人不能为空')
+					return false
+				}
+				if(!this.value7){
+					Toast('整改期限不能为空')
+					return false
+				}
 				this.showNext=true
+				
+			},
+			lastStep(){
+				this.showNext=false
+			},
+			confirmTo(){
+				if(!this.sign){
+					Toast('整改责任人未签字')
+					return false
+				}
+				if(!this.value8){
+					Toast('复查日期不能为空')
+					return false
+				}
+				if(!this.sign2){
+					Toast('复查人未签字')
+					return false
+				}
+				console.log(this.imgListUpd);
+				let obj={
+					docsId:0,
+					cd:this.Numbers,
+					nm:this.value1,
+					orgEnterId:this.orgEnterId,
+					inspArea:this.value3,
+					rectifyer:this.rectifyer,
+					explains:this.value4,
+					rectifyDemand:this.value6,
+					troubleImg:this.imgListUpd.join(','),
+					rectifyerSign:this.sign,
+					rectifyTmLimit:this.value7,
+					reviewerTm:this.value8,
+					reviewerSign:this.sign2,
+					rmks:'',
+				}
+				this.api.postDocsRectifyAdd(obj).then(res=>{
+						this.until.back()
+				})
+			},
+			clear(){
+				this.$refs.s1.clear()
+				this.sign = ''
+			},
+			async  confirm(){
+			     let temp= this.$refs.s1.getSignature()
+			     let file =  this.until.base64toFile(temp,"sign.png")
+			     let res=await  this.api.uploadImg2(file)
+			    this.sign=res
+			 },
+			 clear2(){
+			 	this.$refs.s2.clear()
+			 	this.sign2 = ''
+			 },
+			 async  confirm2(){
+			      let temp= this.$refs.s2.getSignature()
+			      let file =  this.until.base64toFile(temp,"sign.png")
+			      let res=await  this.api.uploadImg2(file)
+			     this.sign2=res
+			  },
+			 onConfirm1(val){
+				 this.orgEnterId=val.id
+				 this.value2=val.company
+				 let query=this.query.new()
+				 this.query.toW(query,'orgEnterId',this.orgEnterId,"EQ")
+				 this.api.getMemberOrgEnterLink(this.query.toEncode(query)).then(res=>{
+					 this.optionsTwo = res.data.list
+					 this.showPicker=false
+				 })
+			 },
+			onConfirm2(val){
+				this.value5=val.realNm
+				this.rectifyer=val.id
+				this.showPicker2=false
+			},
+			onConfirm3(val){
+				this.value7=this.formatTime(val)
+				this.showPickerTwo=false
+				this.value8=this.formatTimeTwo(val)
+				console.log(this.value7);
+			},
+			onConfirm4(val){
+				this.value8=this.formatTime(val)
+				this.showPickerThree=false	
+			},
+			formatTime(date) {
+			  let myDate = new Date(date)
+			  let year = myDate.getFullYear();
+			  let month = myDate.getMonth() + 1;
+			  let day = myDate.getDate();
+			  let hour = myDate.getHours();
+			  let minute = myDate.getMinutes();
+			  let second = myDate.getSeconds();
+			  return year + "-" + this.formatTen(month) + "-" + this.formatTen(day) 
+			},
+			formatTimeTwo(date) {
+			  let myDate = new Date(new Date(date).getTime() + 2 * 24 * 60 * 60 * 1000)
+			  let year = myDate.getFullYear();
+			  let month = myDate.getMonth() + 1;
+			  let day = myDate.getDate();
+			  let hour = myDate.getHours();
+			  let minute = myDate.getMinutes();
+			  let second = myDate.getSeconds();
+			  return year + "-" + this.formatTen(month) + "-" + this.formatTen(day) 
+			},
+			
+			formatTen(num) {
+			  return num > 9 ? (num + "") : ("0" + num);
+			},
+			preview(index){
+				ImagePreview({
+				  images: this.imgListUpd,
+				  closeable: true,
+				    startPosition: index,
+				});
 			}
 			
 
@@ -463,6 +635,7 @@
 					box-sizing: border-box;
 					border-bottom: 0.01rem solid #E5E5E5;
 					.listLeft{
+						width: 1.5rem;
 						font-size: 0.24rem;
 						font-weight: 500;
 						color: #333333;
@@ -500,6 +673,7 @@
 						display: flex;
 						flex-wrap: wrap;
 						img{
+							margin-left: 0.2rem;
 							width: 2rem;
 							height: 2rem;
 						}

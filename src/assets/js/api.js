@@ -268,10 +268,16 @@ class api {
 	}
 
 	//上传图片
-	uploadImg2(e) {
-
-		// let param = new FormData();
-		// param.append('file',e);
+	uploadImg2(e){
+		let param = new FormData();
+		param.append('file',e);
+		return new Promise(resolve => {
+			post('/general/oss/upload',param).then(res=>{
+				resolve(res.data)
+			})
+		})
+	}
+   uploadImg3(e){
 		return new Promise(resolve => {
 			post('/general/oss/upload', e).then(res => {
 
@@ -279,7 +285,6 @@ class api {
 			})
 		})
 	}
-
 	//选型记录复制
 	xuanxingCopy(id) {
 		return new Promise(resolve => {
@@ -2115,6 +2120,7 @@ class api {
 	    })
 	  })
 	}
+
 	// 开票结果
 	getInvoiceResult(data) {
 	  return new Promise(resolve => {
@@ -2139,6 +2145,40 @@ class api {
 		  })
 		})
 	  }
+
+	//获取整改单单号
+	getDocsRectifyCd(){
+		return new Promise(resolve => {
+		  get('/ship/docsRectify/apis/getCd').then(res => {
+		    resolve(res)
+		  })
+		})
+	}
+	//整改单新增
+	postDocsRectifyAdd(data){
+		return new Promise(resolve => {
+			post("/ship/docsRectify/apis/add",data).then(res=>{
+				resolve(res.data)
+			})
+		})
+	}
+	//获取整改单位
+	getRecitifyList(query) {
+	  return new Promise(resolve => {
+	    get('/ship/orgEnter/api/list?query=' + query).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//获取整改单位人员列表
+	getMemberOrgEnterLink(query) {
+	  return new Promise(resolve => {
+	    get('/ship/memberOrgEnterLink/api/listA?query=' + query).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+
 }
 
 

@@ -40,7 +40,7 @@
                 default: 200
             },
             width: {
-                default: 200
+                default: 300
             },
             strokeColor: {
                 default: 'black',
