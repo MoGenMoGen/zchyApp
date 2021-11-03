@@ -3,15 +3,44 @@
   <div id="container">
     <pen-header title="整改单"></pen-header>
     <!-- 二次下发 -->
-    <div id="Issueshow" v-if="Issueshow">
-      <div class="addBox">
+    <div id="Issueshow" v-if="Issueshow" @click="Issueshow = false">
+      <div class="addBox" @click.stop="">
         <div class="head">
           <p>下发说明</p>
         </div>
         <div class="addBody">
+          <div class="inputbox">
+            <van-field
+              v-model="info.reissueReport"
+              rows="1"
+              autosize
+              clearable
+              required
+              label="下发说明："
+              type="textarea"
+              placeholder="请输入二次下发说明"
+            />
+          </div>
+
+          <div class="uploadBox">
+            <!-- <div class="listLeft">上传图片:</div> -->
+            <div class="listRightImg">
+              <van-uploader
+                preview-size="1.5rem"
+                :after-read="afterRead"
+                :before-delete="beforeDel"
+                v-model="reissueAlbums"
+              />
+              <van-loading
+                v-if="isvanloading2"
+                type="spinner"
+                class="van_loading"
+              />
+            </div>
+          </div>
           <div class="Issuebtn">
-            <div class="cancel button" @click="Issueshow = false">取消</div>
-            <div class="confirm button" @click="handleconfirmIssue">确认</div>
+            <div class="cancel" @click.stop="Issueshow = false">取消</div>
+            <div class="confirm" @click="handleconfirmIssue">确认</div>
           </div>
         </div>
       </div>
@@ -367,9 +396,13 @@ export default {
       // 再次下发列表
       reissueList: [],
       info: {},
+      // 上报图片列表
       albums: [],
       // 加载图片
       isvanloading: false,
+      // 再次下发图片列表
+      reissueAlbums: [],
+      isvanloading2: false,
       // 二次下发弹窗
       Issueshow: false,
     };
@@ -420,20 +453,33 @@ export default {
     },
     // 文件删除前的回调
     beforeDel(file, detail) {
-      console.log(this.albums, this.commitInfo.pic);
       // detail.index为图片下标
       // let fileList = this.commitInfo.pic.split(",");
       // fileList.splice(detail.index, 1);
       // this.commitInfo.pic = fileList.join(",");
       // albums里面内容为文件格式，不能直接传给后台
-      this.albums.splice(detail.index, 1);
-      this.info.rectifyImg = this.albums.join(",");
+      if (this.currentRole && this.currentRole.identityCd == "identity30") {
+        this.albums.splice(detail.index, 1);
+        this.info.rectifyImg = this.albums.join(",");
+      } else if (
+        this.currentRole &&
+        this.currentRole.identityCd == "identity50"
+      ) {
+        this.reissueAlbums.splice(detail.index, 1);
+        this.info.reissueImg = this.reissueAlbums.join(",");
+      }
     },
     // 文件读取完成后的回调
     async afterRead(e) {
+      // 船厂identityCd == 'identity30'整改上报图片上传
+      // 检测identityCd == 'identity50'二次下发图片上传
       console.log(e);
       // this.$loading.show("正在上传");
-      this.isvanloading = true;
+      if (this.currentRole && this.currentRole.identityCd == "identity30")
+        this.isvanloading = true;
+      else if (this.currentRole && this.currentRole.identityCd == "identity50")
+        this.isvanloading2 = true;
+
       const formData = new FormData();
       if (e.file.size > 1048576) {
         // console.log("压缩图片");
@@ -445,13 +491,27 @@ export default {
       }
       this.api.uploadImg2(formData).then((imgurl) => {
         this.isvanloading = false;
+        this.isvanloading2 = false;
         console.log("上传后地址", imgurl);
-        if (!this.info.rectifyImg) {
-          this.info.rectifyImg = imgurl;
-        } else {
-          this.info.rectifyImg += `,${imgurl}`;
+        if (this.currentRole && this.currentRole.identityCd == "identity30") {
+          if (!this.info.rectifyImg) {
+            this.info.rectifyImg = imgurl;
+          } else {
+            this.info.rectifyImg += `,${imgurl}`;
+          }
+          // this.albums.push(imgurl);
+        } else if (
+          this.currentRole &&
+          this.currentRole.identityCd == "identity50"
+        ) {
+          if (!this.info.reissueImg) {
+            this.info.reissueImg = imgurl;
+          } else {
+            this.info.reissueImg += `,${imgurl}`;
+          }
+          // this.reissueAlbums.push(imgurl);
+          console.log(1111111, this.reissueAlbums);
         }
-        this.albums.push();
       });
     },
     back() {
@@ -510,6 +570,29 @@ export default {
         }
       }
     },
+    // 二次下发
+    async   handleconfirmIssue() {
+      if (!this.info.reissueReport || !this.info.reissueImg) {
+        Toast("请将信息填写完整");
+      } else {
+        let data = await this.api.handleRectifyReturn({
+          inspId: this.reissueList[this.reissueList.length - 1].id,
+          id: this.id,
+          cd: this.info.cd,
+          reissueImg: this.info.reissueImg,
+          reissueReport: this.info.reissueReport,
+        });
+        if (data.code == 0) {
+          Toast.success("再次下发成功");
+          let data1 = await this.api.getRectifyDetail(this.id);
+          this.info = data1.shipDocsRectifyVo;
+          this.reissueList = data1.reissueList;
+        } else {
+          this.$message.error("再次下发失败");
+        }
+      }
+      this.Issueshow = false;
+    },
   },
 };
 </script>
@@ -534,7 +617,9 @@ export default {
       background-color: #ffffff;
       display: flex;
       flex-direction: column;
-      border-radius: .08rem;
+      border-radius: 0.08rem;
+      position: relative;
+
       .head {
         box-sizing: border-box;
         display: flex;
@@ -542,18 +627,18 @@ export default {
         align-items: center;
         height: 1rem;
         width: 100%;
-        padding: 0 .3rem;
+        padding: 0 0.3rem;
         border-bottom: 1px solid rgba(0, 0, 0, 0.3);
         > p {
           margin: 0 auto;
-          font-size: .28rem;
-          padding-left: .16rem;
-          color:#333;
+          font-size: 0.28rem;
+          padding-left: 0.16rem;
+          color: #333;
           // width: 37.4%;
         }
         > img {
-          width: .16rem;
-          height: .16rem;
+          width: 0.16rem;
+          height: 0.16rem;
           cursor: pointer;
         }
       }
@@ -564,33 +649,45 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+        .inputbox {
+          width: 80%;
+          margin-top: 0.5rem;
+        }
+        .uploadBox {
+          width: 80%;
+          margin-top: 0.5rem;
+          padding-bottom: 0.78rem;
+        }
         .Issuebtn {
-          margin-top: .4rem;
-          margin-bottom: .4rem;
+          width: 100%;
+          position: absolute;
+          z-index: 199;
+          bottom: 0;
+          left: 0;
           display: flex;
           .cancel {
             width: 50%;
-            height: .52rem;
-            background: rgba(228, 57, 60, 0);
-            border: 1px solid #dddddd;
-            border-radius: .05rem;
-            font-size: .16rem;
+            height: 0.78rem;
+            background: #fff;
+            border-top: 1px solid #dddddd;
+            border-radius: 0.05rem;
+            font-size: 0.16rem;
             font-weight: 400;
             color: #666666;
-            line-height: .52rem;
+            line-height: 0.78rem;
             text-align: center;
-            margin-right: .2rem;
           }
           .confirm {
             width: 50%;
+            border-top: 1px solid #dddddd;
 
-            height: .52rem;
+            height: 0.78rem;
             background: #2778be;
-            border-radius: .05rem;
-            font-size: .16rem;
+            border-radius: 0.05rem;
+            font-size: 0.16rem;
             font-weight: 400;
             color: #ffffff;
-            line-height: .52rem;
+            line-height: 0.78rem;
             text-align: center;
           }
         }

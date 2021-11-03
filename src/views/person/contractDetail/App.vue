@@ -24,7 +24,7 @@
                     </van-row>
                     <van-row class="row" type="flex">
                         <van-col span="6"><p>合同总额:</p></van-col>
-                        <van-col span="18"><p>￥<span style="color: #FF2727">{{info.totalPrice}}</span></p></van-col>
+                        <van-col span="18"><p style="color: #FF2727">￥<span style="color: #FF2727">{{info.totalPrice}}</span></p></van-col>
                     </van-row>
 
                     <van-row class="row" type="flex">

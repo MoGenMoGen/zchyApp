@@ -80,7 +80,7 @@
             <div class="row">
               <div class="left">整改内容:</div>
               <div class="right">
-                {{ item.nm }}
+                {{ item.rectifyDemand }}
               </div>
             </div>
             <div class="row">
@@ -200,10 +200,10 @@ export default {
         this.tab1Id = id;
         this.pageNo = 1;
         this.list = [];
+        this.state = id;
+
         if (this.tab1Id == 1) this.getList(true);
         else {
-          this.state = id;
-
           this.getList(false);
         }
       }
@@ -248,7 +248,7 @@ export default {
           "EQ"
         );
       }
-      let query=this.query.toEncode(qry)
+      let query = this.query.toEncode(qry);
 
       // // 根据登陆者的identityCd判断，30则是orgEnterId，50为orgTestEnterId
       // // 船厂

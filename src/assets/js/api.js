@@ -268,16 +268,16 @@ class api {
 	}
 
 	//上传图片
-	uploadImg2(e){
+	uploadImg2(e) {
 		let param = new FormData();
-		param.append('file',e);
+		param.append('file', e);
 		return new Promise(resolve => {
-			post('/general/oss/upload',param).then(res=>{
+			post('/general/oss/upload', param).then(res => {
 				resolve(res.data)
 			})
 		})
 	}
-   uploadImg3(e){
+	uploadImg3(e) {
 		return new Promise(resolve => {
 			post('/general/oss/upload', e).then(res => {
 
@@ -2066,71 +2066,72 @@ class api {
 	}
 	//开票资料详情
 	getQualiInfo(data) {
-	  return new Promise(resolve => {
-	    get("/ds/invoiceInfo/apis/infoByOrgEnterId", data).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			get("/ds/invoiceInfo/apis/infoByOrgEnterId", data).then(res => {
+				resolve(res)
+			})
+		})
 	}
 	//开票资料新增
 	qualiAdd(data) {
-	  return new Promise(resolve => {
-	    post("/ds/invoiceInfo/apis/add", data).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			post("/ds/invoiceInfo/apis/add", data).then(res => {
+				resolve(res)
+			})
+		})
 	}
 	//开票资料更新
 	qualiUpd(data) {
-	  return new Promise(resolve => {
-	    post("/ds/invoiceInfo/apis/upd", data).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			post("/ds/invoiceInfo/apis/upd", data).then(res => {
+				resolve(res)
+			})
+		})
 	}
 	//开票资料删除
 	qualiDel(data) {
-	  return new Promise(resolve => {
-	    get("/ds/invoiceInfo/apis/del", data).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			get("/ds/invoiceInfo/apis/del", data).then(res => {
+				resolve(res)
+			})
+		})
 	}
 	//开票资料新增
 	qualiAddrAdd(data) {
-	  return new Promise(resolve => {
-	    post("/ds/invoiceAddr/apis/add", data).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			post("/ds/invoiceAddr/apis/add", data).then(res => {
+				resolve(res)
+			})
+		})
 	}
 	//开票资料更新
 	qualiAddrUpd(data) {
-	  return new Promise(resolve => {
-	    post("/ds/invoiceAddr/apis/upd", data).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			post("/ds/invoiceAddr/apis/upd", data).then(res => {
+				resolve(res)
+			})
+		})
 	}
 	//开票资料详情
 	getQualiAddrInfo(data) {
-	  return new Promise(resolve => {
-	    get("/ds/invoiceAddr/apis/listByOrderId", data).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			get("/ds/invoiceAddr/apis/listByOrderId", data).then(res => {
+				resolve(res)
+			})
+		})
 	}
 
 	// 开票结果
 	getInvoiceResult(data) {
-	  return new Promise(resolve => {
-	    get("/ds/invoiceResult/apis/listByOrderId", data).then(res => {
-	      resolve(res.data)
-	    })
-	  })
+		return new Promise(resolve => {
+			get("/ds/invoiceResult/apis/listByOrderId", data).then(res => {
+				resolve(res.data)
+			})
+		})
 	}
 	// 整改上报
 	handleRectifyReport(body) {
+		41
 		return new Promise(resolve => {
 			post("/ship/docsRectify/apis/rectifyReport", body).then(res => {
 				resolve(res)
@@ -2140,43 +2141,83 @@ class api {
 	// 整改确认结案
 	handlerectifyClose(body) {
 		return new Promise(resolve => {
-		  post("/ship/docsRectify/apis/rectifyClose", body).then(res => {
-			resolve(res)
-		  })
+			post("/ship/docsRectify/apis/rectifyClose", body).then(res => {
+				resolve(res)
+			})
 		})
-	  }
+	}
+	// 整改再次下发
+	handleRectifyReturn(body) {
+		return new Promise(resolve => {
+			post("/ship/docsRectify/apis/rectifyReturn", body).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 历史图片审核通过分页列表
+	getHisPicAdoptList(data) {
+		return new Promise(resolve => {
+			get("/ship/docsImgs/apis/page?query" + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 运行记录审核通过分页列表
+	getRunAdoptList(data) {
+		return new Promise(resolve => {
+			get("/ship/docsOprRecord/apis/page?query" + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 云检验审核通过分页列表
+	getCloudTestAdoptList(data) {
+		return new Promise(resolve => {
+			get("/ship/docsInsp/apis/page?query" + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//船舶的合同列表
+	shipContractList(query, data) {
+		return new Promise(resolve => {
+			get("/ship/contract/apis/docsPage?query=" + query, data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 
 	//获取整改单单号
-	getDocsRectifyCd(){
+	getDocsRectifyCd() {
 		return new Promise(resolve => {
-		  get('/ship/docsRectify/apis/getCd').then(res => {
-		    resolve(res)
-		  })
+			get('/ship/docsRectify/apis/getCd').then(res => {
+				resolve(res)
+			})
 		})
 	}
 	//整改单新增
-	postDocsRectifyAdd(data){
+	postDocsRectifyAdd(data) {
 		return new Promise(resolve => {
-			post("/ship/docsRectify/apis/add",data).then(res=>{
+			post("/ship/docsRectify/apis/add", data).then(res => {
 				resolve(res.data)
 			})
 		})
 	}
 	//获取整改单位
 	getRecitifyList(query) {
-	  return new Promise(resolve => {
-	    get('/ship/orgEnter/api/list?query=' + query).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			get('/ship/orgEnter/api/list?query=' + query).then(res => {
+				resolve(res)
+			})
+		})
 	}
 	//获取整改单位人员列表
 	getMemberOrgEnterLink(query) {
-	  return new Promise(resolve => {
-	    get('/ship/memberOrgEnterLink/api/listA?query=' + query).then(res => {
-	      resolve(res)
-	    })
-	  })
+		return new Promise(resolve => {
+			get('/ship/memberOrgEnterLink/api/listA?query=' + query).then(res => {
+				resolve(res)
+			})
+		})
 	}
 
 }
