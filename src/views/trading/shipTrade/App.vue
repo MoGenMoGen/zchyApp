@@ -65,9 +65,12 @@
 							<span>船舶型深：{{item.deep}}</span>
 						</p>
 						<!--<p class="price">￥{{item.origPrice}}</p>-->
-						<p class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice !=price">￥{{item.goodsMinPrice}}</p>
-						<p class="price" v-if="item.goodsMinPrice!==item.goodsMaxPrice">￥{{item.goodsMinPrice}}-{{item.goodsMaxPrice}}</p>
-						<p class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice ==price">价格面议</p>
+						<div style="display: flex; align-items: auto; position: relative;">
+						<span class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice !=price">￥{{item.goodsMinPrice}}</span>
+						<span class="price" v-if="item.goodsMinPrice!==item.goodsMaxPrice">￥{{item.goodsMinPrice}}-{{item.goodsMaxPrice}}</span>
+						<span class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice ==price">价格面议</span>
+						<span style="position: absolute; right: 2rem;"><img :src="Vr" v-if="item.vrUrl" @click.stop="toVr(item.vrUrl)" style="width: 1.38rem; height: 0.43rem;"></span>
+					</div>
 					</div>
 				</div>
 			</van-list>
@@ -81,6 +84,7 @@
     import chooseClassify from '@/components/trade/choose'
 	import search from '@/assets/img/search.png'
     import choose from '@/assets/img/trading/筛选.png'
+	import Vr from '@/assets/img/Vr.png'
     import old from '@/assets/img/trading/二手船.png'
     import newShip from '@/assets/img/trading/新造船.png'
     import {mapState} from 'vuex'
@@ -92,6 +96,7 @@
                 finished:false,
                 immediate:false,
                 choose,
+				Vr,
 				search,
                 old,
 				newShip,
@@ -252,6 +257,9 @@
             onLoad(){
                 this.pageNo++
 				this.getList()
+			},
+			toVr(url){
+				window.open(url)
 			}
         },
 

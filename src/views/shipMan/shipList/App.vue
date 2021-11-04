@@ -11,6 +11,7 @@
 			</div>
 			<div class="whiteBox" v-if="list.length>0">
 				<div class="part" v-for="(i,k) in list" :key="k" @click="toDetail(i.id)">
+					<img :src="Vr" v-if="i.vrUrl" @click.stop="toVr(i.vrUrl)" style="width: 1.38rem;height: 0.43rem;opacity: 0.9;position: absolute;top: 0;left: 0;">
 					<img :src="i.imgUrl"/>
 					<div class="ct">
 						<p>{{i.nm}}</p>
@@ -25,16 +26,18 @@
 
 <script>
 	import { Toast } from 'vant'; 
-  import bgS from '@/assets/img/bgS.png'
+    import bgS from '@/assets/img/bgS.png'
 	import tradingL from '@/assets/img/tradingL.png'
 	import tradingR from '@/assets/img/tradingR.png'
 	import {mapState} from "vuex";
+	import Vr from '@/assets/img/Vr.png'
   export default {
     data() {
       return {
         bgS,
 				tradingL,
 				tradingR,
+				Vr,
 				lunBoList:[],
 				list:[],
 				cid2:"",
@@ -108,6 +111,9 @@
       toDetail(id){
 				this.until.href("./shipDetail.html?id="+id)
       },
+	  toVr(url){
+		  window.open(url)
+	  }
 		},
 
     };

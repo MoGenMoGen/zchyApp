@@ -7,7 +7,7 @@
 
         <div class="body">
             <van-list  v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad"   :immediate-check="immediate" >
-                <div class="list-item" v-for="item in list" :key="item.id">
+                <div class="list-item" v-for="item in list" :key="item.id" style="position: relative;">
                     <van-row class="row" align="center" type="flex">
                         <van-col span="6"><p>船舶编号：</p></van-col>
                         <van-col span="18"><p>{{item.cd}}</p></van-col>
@@ -45,7 +45,8 @@
                             <p  style="color: #FF3F3F;display: none"  @click="showPop2(item)">节点通知</p>
                         </van-col>
                     </van-row>
-                </div>
+					<img :src="Vr" v-if="item.vrUrl" @click.stop="toUrl(item.vrUrl)" style="width: 1.38rem; height: 0.43rem;position: absolute;right:0.3rem; bottom: 0.3rem;">
+				</div>
             </van-list>
 
         </div>
@@ -67,10 +68,12 @@
 	import {mixins} from "../mixins/mixins"
     import {Toast} from 'vant'
 	import {mapState} from "vuex";
+	import Vr from '@/assets/img/Vr.png'
     export default {
 		mixins:[mixins],
         data() {
             return {
+				Vr,
                 showPop:false,
                 docsId:'',
                 showDevie:false,
@@ -145,7 +148,11 @@
                this.loading = false;
                this.pageNo++
 
+			},
+			toUrl(url){
+				window.open(url)
 			}
+			
 
         },
 

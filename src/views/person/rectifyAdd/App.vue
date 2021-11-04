@@ -504,6 +504,7 @@
 					cd:this.Numbers,
 					nm:this.value1,
 					orgEnterId:this.orgEnterId,
+					orgTestEnterId: this.currentRoleId,
 					inspArea:this.value3,
 					rectifyer:this.rectifyer,
 					explains:this.value4,
