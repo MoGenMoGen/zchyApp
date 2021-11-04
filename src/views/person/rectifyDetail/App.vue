@@ -26,6 +26,7 @@
             <!-- <div class="listLeft">上传图片:</div> -->
             <div class="listRightImg">
               <van-uploader
+                multiple="true"
                 preview-size="1.5rem"
                 :after-read="afterRead"
                 :before-delete="beforeDel"
@@ -73,7 +74,17 @@
       <div class="bodyContent">
         <div class="contentList">
           <div class="listLeft">整改责任人：</div>
-          <div class="listRight">{{ info.rectifyerSign }}</div>
+          <div
+            class="listRight"
+            v-if="info.rectifyerSign && info.rectifyerSign.includes('http')"
+          >
+            <img
+              :src="info.rectifyerSign"
+              alt=""
+              style="object-fit: fill; width: 3rem; height: 2rem"
+            />
+          </div>
+          <div class="listRight" v-else>{{ info.rectifyerSign }}</div>
         </div>
       </div>
       <div class="bodyContent">
@@ -118,7 +129,7 @@
               :src="item"
               v-for="(item, index) in hiddenPics"
               :key="index"
-              @click="Preview(index)"
+              @click="Preview(index, hiddenPics)"
             />
           </div>
         </div>
@@ -126,7 +137,17 @@
       <div class="bodyContent">
         <div class="contentList">
           <div class="listLeft">复查人：</div>
-          <div class="listRight">{{ info.reviewerSign }}</div>
+          <div
+            class="listRight"
+            v-if="info.reviewerSign && info.reviewerSign.includes('http')"
+          >
+            <img
+              :src="info.reviewerSign"
+              alt=""
+              style="object-fit: fill; width: 3rem; height: 2rem"
+            />
+          </div>
+          <div class="listRight" v-else>{{ info.reviewerSign }}</div>
         </div>
       </div>
       <div class="bodyContent">
@@ -209,6 +230,7 @@
                 :after-read="afterRead"
                 :before-delete="beforeDel"
                 v-model="albums"
+                multiple="true"
               />
               <van-loading
                 v-if="isvanloading"
@@ -241,12 +263,18 @@
           <div class="contentList">
             <div class="listLeft">整改上报：</div>
             <div class="listRight">{{ info.rectifyReport }}</div>
+          </div>
+          <div
+            class="contentList"
+            style="display: flex; flex-direction: column"
+          >
+            <div class="listLeft">执行图片:</div>
             <div class="listRightImg">
               <img
                 :src="item"
                 v-for="(item, index) in albums"
                 :key="index"
-                @click="Preview(index)"
+                @click="Preview(index, albums)"
               />
             </div>
           </div>
@@ -260,7 +288,16 @@
         <div class="bodyContent">
           <div class="contentList">
             <div class="listLeft">确认人：</div>
-            <div class="listRight">{{ info.reviewer }}</div>
+            <div
+              class="listRight"
+              v-if="info.reviewerSign && info.reviewerSign.includes('http')"
+            >
+              <img
+                :src="info.reviewerSign"
+                alt=""
+                style="object-fit: fill; width: 3rem; height: 2rem"
+              />
+            </div>
           </div>
         </div>
         <div class="bodyContent">
@@ -343,7 +380,16 @@
       <div class="bodyContent">
         <div class="contentList">
           <div class="listLeft">签发人：</div>
-          <div class="listRight">{{ info.closeUserNm }}</div>
+          <div
+            class="listRight"
+            v-if="info.reviewerSign && info.reviewerSign.includes('http')"
+          >
+            <img
+              :src="info.reviewerSign"
+              alt=""
+              style="object-fit: fill; width: 3rem; height: 2rem"
+            />
+          </div>
         </div>
       </div>
       <div class="bodyContent">
@@ -427,11 +473,10 @@ export default {
     window.onresize = () => {
       this.changeDevice();
     };
-    console.log(111111);
     this.id = this.until.getQueryString("id");
     let data = await this.api.getRectifyDetail(this.id);
-    console.log(22222, data);
     this.info = data.shipDocsRectifyVo;
+    if (this.info.rectifyImg) this.albums = this.info.rectifyImg.split(",");
     this.reissueList = data.reissueList;
   },
   methods: {
@@ -444,10 +489,9 @@ export default {
           window.location.origin + this.serverAddr + "/personal/record";
       }
     },
-    Preview(index) {
-      let that = this;
+    Preview(index, list) {
       ImagePreview({
-        images: that.hiddenPics,
+        images: list,
         startPosition: index,
       });
     },
@@ -489,7 +533,7 @@ export default {
       } else {
         formData.append("file", e.file, "file.jpg");
       }
-      this.api.uploadImg2(formData).then((imgurl) => {
+      this.api.uploadImg3(formData).then((imgurl) => {
         this.isvanloading = false;
         this.isvanloading2 = false;
         console.log("上传后地址", imgurl);
@@ -544,6 +588,9 @@ export default {
           Toast.success("上报成功");
           let data = await this.api.getRectifyDetail(this.id);
           this.info = data.shipDocsRectifyVo;
+          if (this.info.rectifyImg)
+            this.albums = this.info.rectifyImg.split(",");
+
           this.reissueList = data.reissueList;
         } else {
           Toast.fail("上报失败");
@@ -564,6 +611,9 @@ export default {
           Toast.success("结案成功");
           let data = await this.api.getRectifyDetail(this.id);
           this.info = data.shipDocsRectifyVo;
+          if (this.info.rectifyImg)
+            this.albums = this.info.rectifyImg.split(",");
+
           this.reissueList = data.reissueList;
         } else {
           Toast.fail("结案失败");
@@ -571,7 +621,7 @@ export default {
       }
     },
     // 二次下发
-    async   handleconfirmIssue() {
+    async handleconfirmIssue() {
       if (!this.info.reissueReport || !this.info.reissueImg) {
         Toast("请将信息填写完整");
       } else {
@@ -586,12 +636,32 @@ export default {
           Toast.success("再次下发成功");
           let data1 = await this.api.getRectifyDetail(this.id);
           this.info = data1.shipDocsRectifyVo;
+          if (this.info.rectifyImg) {
+            this.albums = this.info.rectifyImg.split(",");
+          }
           this.reissueList = data1.reissueList;
         } else {
-          this.$message.error("再次下发失败");
+          Toast.fail("再次下发失败");
         }
       }
       this.Issueshow = false;
+    },
+    //传入图片路径，返回base64
+    getBase64(url, callback) {
+      var Img = new Image(),
+        dataURL = "";
+      Img.src = url + "?v=" + Math.random();
+      Img.setAttribute("crossOrigin", "Anonymous");
+      Img.onload = function () {
+        var canvas = document.createElement("canvas"),
+          width = Img.width,
+          height = Img.height;
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(Img, 0, 0, width, height);
+        dataURL = canvas.toDataURL("image/jpeg");
+        return callback ? callback(dataURL) : null;
+      };
     },
   },
 };

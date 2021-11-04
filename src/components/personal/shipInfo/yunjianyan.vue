@@ -104,12 +104,13 @@ export default {
     tofpxpert() {
       // let uid = "03939";
       // let ps = "zchy54321";
-      let uid = "";
-      let ps = "";
+      // let uid = "";
+      // let ps = "";
       let server = "www.fpxpert.cn";
-      let url = encodeURI(
-        `esfp://login?uid=${uid}&password=${ps}&server=${server}`
-      );
+      // let url = encodeURI(
+      //   `esfp://login?uid=${uid}&password=${ps}&server=${server}`
+      // );
+      let url = encodeURI(`esfp://login?server=${server}`);
       window.location.replace(url);
     },
     getList() {

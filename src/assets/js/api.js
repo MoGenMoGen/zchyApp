@@ -25,6 +25,8 @@ axios.defaults.transformRequest.unshift((params) => {
 })
 const hostUrl = 'https://www.ship88.cn'
 // const hostUrl = 'http://lwkacgr.nat.ipyingshe.com'
+// const hostUrl = 'http://u2768442w0.qicp.vip'
+
 //ajax请求
 function get(url, data, header, cache = true) {
 	let headers = null
@@ -42,7 +44,7 @@ function get(url, data, header, cache = true) {
 	}
 
 	let promise = new Promise((resolve, reject) => {
-		axios.get(hostUrl + url, { params: data, headers }).then(res => {
+		axios.get(url, { params: data, headers }).then(res => {
 			Toast.clear();
 			if (res.data.code == 0) {
 				resolve(res.data)
@@ -87,7 +89,7 @@ function post(url, data) {
 	}
 
 	let promise = new Promise((resolve, reject) => {
-		axios.post(hostUrl + url, data, { headers: header })
+		axios.post(url, data, { headers: header })
 			.then(function (res) {
 				Toast.clear();
 				if (res.data.code === 0) {

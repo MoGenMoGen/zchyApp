@@ -24,16 +24,25 @@
       <div class="body2">
         <div class="list-cont2">
           <!-- <div class="datebox"> -->
-          <van-field
-            @click="showPicker = true"
-            class="datebox"
-            readonly
-            clickable
-            clearable
-            label=""
-            v-model="searchInfo.IssueDate"
-            placeholder="下发日期"
-          />
+          <div style="position: relative">
+            <van-field
+              @click="showPicker = true"
+              class="datebox"
+              readonly
+              clickable
+              clearable
+              label=""
+              v-model="searchInfo.IssueDate"
+              placeholder="下发日期"
+            />
+            <van-icon
+            v-if="searchInfo.IssueDate"
+              @click="searchInfo.IssueDate = ''"
+              name="close"
+              class="btn_close"
+            />
+          </div>
+
           <van-popup v-model="showPicker" round position="bottom">
             <van-datetime-picker
               type="date"
@@ -359,6 +368,13 @@ export default {
         //     height: 0.6rem;
         //     line-height: 0.6rem;
         //   }
+        .btn_close {
+          position: absolute;
+          top: 50%;
+          right: 0.1rem;
+          transform: translateY(-50%);
+          z-index: 10;
+        }
         .datebox {
           width: 2.52rem;
           height: 0.6rem;
@@ -366,8 +382,9 @@ export default {
           padding: 0;
           padding-left: 0.2rem;
           background: #ffffff;
-          border: 0.01rem solid #e5e5e5;
+          border: 1px solid #e5e5e5;
           border-radius: 0.3rem;
+
         }
         .inputbox {
           width: 2.82rem;
@@ -376,7 +393,7 @@ export default {
           padding: 0;
           padding-left: 0.2rem;
           background: #ffffff;
-          border: 0.01rem solid #e5e5e5;
+          border: 1px solid #e5e5e5;
           border-radius: 0.3rem;
         }
         .btn {
