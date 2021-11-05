@@ -282,7 +282,7 @@ export default {
       this.total = data.page.total;
     },
     toDetail(id) {
-      this.until.href("/views/person/rectifyDetail.html?id=" + id);
+      this.until.href("./rectifyDetail.html?id=" + id);
     },
     Search() {
       this.pageNo = 1;

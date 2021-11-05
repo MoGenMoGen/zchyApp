@@ -570,7 +570,7 @@ export default {
         //再下发说明列表
         if (this.reissueList.length > 1) {
           obj = {
-            inspId: this.reissueList[this.reissueList - 1].id,
+            inspId: this.reissueList[this.reissueList.length - 1].id,
           };
         }
         let res = await this.api.handleRectifyReport({
