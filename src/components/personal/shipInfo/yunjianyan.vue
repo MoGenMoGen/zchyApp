@@ -110,7 +110,8 @@ export default {
       // let url = encodeURI(
       //   `esfp://login?uid=${uid}&password=${ps}&server=${server}`
       // );
-      let url = encodeURI(`esfp://login?server=${server}`);
+      // let url = encodeURI(`esfp://login?server=${server}`);
+      let url = encodeURI("esfp://");
       window.location.replace(url);
     },
     getList() {
