@@ -311,6 +311,29 @@ class until{
       }
     },1000);
   }
+  formatTen(num) {
+    return num > 9 ? (num + "") : ("0" + num);
+  }
+  formatTime(date) {
+    let myDate = new Date(date)
+    let year = myDate.getFullYear();
+    let month = myDate.getMonth() + 1;
+    let day = myDate.getDate();
+    let hour = myDate.getHours();
+    let minute = myDate.getMinutes();
+    let second = myDate.getSeconds();
+    return year + "-" + this.formatTen(month) + "-" + this.formatTen(day);
+  }
+  formatTimeTwo() {
+    let myDate = new Date()
+    let year = myDate.getFullYear();
+    let month = myDate.getMonth() + 1;
+    let day = myDate.getDate();
+    let hour = myDate.getHours();
+    let minute = myDate.getMinutes();
+    let second = myDate.getSeconds();
+    return year + "-" + this.formatTen(month) + "-" + this.formatTen(day);
+  }
   /*版本检测*/
   browser={
     versions:function(){

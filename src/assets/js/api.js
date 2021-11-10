@@ -2269,6 +2269,14 @@ class api {
 	    })
 	  })
 	}
+	// 新闻咨询招标分页列表
+	getBidList(data){
+	  return new Promise(resolve => {
+	    get("/ship/bid/apis/api/page?query="+data).then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
 
 }
 
