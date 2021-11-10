@@ -102,7 +102,7 @@
                     })
 				  setTimeout(()=>{
 				      //有上级地址并且上级地址不是注册页面时，登录成功后直接返回上级页面
-				      if(document.referrer && document.referrer.indexOf('register')=='-1'){
+				      if(document.referrer && document.referrer.indexOf('register')=='-1'&&document.referrer.indexOf('setting')=='-1'){
                           window.location.replace(document.referrer)
                       }else { //否则跳转到首页
                           window.location.replace('../home/index.html?email='+this.form.username+'&password='+this.form.password+'&_='+(new Date()).valueOf())
