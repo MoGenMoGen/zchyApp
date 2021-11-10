@@ -6,7 +6,14 @@ const hostUrl = 'http://192.168.2.105';
 // const hostUrl = 'http://www.mxjob.com.cn/wechat';
 
 class until{
-
+	imgStyle(cont){
+	  let myContent = cont.replace(/<img[^>]*>/gi, function (match, capture) {
+	    return match.replace(/(<img[^>]*)(\/?>)/gi, "$1style='max-width:100%;height:auto;' $2")
+	    // return match.replace(/style\s*?=\s*?([‘"])[\s\S]*?\1/ig, 'style="max-width:100%;height:auto;"') // 替换style
+	
+	  })
+	  return myContent
+	}
     isMyApp(){
       let u = navigator.userAgent;
       let flag = u.indexOf('zhongChuang') > -1;

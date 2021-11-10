@@ -368,7 +368,7 @@
                 toolList11:[ //设计院
                     {img:person13,
                         nm:'投标管理',
-                        url:'../bid/bidList.html',
+                        url:'../person/isbid.html',
                     },{img:person14,
                         nm:'选型报价',
                         url:'../shipDesign/seleQuo.html?type=add',
@@ -385,7 +385,7 @@
                 toolList12:[ //船厂
                     {img:person13,
                         nm:'投标管理',
-                        url:'../bid/bidList.html',
+                        url:'../person/isbid.html',
                     },{img:person14,
                         nm:'船舶建造',
                         url:'../person/shipBuild.html',
@@ -403,7 +403,7 @@
                 toolList13:[ //监理监造机构
                     {img:person13,
                         nm:'投标管理',
-                        url:'../bid/bidList.html',
+                        url:'../person/isbid.html',
                     },{img:person16,
                         nm:'管控船舶',
                         url:'../shipControl/controlList.html',
@@ -414,7 +414,7 @@
                 toolList14:[ //检验检测机构
                     {img:person13,
                         nm:'投标管理',
-                        url:'../bid/bidList.html',
+                        url:'../person/isbid.html',
                     },{img:person16,
                         nm:'管控船舶',
                         url:'../shipControl/controlList.html',
@@ -430,7 +430,7 @@
                 toolList15:[ //供应商
                     {img:person13,
                         nm:'投标管理',
-                        url:'../bid/bidList.html',
+                        url:'../person/isbid.html',
                     },{img:person17,
                         nm:'销售订单',
                         url:'../person/myOrder.html?orderType=6&item='+JSON.stringify({id:0, nm:'全部', statusCd:'01'}),

@@ -2221,6 +2221,54 @@ class api {
 			})
 		})
 	}
+	// 我的投标报名列表
+	getMyBidApplyList(data) {
+	  return new Promise(resolve => {
+	    get("/ship/bidApply/page?query="+data).then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
+	// 招标公告分页列表
+	getBidAfficheList2(data){
+	  return new Promise(resolve => {
+	    get("/ship/bidAffiche/list?query="+data).then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
+	// 全部投标，投标结果列表
+	getMyBidList(data,id) {
+	  return new Promise(resolve => {
+	    get("/ship/bid/pageOfMy?query="+data+'&id='+id).then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
+	//保证金提交
+	bidBail(data) {
+	  return new Promise(resolve => {
+	    post("/ship/bidDeposit/add", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//投标报价
+	bidOffer(data) {
+	  return new Promise(resolve => {
+	    post("/ship/bidOffer/apis/offer", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//签到
+	bidSign(data) {
+	  return new Promise(resolve => {
+	    post("/ship/bidSignin/bidSignin/"+data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
 
 }
 
