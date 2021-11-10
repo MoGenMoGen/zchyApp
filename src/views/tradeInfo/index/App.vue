@@ -177,6 +177,10 @@
             async getCatList(){
                 let qry = this.query.new()
                 this.tab1= await this.api.infoList(this.query.toEncode(qry))
+				this.tab1.push({
+					nm:'招标公告',
+					id: 1
+				})
 								if(localStorage.getItem('tradeId')){
 									this.chooseTab1(window.localStorage.getItem('tradeId'))
 								}else if(this.until.getQueryString("tabId")){
@@ -252,14 +256,20 @@
                     height: 0.8rem;
                     align-items: center;
                     border-bottom: 1px solid rgba(0,0,0,0.1);
+					padding: 0 0.2rem;
+					box-sizing: border-box;
+					overflow-x: auto;
+					overflow-y: hidden;
+					white-space: nowrap;
                     /*标题*/
                     p{
                         font-size: 0.285rem;
-                        width: 25%;
+						margin: 0 0.1rem;
+						height: 95%;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        height: 100%;
+                        // height: 100%;
                         /*对所有属性过渡0.2s*/
                         transition: all 0.2s;
                         color: #666666;
