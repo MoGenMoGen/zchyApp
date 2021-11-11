@@ -2277,6 +2277,14 @@ class api {
 	    })
 	  })
 	}
+	// 招投标详情
+	getBidInfo(data) {
+	  return new Promise(resolve => {
+	    get("/ship/bid/apis/api/info/"+data).then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
 
 }
 

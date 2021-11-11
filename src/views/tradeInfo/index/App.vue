@@ -74,7 +74,7 @@
 					  />
 					</van-popup>
 					~
-					<span  @click="showPicker2=true">{{endTime?endTime:'结束时间'}}</span>
+					<span  @click="showPicker2=true" :style="{'color':endTime?'#000000':''}">{{endTime?endTime:'结束时间'}}</span>
 					<van-popup v-model="showPicker2" round position="bottom" >
 					  <van-datetime-picker
 					    v-model="currentDate"
@@ -86,6 +86,45 @@
 					</van-popup>
 				</div>
 			</div>
+			<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+				:immediate-check="immediate">
+			<div class="bodyList" v-for="(item,index) in list" :key='index' @click="toDetailTwo(item)">
+				<div class="list">
+					<div class="listLeft">
+						项目名称:
+					</div>
+					<div class="listRight">
+						{{item.nm}}
+					</div>
+				</div>
+				<div class="list">
+					<div class="listLeft">
+						发布日期:
+					</div>
+					<div class="listRight">
+						{{item.publishTm}}
+					</div>
+				</div>
+				<div class="list">
+					<div class="listLeft">
+						报名截止日期:
+					</div>
+					<div class="listRight">
+						{{item.completeTm}}
+					</div>
+				</div>
+				<div class="list" style="margin-bottom: 0;">
+					<div class="listLeft">
+						项目状态:
+					</div>
+					<div class="listRight">
+						<p v-if="returnDate(item.completeTm)" style="color: #2778BE;">进行中</p>
+						<p v-else>已结束</p>
+					</div>
+				</div>
+				<img src="../../../assets/img/person/arrow_right.png" >
+			</div>
+			</van-list>
 		</div>
 
 	</div>
@@ -183,6 +222,10 @@
 				window.localStorage.setItem('tradeId', this.tab1Id)
 				this.until.href("./infoDetail.html?id=" + item.id)
 			},
+			toDetailTwo(item){
+				window.localStorage.setItem('tradeId', this.tab1Id)
+				this.until.href("./infoDetailTwo.html?id=" + item.id)
+			},
 			chooseTab1(id) {
 				if (id != this.tab1Id) {
 					this.tab1Id = id
@@ -221,6 +264,7 @@
 					  this.finished = this.list.length >= res.page.total
 					  this.loading = false;
 					  this.pageNo++
+					  console.log(this.list);
 					})
 				}
 				else{
@@ -265,12 +309,18 @@
 			},
 			confirmTo(value){
 				console.log(value);
+				this.pageNo = 1
+				this.list = []
+				this.finished = false
 				this.beginTime=this.until.formatTime(value)
 				this.showPicker=false
 				this.getList()
 			},
 			confirmTo2(value){
 				console.log(value);
+				this.pageNo = 1
+				this.list = []
+				this.finished = false
 				this.endTime=this.until.formatTime(value)
 				this.showPicker2=false
 				this.getList()
@@ -282,7 +332,19 @@
 				this.showPicker2=false
 			},
 			toSearch(){
+				this.pageNo = 1
+				this.list = []
+				this.finished = false
 				this.getList()
+			},
+			returnDate() {
+			  return (date) => {
+			    if((new Date(date+' 23:59:59')).getTime()>this.nowDate){
+			      return true
+			    } else {
+			      return false
+			    }
+			  }
 			}
 		}
 	};
@@ -455,6 +517,7 @@
 				background-color:#FFFFFF;
 				display: flex;
 				justify-content: space-between;
+				border-bottom: 0.01rem solid rgba(0,0,0,0.1);
 				.leftSearch{
 					input{
 						width: 2.52rem;
@@ -482,6 +545,37 @@
 					text-align: center;
 					line-height: 0.6rem;
 					color: #B8B8B8;
+				}
+			}
+			.bodyList{
+				padding: 0.4rem 0.3rem;
+				box-sizing: border-box;
+				background-color: #ffffff;
+				margin-bottom:0.1rem ;
+				border-radius: 0.1rem;
+				position: relative;
+				.list{
+					display: flex;
+					margin-bottom: 0.29rem;
+					.listLeft{
+						font-size: 0.24rem;
+						color: #333333;
+						width: 1.8rem;
+					}
+					.listRight{
+						font-size: 0.24rem;
+						color: #333333;
+						margin-left:0.2rem;
+						
+					}
+				}
+				img{
+					width: 0.12rem;
+					height: 0.22rem;
+					position: absolute;
+					right: 0.3rem;
+					top: 50%;
+					transform: translateY(-50%);
 				}
 			}
 		}
