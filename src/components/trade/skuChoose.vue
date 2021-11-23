@@ -347,7 +347,7 @@
                 return
             }
             let param = {
-                goodsId: this.id,
+                goodsId: data.goodsId,
                 goodsSkuId: data.selectedSkuComb.id,
                 qty: data.selectedNum
             }

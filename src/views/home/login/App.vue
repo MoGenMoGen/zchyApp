@@ -17,11 +17,11 @@
 			    <input v-model="form.password" placeholder="请输入密码" type="password"/>
 				<button @click="toPage('./forgetPWD.html')">忘记密码</button>
 			</div>
-			<div class="input" style="opacity: 0;height: 0">
+			<!-- <div class="input" style="opacity: 0;height: 0">
 				<img :src="password"/>
 				<input v-model="form.password" placeholder="请输入密码" type="password"/>
 				<button @click="toPage('./forgetPWD.html')">忘记密码</button>
-			</div>
+			</div> -->
 			<button @click="confirm">登录</button>
 		</div>
 
@@ -157,8 +157,9 @@
 			background-color: #ffffff;
 			border-radius: 0.12rem;
 			padding: 1.1rem 0.6rem 1.85rem;
+			box-sizing: border-box;
 			.input{
-			    width: 5.8rem;
+			    width: 100%;
 			    margin: 0 auto 0.4rem;
 			    height: 0.9rem;
 			    display: flex;
@@ -182,11 +183,14 @@
 					margin-right: 0.6rem;
 			    }
 				>button{
+					width: 1.2rem;
+					font-size: 0.24rem;
+					text-align: center;
 					color: @themeColor;
 				}
 			}
 			>button{
-				width: 5.8rem;
+				width: 100%;
 				border-radius: 0.03rem;
 				height: 0.9rem;
 			    margin: 0.6rem auto 0;
