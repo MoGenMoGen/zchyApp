@@ -55,7 +55,7 @@
 						投标金额：
 					</div>
 					<div class="listRight">
-						<input type="" name="" v-model="offerAmt" placeholder="请输入投标金额" />
+						<input type="" name="" v-model="offerAmt" placeholder="请输入投标金额"  :disabled="!(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))"/>
 					</div>
 				</div>
 				<div class="boxList">
@@ -63,7 +63,7 @@
 						附件上传：
 					</div>
 					<div class="listRight" style="width: 4rem;">
-						<van-uploader :after-read="afterRead2" v-model="fileList" :before-delete="deleteFile">
+						<van-uploader :after-read="afterRead2" v-model="fileList" :before-delete="deleteFile"  :disabled="!(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))"  :deletable="(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))">
 						<!--  <div style="background-color:#2778BE ; color: #ffffff; width: 1.3rem; height: 0.6rem; font-size: 10px; text-align: center;line-height: 0.6rem;border-radius: 0.1rem;" >
 						  	文件上传
 						  </div> -->
@@ -273,10 +273,17 @@
 					this.offerAmt=this.applyInfo.offer.shipBidOfferVo.offerAmt;
 					if(this.applyInfo.offer.shipBidOfferVo.attachment){
 						this.fileList=this.applyInfo.offer.shipBidOfferVo.attachment.split(",")
+						this.fileListUpd=this.applyInfo.offer.shipBidOfferVo.attachment.split(",")
+					}
+					else if(this.applyInfo.offer.shipBidOfferVo.attachDecode){
+						this.fileList=this.applyInfo.offer.shipBidOfferVo.attachDecode.split(",");
+						this.fileListUpd=this.applyInfo.offer.shipBidOfferVo.attachment.split(",")
 					}
 					else{
 						this.fileList=[]
+						this.fileListUpd=[]
 					}
+					
 				}
 			},
 			afterRead(file) {
@@ -393,6 +400,10 @@
 					Notify('请选择附件');
 					return false
 				}
+				if (this.until.TimeStep2(this.completeTm) >= 0) {
+				Notify('已经过了截止时间');
+				  return false;
+				}
 				let obj={
 					orgId:this.applyInfo.orgId,
 					orgNm:this.applyInfo.orgNm,
@@ -401,13 +412,28 @@
 					offerAmt:this.offerAmt,
 					attachment:this.fileListUpd.join(",")
 				}
-				this.api.bidOffer(obj).then(res=>{
-					Notify({ type: 'success', message: '上传成功' });
-					this.offerAmt=''
-					this.fileListUpd=[]
-					this.fileList=[]
-					this.getBidData()
-				})
+				if(this.applyInfo.offer){
+					obj.id= this.applyInfo.offer.shipBidOfferVo.id
+				}
+				if(!this.applyInfo.offer){
+					this.api.bidOffer(obj).then(res=>{
+						Notify({ type: 'success', message: '上传成功' });
+						this.offerAmt=''
+						this.fileListUpd=[]
+						this.fileList=[]
+						this.getBidData()
+					})
+				}
+				else{
+					this.api.bidOfferUpd(obj).then(res=>{
+						Notify({ type: 'success', message: '修改成功' });
+						this.offerAmt=''
+						this.fileListUpd=[]
+						this.fileList=[]
+						this.getBidData()
+					})
+				}
+			
 			},
 			onBeforeClose(action, done) {
 				console.log(this.imgListUpd);

@@ -281,7 +281,7 @@ class api {
 	}
 	uploadImg3(e) {
 		return new Promise(resolve => {
-			post('/general/oss/upload', e).then(res => {
+			post('/general/oss/encUpload', e).then(res => {
 
 				resolve(res.data)
 			})
@@ -1898,6 +1898,14 @@ class api {
 			})
 		})
 	}
+	//投标报价更新
+	bidOfferUpd(data) {
+	  return new Promise(resolve => {
+	    post("/ship/bidOffer/apis/upd", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
 	//验证用户名是否重复
 	checkUsername(data) {
 		return new Promise((resolve, reject) => {
@@ -2127,7 +2135,7 @@ class api {
 	getInvoiceResult(data) {
 		return new Promise(resolve => {
 			get("/ds/invoiceResult/apis/listByOrderId", data).then(res => {
-				resolve(res)
+				resolve(res.data)
 			})
 		})
 	}
@@ -2293,22 +2301,7 @@ class api {
 	    })
 	  })
 	}
-	//开票资料地址删除
-	qualiAddrDel(data) {
-	  return new Promise(resolve => {
-	    get("/ds/invoiceAddr/apis/del", data).then(res => {
-	      resolve(res)
-	    })
-	  })
-	}
-	// 首页招标公告分页列表
-	getZbggList(data){
-	  return new Promise(resolve => {
-	    get("/ship/bidAffiche/apis/api/pageWithStatus?query="+data).then(res=>{
-	      resolve(res)
-	    })
-	  })
-	}
+
 }
 
 
