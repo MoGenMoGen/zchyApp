@@ -30,7 +30,7 @@
 					<div></div>
 					<div>
 						<span v-if="item.invoiceType!=0&&item.invoiceType!=1" @click="bidDetail(item)">发票详情</span>
-						<span v-if="item.invoiceType!=3" class="apply-btn" @click="applyBid(item)">申请开票</span>
+						<span v-if="item.invoiceType!=3&&item.payAmt!=0" class="apply-btn" @click="applyBid(item)">申请开票</span>
 					</div>
 				</div>
 			</div>
@@ -120,7 +120,7 @@
 				div {
 					display: flex;
 					align-items: center;
-					width: 80%;
+					width: 73%;
 					img {
 						width: 0.25rem;
 						height: 0.23rem;

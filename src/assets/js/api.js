@@ -2127,7 +2127,7 @@ class api {
 	getInvoiceResult(data) {
 		return new Promise(resolve => {
 			get("/ds/invoiceResult/apis/listByOrderId", data).then(res => {
-				resolve(res.data)
+				resolve(res)
 			})
 		})
 	}
@@ -2285,7 +2285,22 @@ class api {
 	    })
 	  })
 	}
-
+	//开票资料地址删除
+	qualiAddrDel(data) {
+	  return new Promise(resolve => {
+	    get("/ds/invoiceAddr/apis/del", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	// 首页招标公告分页列表
+	getZbggList(data){
+	  return new Promise(resolve => {
+	    get("/ship/bidAffiche/apis/api/pageWithStatus?query="+data).then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
 }
 
 

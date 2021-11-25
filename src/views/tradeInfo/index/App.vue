@@ -444,7 +444,9 @@
 					}
 
 				}
-
+				.line1::-webkit-scrollbar { 
+					height: 0 !important;
+				}
 			}
 		}
 

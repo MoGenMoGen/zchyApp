@@ -1,7 +1,11 @@
 <template>
-	<!--	我的船舶-->
+	<!--	我的发票-->
 	<div id="container">
 		<pen-header title="发票详情"></pen-header>
+		<div class="body">
+			<div class="info-box">未开金额：<span style="color: red;">{{canOpenSum - openedSum}}</span></div>
+			<div class="info-box">已开金额：<span style="color: red;">{{openedSum}}</span></div>
+		</div>
 		<div class="body">
 			<div class="info-box" v-for="(item,index) in list" :key="index">
 				<div class="classTitle">
@@ -62,7 +66,9 @@
 				download,
 				id: '',
 				isOver: true,
-				list: []
+				list: [],
+				openedSum: '',
+				canOpenSum: ''
 			};
 		},
 		components: {
@@ -84,7 +90,9 @@
 			this.id = this.until.getQueryString('orderCd')
 			this.api.getInvoiceResult({orderNo:this.id}).then(res => {
 			  console.log(res)
-			  this.list = res.list
+			  this.list = res.data.list
+			  this.openedSum = res.openedSum
+			  this.canOpenSum = res.canOpenSum
 			})
 		},
 		methods: {

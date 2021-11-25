@@ -9,11 +9,14 @@
 				@confirm="onConfirm2" />
 		</van-popup>
 		<pen-header title="我的发票"></pen-header>
+		<div class="body" style="padding-bottom: 0;">
+			<div class="info-box">未开金额：<span style="color: red;">{{canOpenSum - openedSum}}</span></div>
+		</div>
 		<div class="body">
 			<div class="info-box">
 				<div class="classTitle">
 					<img :src="tradingL">
-					<p>电子普通发票信息</p>
+					<p>电子发票信息</p>
 					<img :src="tradingR">
 				</div>
 				<van-row class="row" align="center" type="flex">
@@ -85,7 +88,7 @@
 					<van-col span="15" offset="1"><input placeholder="输入备注" v-model="rmks"></van-col>
 				</van-row>
 			</div>
-			<div class="info-box" v-if="headUp!='个人'">
+			<div class="info-box" v-if="!flag">
 				<div class="classTitle">
 					<img :src="tradingL">
 					<p>资质信息</p>
@@ -120,7 +123,7 @@
 					<van-col span="15" offset="1"><input placeholder="输入银行账户" v-model="account"></van-col>
 				</van-row>
 			</div>
-			<div class="info-box" v-if="headUp!='个人'">
+			<div class="info-box" v-if="!flag">
 				<div class="classTitle">
 					<img :src="tradingL">
 					<p>收票信息</p>
@@ -223,7 +226,10 @@
 				address: '',
 				addrNm: "",
 				email: '',
-				type: ''
+				type: '',
+				openedSum: '',
+				canOpenSum: '',
+				flag: false //true为增值税电子普通发票,公司个人下面没有， false为增值税专用发票，公司有下面
 			};
 		},
 		components: {
@@ -242,10 +248,22 @@
 		async mounted() {
 			this.id = this.until.getQueryString('id')
 			this.orderCd = this.until.getQueryString('orderCd')
+			this.api.getInvoiceResult({orderNo:this.orderCd}).then(res => {
+				console.log(res)
+			  this.openedSum = res.openedSum
+			  this.canOpenSum = res.canOpenSum
+			})
 			this.api.dataDictionary('INVOICE_TYPE').then(res => {
 				this.invoiceType = res
 			})
-			this.getDefault()
+			if(this.until.loGet('currentRole')) {
+				this.getDefault()
+			} else {
+				this.headUpType = [{
+					value: '2',
+					label: '个人'
+				}]
+			}
 			this.changeDevice()
 			window.onresize = () => {
 				this.changeDevice()
@@ -263,6 +281,15 @@
 			onConfirm(e) {
 				this.invoice = e.nm
 				this.invoiceCd = e.cd
+				if(this.headUp=='公司') {
+					if(this.invoiceCd == 'INVOICE_TYPE.10') {
+					  this.flag = true
+					} else {
+					  this.flag = false
+					}
+				} else {
+					this.flag = true
+				}
 				this.showPicker = false
 			},
 			onConfirm2(e) {
@@ -271,6 +298,25 @@
 				this.showPicker2 = false
 				if (this.headUp == '个人') {
 					this.buyerName = '个人'
+					this.invoiceType.splice(0,1)
+					this.invoice = ''
+					this.invoiceCd = ''
+					this.flag = true
+				} else {
+					if(this.invoiceCd == 'INVOICE_TYPE.10') {
+					  this.flag = true
+					} else {
+					  this.flag = false
+					}
+					let param = {
+						orgEnterId: JSON.parse(this.until.loGet('currentRole')).id
+					}
+					this.api.getQualiInfo(param).then(res => {
+						this.buyerName = res.data.nm
+					})
+					this.api.dataDictionary('INVOICE_TYPE').then(res => {
+						this.invoiceType = res
+					})
 				}
 			},
 			changeAddr(e) {
@@ -289,7 +335,7 @@
 				if (this.headUp == '') {
 					Toast('请选择抬头类型!')
 					return
-				} else if (this.headUp == '公司') {
+				} else if (this.headUp == '公司'&&!this.flag) {
 					if (this.buyerName == '') {
 						Toast('请输入单位名称!')
 						return
@@ -328,6 +374,32 @@
 					// }
 					if (this.email == "") {
 						Toast('请输入收票人邮箱!')
+						return
+					}
+					param = {
+						orgEnterId: JSON.parse(this.until.loGet('currentRole')).id,
+						orderId: this.id,
+						orderCd: this.orderCd,
+						type: this.type,
+						invoiceTypeCd: this.invoiceCd,
+						buyerName: this.buyerName,
+						buyerTaxNum: this.buyerTaxNum,
+						buyerTel: this.buyerTel,
+						buyerAddress: this.buyerAddress,
+						buyerAccount: this.bank + this.account,
+						linkman: this.linkman,
+						phone: this.phone,
+						email: this.email,
+						rmks: this.rmks,
+						invoiceAddr: this.addrNm.replace(/-/g, '') + this.address
+					}
+				} else if (this.headUp=='公司'&&flag) {
+					if (this.buyerName == '') {
+						Toast('请输入单位名称!')
+						return
+					}
+					if (this.buyerTaxNum == '') {
+						Toast('请输入纳税人识别号!')
 						return
 					}
 					param = {

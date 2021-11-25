@@ -8,10 +8,10 @@
 			<div class="tip-word">您的增票资质：<span style="font-size: 0.24rem;color: #909090;">未添加</span></div>
 			<div @click="audit=2" class="tip-btn">添加增票资质</div>
 		</div>
-		<div v-if="audit==3" class="tip-box">
+		<!-- <div v-if="audit==3" class="tip-box">
 			<div @click="audit=2" class="tip-btn">修改</div>
 			<div @click="delInfo" class="tip-btn" style="color: #D5D5D5;border-color: #D5D5D5;">删除</div>
-		</div>
+		</div> -->
 		<div class="info-box" v-if="audit!=1">
 			<div class="classTitle">
 				<img :src="tradingL">
@@ -43,14 +43,14 @@
 			    <van-col span="8" offset="1"><p class="row-label">银行账户：</p></van-col>
 			    <van-col span="15" offset="1"><input placeholder="输入银行账户" v-model="info.account" type="number"></van-col>
 			</van-row>
-			<van-row class="row" align="center"  type="flex" justify="center" v-if="audit==2">
+			<!-- <van-row class="row" align="center"  type="flex" justify="center" v-if="audit==2">
 				<van-col>
 					<van-checkbox v-model="checked" shape="square" icon-size="0.24rem"></van-checkbox>
 				</van-col>
 				<van-col style="margin-left: 0.1rem;">
 					<p class="row-label" style="font-size: 0.22rem;">我已阅读并同意<span style="color: #E4393C;">《增票资质确认书》</span></p>
 				</van-col>
-			</van-row>
+			</van-row> -->
 			<van-row class="row" align="center" type="flex" v-if="audit==3">
 				<van-col offset="1"><p class="row-label">单位名称：{{info.nm}}</p></van-col>
 			</van-row>
@@ -70,12 +70,13 @@
 				<van-col offset="1"><p class="row-label">银行账户：{{account}}</p></van-col>
 			</van-row>
 		</div>
-		<div class="info-box" v-if="isPass">
+		<div class="info-box">
 			<div class="classTitle">
 				<img :src="tradingL">
 				<p>增票收票地址</p>
 				<img :src="tradingR">
 				<span class="classTitle-btn" @click="audit2=2" v-if="isPass2&&audit2==3">修改</span>
+				<span class="classTitle-btn2" @click="del2" v-if="isPass2&&audit2==3">删除</span>
 			</div>
 			<van-row class="row" align="center" type="flex" v-if="audit2==1">
 			    <van-col offset="1">
@@ -84,24 +85,24 @@
 			</van-row>
 			<van-row  class="row" align="center" type="flex" v-if="audit2==2">
 				<van-col span="8" offset="1"><p class="row-label">收票人姓名：</p></van-col>
-				<van-col span="15" offset="1"><input placeholder="输入收票人姓名" v-model="recInfo.linkman"></van-col>
+				<van-col span="15"><input placeholder="输入收票人姓名" v-model="recInfo.linkman"></van-col>
 			</van-row>
 			<van-row  class="row" align="center" type="flex" v-if="audit2==2">
 				<van-col span="8" offset="1"><p class="row-label">收票人手机号：</p></van-col>
-				<van-col span="15" offset="1"><input placeholder="输入收票人手机号" v-model="recInfo.phone"></van-col>
+				<van-col span="15"><input placeholder="输入收票人手机号" v-model="recInfo.phone"></van-col>
 			</van-row>
 			<van-row  class="row" align="center" type="flex" v-if="audit2==2">
 				<van-col span="8" offset="1"><p class="row-label">收票人地区：</p></van-col>
-				<van-col span="12" offset="1"><addr @changeAddr="changeAddr" :addrNm="recInfo.addrNm" ref="addrC"></addr></van-col>
-				<van-col span="2" offset="1"><van-icon name="arrow-down" /></van-col>
+				<van-col span="12"><addr @changeAddr="changeAddr" :addrNm="recInfo.addrNm" ref="addrC"></addr></van-col>
+				<van-col span="2"><van-icon name="arrow-down" /></van-col>
 			</van-row>
 			<van-row  class="row" align="center" type="flex" v-if="audit2==2">
 				<van-col span="8" offset="1"><p class="row-label">收票人地址：</p></van-col>
-				<van-col span="15" offset="1"><input placeholder="输入收票人地址" v-model="recInfo.addrDetail"></van-col>
+				<van-col span="15"><input placeholder="输入收票人地址" v-model="recInfo.addrDetail"></van-col>
 			</van-row>
 			<van-row  class="row" align="center" type="flex" v-if="audit2==2">
 				<van-col span="8" offset="1"><p class="row-label">收票人邮箱：</p></van-col>
-				<van-col span="15" offset="1"><input placeholder="输入收票人邮箱" v-model="recInfo.email"></van-col>
+				<van-col span="15"><input placeholder="输入收票人邮箱" v-model="recInfo.email"></van-col>
 			</van-row>
 			<van-row class="row" align="center" type="flex" v-if="audit2==3">
 				<van-col offset="1"><p class="row-label">收票人姓名：{{recInfo.linkman}}</p></van-col>
@@ -166,7 +167,7 @@
 			  phone: '',
 			  account: '',
 			  phone2: '',
-			  checked: false,
+			  // checked: false,
 			  isPass2: false,
 			  audit2: 1, //1未填写，2填写中（填写或修改），3填写完成
 			  currentRole: '',
@@ -204,8 +205,12 @@
 			    Toast('请输入注册地址');
 			    return
 			  }
-			  if(this.reg.checkPhone(this.info.tel)!='ok') {
-			    Toast(this.reg.checkPhone(this.info.tel));
+			  // if(this.reg.checkPhone(this.info.tel)!='ok') {
+			  //   Toast(this.reg.checkPhone(this.info.tel));
+			  //   return
+			  // }
+			  if(this.info.tel=='') {
+			    Toast('请输入注册电话');
 			    return
 			  }
 			  if(this.info.bank=='') {
@@ -216,10 +221,10 @@
 			    Toast('请输入银行账户');
 			    return
 			  }
-			  if(!this.checked) {
-			    Toast('请阅读并同意《增票资质确认书》');
-			    return
-			  }
+			  // if(!this.checked) {
+			  //   Toast('请阅读并同意《增票资质确认书》');
+			  //   return
+			  // }
 			  if(!this.isPass) {
 			    this.api.qualiAdd(this.info).then(res => {
 			      if(res.msg=='成功') {
@@ -316,11 +321,18 @@
 				  if(res.msg=='成功') {
 				    Toast('增票资质删除成功！')
 				    this.audit = 1
-				    this.audit2 = 1
 				    this.isPass = false
-				    this.isPass2 = false
 				  }
 				})
+			},
+			del2() {
+			    this.api.qualiAddrDel({ids:this.recInfo.id}).then(res => {
+			      if(res.msg=='成功') {
+					Toast('增票收票地址删除成功！')
+			        this.audit2 = 1
+			        this.isPass2 = false
+			      }
+			    })
 			},
 			changeAddr(e) {
 				let data = JSON.parse(e)
@@ -332,7 +344,14 @@
 			this.api.getAdert('billAdApp').then(res => {
 				this.imgTip = res[1].imgUrl
 			})
-			this.getInfo()
+			if(this.currentRole) {
+				this.getInfo()
+			} else {
+				Toast('您未入驻，请完善信息')
+				setTimeout(()=>{
+					this.until.href('./persInfo.html')
+				},1500)
+			}
 		}
     }
 </script>
@@ -401,6 +420,14 @@
 				.classTitle-btn {
 					position: absolute;
 					right: -0.2rem;
+					top: -0.2rem;
+					font-size: 0.24rem;
+					color: #2778BE;
+				}
+				.classTitle-btn2 {
+					position: absolute;
+					right: -0.2rem;
+					top: 0.2rem;
 					font-size: 0.24rem;
 					color: #2778BE;
 				}

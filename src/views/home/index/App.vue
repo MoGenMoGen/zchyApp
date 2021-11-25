@@ -44,11 +44,11 @@
 				<div class="newsTitle">
 					<img :src="news" alt="">
 					<p>平台发布</p>
-					<span @click="toPage('../tradeInfo/index.html?tabId=5032642222281728')">更多 ></span>
+					<span @click="toPage('../tradeInfo/index.html?tabId=1')">更多 ></span>
 				</div>
 				<div class="msgBox" v-for="(item,index) in publishList" :key="index" @click="toPage('../tradeInfo/infoDetail.html?id='+item.id)">
-					<p class="title">· {{item.nm}}</p>
-					<p class="content">{{item.cont}}</p>
+					<p class="title">· {{item.title}}</p>
+					<p class="content">{{item.releTm}}</p>
 				</div>
 			</div>
 			<div class="shipShowBox">
@@ -359,14 +359,17 @@
 			//平台发布
 			async getPublish(){
 				let qry = this.query.new()
-				this.query.toW(qry,'cid','5032642222281728','EQ')
-				let data = await this.api.tradeInfo(this.query.toEncode(qry))
+				// this.query.toW(qry,'cid','5032642222281728','EQ')
+				this.query.toP(qry,1,3)
+				this.query.toO(qry,'releTm','desc')
+				let data = await this.api.getZbggList(this.query.toEncode(qry))
 				data.data.list.forEach((item,index)=>{
-					if(index<2){
-						item.cont = item.cont.replace(/<\/?[^>]*>/g, "").slice(0,35) + '...';
-						item.cont = item.cont.replace(/(&nbsp;)/g, "");
+					// if(index<2){
+						// item.cont = item.cont.replace(/<\/?[^>]*>/g, "").slice(0,35) + '...';
+						// item.cont = item.cont.replace(/(&nbsp;)/g, "");
+						item.releTm = item.releTm.substring(0,10)
 						this.publishList.push(item)
-					}
+					// }
 				})
 			},
 			// 获取船舶分类信息
