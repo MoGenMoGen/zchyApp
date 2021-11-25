@@ -52,7 +52,7 @@
 					<van-field v-model="value3"  placeholder="请输入检查区域"  style="font-size: 0.22rem;"/>
 				</div>
 			</div>
-			<div class="bodyList" style="display: flex; align-items: flex-start;">
+			<!-- <div class="bodyList" style="display: flex; align-items: flex-start;">
 				<div class="left">
 					<span style="color:#FF2015 ;">*</span>
 					<div class="name">
@@ -62,7 +62,7 @@
 				<div class="right">
 					<textarea rows="" cols="" placeholder="请输入主要事项内容详情" v-model="value4"></textarea>
 				</div>
-			</div>
+			</div> -->
 			<div class="bodyList">
 				<div class="left">
 					<span style="color:#FF2015 ;">*</span>
@@ -92,7 +92,7 @@
 			</div>
 			<div class="bodyList" style="display: flex; align-items: flex-start;">
 				<div class="left">
-					<span style="color:#FF2015;opacity: 0;">*</span>
+					<span style="color:#FF2015 ;">*</span>
 					<div class="name">
 						整改要求：
 					</div>
@@ -134,7 +134,7 @@
 						隐患图片<span>(上传完图片后，可以点击图片进行编辑)</span>
 					</div>
 					<div class="imgBox">
-						<van-uploader :after-read="afterRead" v-model="imgList" :before-delete="deleteImg"/>
+						<van-uploader :after-read="afterRead" v-model="imgList" :before-delete="deleteImg" multiple/>
 					</div>
 			</div>
 		
@@ -183,7 +183,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="bodyContent">
+			<!-- <div class="bodyContent">
 				<div class="contentList">
 					<div class="listLeft">
 						隐患说明：
@@ -192,13 +192,13 @@
 					   {{value4}}
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<div class="bodyContent">
 				<div class="contentList">
 					<div class="listLeft">
 						整改要求：
 					</div>
-					<div class="listRight">
+					<div class="listRight" style="max-width: 4rem; overflow: scroll;">
 					   {{value6}}
 					</div>
 				</div>
@@ -467,12 +467,17 @@
 					Toast('检查区域不能为空')
 					return false
 				}
-				if(!this.value4){
-					Toast('隐患说明不能为空')
-					return false
-				}
+				
+				// if(!this.value4){
+				// 	Toast('隐患说明不能为空')
+				// 	return false
+				// }
 				if(!this.value5){
 					Toast('责任整改人不能为空')
+					return false
+				}
+				if(!this.value6){
+					Toast('整改要求不能为空')
 					return false
 				}
 				if(!this.value7){

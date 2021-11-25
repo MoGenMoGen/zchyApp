@@ -9,7 +9,30 @@
 						投标金额：
 					</div>
 					<div class="listRight">
-						<input type="" name="" v-model="depositAmt" placeholder="请输入投标金额" />
+						<input type="" name="" v-model="depositAmt" placeholder="请输入投标金额" :disabled="!((applyInfo.despoit&&applyInfo.despoit.shipBidDepositVo.audit!=2)||!applyInfo.despoit)" />
+					</div>
+					<!-- <div class="" style="font-size: 0.22rem; margin-left: 0.1rem;">
+						万元
+					</div> -->
+				</div>
+				<div class="boxList">
+					<div class="listLeft">
+						保证金凭证：
+					</div>
+					<div class="listRight" style="width: 4rem;">
+						<van-uploader :after-read="afterRead" v-model="imgList" :before-delete="deleteImg" :disabled="!((applyInfo.despoit&&applyInfo.despoit.shipBidDepositVo.audit!=2)||!applyInfo.despoit)"  :deletable="((applyInfo.despoit&&applyInfo.despoit.shipBidDepositVo.audit!=2)||!applyInfo.despoit)" />
+					</div>
+				</div>
+			</div>
+		</van-dialog>
+	<!-- 	<van-dialog v-model="bailDetail" title="保证金" show-cancel-button @cancel="cancelTo3" @confirm='confirmTo3'
+			:before-close="onBeforeClose3">
+			<div class="popBox">
+				<div class="boxList">
+					<div class="listLeft">
+						投标金额：
+					</div>
+					<div class="listRight">
 					</div>
 					<div class="" style="font-size: 0.22rem; margin-left: 0.1rem;">
 						万元
@@ -20,11 +43,10 @@
 						保证金凭证：
 					</div>
 					<div class="listRight" style="width: 4rem;">
-						<van-uploader :after-read="afterRead" v-model="imgList" :before-delete="deleteImg" />
 					</div>
 				</div>
 			</div>
-		</van-dialog>
+		</van-dialog> -->
 		<van-dialog v-model="offer" title="投标报价" show-cancel-button @cancel="cancelTo2" @confirm='confirmTo2'
 			:before-close="onBeforeClose2">
 			<div class="popBox">
@@ -42,9 +64,11 @@
 					</div>
 					<div class="listRight" style="width: 4rem;">
 						<van-uploader :after-read="afterRead2" v-model="fileList" :before-delete="deleteFile">
-						  <div style="background-color:#2778BE ; color: #ffffff; width: 1.3rem; height: 0.6rem; font-size: 10px; text-align: center;line-height: 0.6rem;border-radius: 0.1rem;" >
+						<!--  <div style="background-color:#2778BE ; color: #ffffff; width: 1.3rem; height: 0.6rem; font-size: 10px; text-align: center;line-height: 0.6rem;border-radius: 0.1rem;" >
 						  	文件上传
-						  </div>
+						  </div> -->
+						    <van-button icon="plus" type="primary" style="background-color:#2778BE ; color: #ffffff;  height: 0.6rem; font-size: 10px;">上传文件</van-button>
+
 						</van-uploader>
 					</div>
 				</div>
@@ -105,24 +129,38 @@
 				</div>
 				<div class="listContent">
 					<div class="left">
-						操作：
+						保证金：
 					</div>
-					<div class="rightBtn" v-if="item.depositStatus==2" @click="openBail(item)">
+					<div class="rightBtn" v-if="item.depositStatus==2&&returnDate(2,item.bidEndTm)" @click.stop="openBail(item)">
 						保证金上传
 					</div>
-					<div class="rightBtn"
-						v-if="(item.depositStatus==1||item.depositStatus==3)&&!item.bidDecideTm&&returnDate(2,item.bidEndTm)"  @click.stop="openOffer(item)">
-						投标报价
+					<div class="rightBtn" v-if="item.depositStatus==3" @click.stop="openBailDetail(item)">查看保证金</div>
+				
+				
+				</div>
+				<div class="listContent">
+					<div class="left">
+						投标文件：
 					</div>
 					<div class="rightBtn"
-						v-if="item.signin.shipBidSigninVo.signinStatus==0&&!item.bidDecideTm&&returnDate(1,item.bidOpenTm)" @click.stop="sign(item)">
-						签到
+						v-if="!item.bidDecideTm&&returnDate(2,item.bidEndTm)&&!item.offer"  @click.stop="openOffer(item)">
+						资料上传
 					</div>
-					<div class="right"
-						v-if="item.signin.shipBidSigninVo.signinStatus==1&&!item.bidDecideTm&&returnDate(1,item.bidOpenTm)"
-						style="color: #2778BE;">
-						已签到
+					<div class="rightBtn" v-if="item.offer" @click.stop="openOfferDetail(item)">查看资料</div>
+				</div>
+				<div class="listContent">
+					<div class="left">
+						签到：
 					</div>
+				<div class="rightBtn"
+					 v-if="(item.depositStatus==1||item.depositStatus==3)&&item.signin.shipBidSigninVo.signinStatus==0&&!item.bidDecideTm&&returnDate(1,item.bidOpenTm)" @click.stop="sign(item)">
+					签到
+				</div>
+				<div class="right"
+					v-if="(item.depositStatus==1||item.depositStatus==3)&&item.signin.shipBidSigninVo.signinStatus==1&&!item.bidDecideTm&&returnDate(1,item.bidOpenTm)"
+					style="color: #2778BE;">
+					已签到
+				</div>
 				</div>
 			</div>
 		</van-list>
@@ -153,6 +191,7 @@
 				nowDate: '',
 				applyInfo: [],
 				bail: false,
+				bailDetail:false,
 				offer:false,
 				depositAmt: "", //保证金金额
 				offerAmt:'',//投标金额
@@ -160,6 +199,7 @@
 				imgList: [],
 				fileList:[],
 				fileListUpd:[],
+				completeTm:'',
 			}
 		},
 		computed: {
@@ -211,9 +251,33 @@
 				this.bail = true
 				this.applyInfo = item
 			},
+			openBailDetail(item){
+			     this.bail=true
+				 this.applyInfo = item
+				 console.log(item);
+				 this.depositAmt=item.depositMoney
+				 this.imgList=item.despoit.shipBidDepositVo.depositImgUrl.split(",");
+				 this.imgListUpd=item.despoit.shipBidDepositVo.depositImgUrl.split(",");
+			},
 			openOffer(item){
 				this.offer = true;
 				this.applyInfo=item
+			},
+			openOfferDetail(item){
+				this.offer = true;
+				this.applyInfo=item
+				this.nowDate=(new Date()).getTime()
+				this.completeTm=this.applyInfo.bidEndTm
+				//已经报价过
+				if(this.applyInfo.offer){
+					this.offerAmt=this.applyInfo.offer.shipBidOfferVo.offerAmt;
+					if(this.applyInfo.offer.shipBidOfferVo.attachment){
+						this.fileList=this.applyInfo.offer.shipBidOfferVo.attachment.split(",")
+					}
+					else{
+						this.fileList=[]
+					}
+				}
 			},
 			afterRead(file) {
 				if (file instanceof Array && file.length) {
@@ -260,6 +324,7 @@
 				}
 			},
 			deleteImg(file, detail) {
+			console.log(detail);
 				this.imgListUpd.splice(detail.index, 1)
 				this.imgList.splice(detail.index, 1)
 				console.log(this.imgListUpd);
@@ -298,13 +363,26 @@
 					depositAmt:this.depositAmt,
 					depositImgUrl:this.imgListUpd.join(",")
 				}
-				this.api.bidBail(obj).then(res=>{
-					Notify({ type: 'success', message: '上传成功' });
-					this.depositAmt=''
-					this.imgListUpd=[]
-					this.imgList=[]
-					this.getBidData()
-				})
+				if(this.applyInfo.despoit){
+					obj.id = this.applyInfo.despoit.shipBidDepositVo.id
+					this.api.bidBailUpd(obj).then(() => {
+					 Notify({ type: 'success', message: '修改成功' });
+					 this.depositAmt=''
+					 this.imgListUpd=[]
+					 this.imgList=[]
+					 this.getBidData()
+					})
+				}
+				else{
+					this.api.bidBail(obj).then(res=>{
+						Notify({ type: 'success', message: '上传成功' });
+						this.depositAmt=''
+						this.imgListUpd=[]
+						this.imgList=[]
+						this.getBidData()
+					})
+				}
+			
 			},
 			confirmTo2() {
 				if (!this.offerAmt) {
@@ -357,7 +435,8 @@
 				this.api.bidSign(id).then(res => {
 				 Notify({ type: 'success', message: '签到成功' });
 				})
-			}
+			},
+		
 			
 			
 

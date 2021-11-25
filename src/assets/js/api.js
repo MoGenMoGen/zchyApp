@@ -2253,6 +2253,14 @@ class api {
 	    })
 	  })
 	}
+	//保证金修改
+	bidBailUpd(data) {
+	  return new Promise(resolve => {
+	    post("/ship/bidDeposit/upd", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
 	//投标报价
 	bidOffer(data) {
 	  return new Promise(resolve => {
