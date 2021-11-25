@@ -36,7 +36,7 @@
               placeholder="下发日期"
             />
             <van-icon
-            v-if="searchInfo.IssueDate"
+              v-if="searchInfo.IssueDate"
               @click="searchInfo.IssueDate = ''"
               name="close"
               class="btn_close"
@@ -88,9 +88,13 @@
             </div>
             <div class="row">
               <div class="left">整改内容:</div>
-              <div class="right">
+              <div
+                class="right"
+                style="white-space: pre-line; margin-top: -0.46rem"
+              >
                 {{ item.rectifyDemand }}
               </div>
+              <!-- <div class="right" v-html="item.rectifyDemand"></div> -->
             </div>
             <div class="row">
               <div class="left">整改单位:</div>
@@ -384,7 +388,6 @@ export default {
           background: #ffffff;
           border: 1px solid #e5e5e5;
           border-radius: 0.3rem;
-
         }
         .inputbox {
           width: 2.82rem;

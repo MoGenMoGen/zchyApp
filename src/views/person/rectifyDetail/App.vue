@@ -6,7 +6,7 @@
     <div id="Issueshow" v-if="Issueshow" @click="Issueshow = false">
       <div class="addBox" @click.stop="">
         <div class="head">
-          <p>下发说明</p>
+          <p>再次下发说明</p>
         </div>
         <div class="addBody">
           <div class="inputbox">
@@ -23,7 +23,12 @@
           </div>
 
           <div class="uploadBox">
-            <!-- <div class="listLeft">上传图片:</div> -->
+            <div
+              class="listLeft"
+              style="padding-left: 6px; box-sizing: border-box"
+            >
+              <span style="color: red">*</span>下发图片:
+            </div>
             <div class="listRightImg">
               <van-uploader
                 multiple="true"
@@ -87,16 +92,18 @@
           <div class="listRight" v-else>{{ info.rectifyerSign }}</div>
         </div>
       </div>
-      <div class="bodyContent">
+      <!-- <div class="bodyContent">
         <div class="contentList">
           <div class="listLeft">整改日期：</div>
           <div class="listRight">{{ info.rectifyTm }}</div>
         </div>
-      </div>
+      </div> -->
       <div class="bodyContent">
         <div class="contentList">
-          <div class="listLeft">复查日期：</div>
-          <div class="listRight">{{ info.reviewerTm }}</div>
+          <div class="listLeft">下发日期：</div>
+          <div class="listRight" v-if="info.issueTm">
+            {{ info.issueTm.slice(0, 10) }}
+          </div>
         </div>
       </div>
       <div class="bodyContent">
@@ -105,16 +112,21 @@
           <div class="listRight">{{ info.inspArea }}</div>
         </div>
       </div>
-      <div class="bodyContent">
+      <!-- <div class="bodyContent">
         <div class="contentList">
           <div class="listLeft">隐患说明：</div>
           <div class="listRight">{{ info.explains }}</div>
         </div>
-      </div>
+      </div> -->
       <div class="bodyContent">
         <div class="contentList">
           <div class="listLeft">整改要求：</div>
-          <div class="listRight">{{ info.rectifyDemand }}</div>
+          <div
+            class="listRight"
+            style="white-space: pre-line; margin-top: -20px"
+          >
+            {{ info.rectifyDemand }}
+          </div>
         </div>
       </div>
 
@@ -159,7 +171,9 @@
       <div class="bodyContent">
         <div class="contentList">
           <div class="listLeft">检查时间：</div>
-          <div class="listRight">{{ info.reviewerTm }}</div>
+          <div class="listRight" v-if="info.reviewerTm">
+            {{ info.reviewerTm.slice(0, 10) }}
+          </div>
         </div>
       </div>
     </div>
@@ -223,7 +237,12 @@
             class="contentList"
             style="display: flex; flex-direction: column; border-bottom: 0"
           >
-            <div class="listLeft">图片:</div>
+            <div
+              class="listLeft"
+              style="padding-left: 8px; box-sizing: border-box"
+            >
+              <span style="color: red">*</span>图片:
+            </div>
             <div class="listRightImg">
               <van-uploader
                 preview-size="1.5rem"
@@ -257,35 +276,186 @@
       </div>
 
       <!-- 船厂待执行结束 -->
-      <!-- 待结案/已完成开始 -->
-      <div v-else-if="info.state == 3 || info.state == 4">
-        <div class="bodyContent">
-          <div class="contentList">
-            <div class="listLeft">整改上报：</div>
-            <div class="listRight">{{ info.rectifyReport }}</div>
-          </div>
-          <div
-            class="contentList"
-            style="display: flex; flex-direction: column"
-          >
-            <div class="listLeft">执行图片:</div>
-            <div class="listRightImg">
-              <img
-                :src="item"
-                v-for="(item, index) in albums"
-                :key="index"
-                @click="Preview(index, albums)"
-              />
+      <!-- 除检验检测待执行开始 -->
+      <div
+        v-if="
+          !(
+            currentRole &&
+            currentRole.identityCd == 'identity50' &&
+            info.state == 2
+          )
+        "
+        style="background: #efefef"
+        :style="{
+          'padding-top':
+            currentRole &&
+            currentRole.identityCd == 'identity30' &&
+            info.state == 2
+              ? '.12rem'
+              : '',
+        }"
+      >
+        <div
+          v-for="(item, index) in reissueList"
+          :key="index"
+          style="background: #fff; margin-bottom: 0.12rem"
+        >
+          <!-- 第一次下发 -->
+          <div v-show="item.isshow && index == 0">
+            <div style="font-size: 14px; font-weight: 700; text-align: center">
+              下发内容
+            </div>
+
+            <div class="bodyContent">
+              <div class="contentList">
+                <div class="listLeft">整改要求:</div>
+                <div
+                  class="listRight"
+                  style="white-space: pre-line; margin-top: -20px"
+                >
+                  {{ item.rectifyDemand }}
+                </div>
+              </div>
+              <div
+                class="contentList"
+                style="display: flex; flex-direction: column"
+              >
+                <div class="listLeft">隐患图片:</div>
+                <div class="listRightImg">
+                  <img
+                    :src="item1"
+                    v-for="(item1, index1) in item.troubleImg
+                      ? item.troubleImg.split(',')
+                      : []"
+                    :key="index1"
+                    @click="
+                      Preview(
+                        index1,
+                        item.troubleImg ? item.troubleImg.split(',') : []
+                      )
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="bodyContent">
+              <div class="contentList">
+                <div class="listLeft">下发日期：</div>
+                <div class="listRight" v-if="item.issueTm">
+                  {{ item.issueTm.slice(0, 10) }}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="bodyContent">
-          <div class="contentList">
-            <div class="listLeft">上报日期：</div>
-            <div class="listRight">{{ info.rectifyTm }}</div>
+          <!-- 二次下发 -->
+          <div v-show="item.isshow && index > 0">
+            <div style="font-size: 14px; font-weight: 700; text-align: center">
+              再次下发内容
+            </div>
+            <div class="bodyContent">
+              <div class="contentList">
+                <div class="listLeft">下发说明:</div>
+                <div
+                  class="listRight"
+                  style="white-space: pre-line; margin-top: -20px"
+                >
+                  {{ item.rectifyDemand }}
+                </div>
+              </div>
+              <div
+                class="contentList"
+                style="display: flex; flex-direction: column"
+              >
+                <div class="listLeft">隐患图片:</div>
+                <div class="listRightImg">
+                  <img
+                    :src="item1"
+                    v-for="(item1, index1) in item.reissueImg
+                      ? item.reissueImg.split(',')
+                      : []"
+                    :key="index1"
+                    @click="
+                      Preview(
+                        index1,
+                        item.reissueImg ? item.reissueImg.split(',') : []
+                      )
+                    "
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="bodyContent">
+          <div v-show="item.isshow && item.rectifyReport">
+            <div style="font-size: 14px; font-weight: 700; text-align: center">
+              整改上报内容
+            </div>
+
+            <div class="bodyContent">
+              <div class="contentList">
+                <div class="listLeft">整改上报：</div>
+                <div
+                  class="listRight"
+                  style="white-space: pre-line; margin-top: -20px"
+                >
+                  {{ item.rectifyReport }}
+                </div>
+              </div>
+              <div
+                class="contentList"
+                style="display: flex; flex-direction: column"
+              >
+                <div class="listLeft">执行图片:</div>
+                <div class="listRightImg">
+                  <img
+                    :src="item"
+                    v-for="(item, index) in item.rectifyImg
+                      ? item.rectifyImg.split(',')
+                      : []"
+                    :key="index"
+                    @click="
+                      Preview(
+                        index,
+                        item.rectifyImg ? item.rectifyImg.split(',') : []
+                      )
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="bodyContent">
+              <div class="contentList">
+                <div class="listLeft">整改日期：</div>
+                <div class="listRight" v-if="item.rectifyTm">
+                  {{ item.rectifyTm.slice(0, 10) }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: center">
+            <img
+              :src="Dfolder"
+              style="
+                width: 0.46rem;
+                height: 0.46rem;
+                object-fit: fill;
+                margin: 0.1rem 0;
+              "
+              v-show="!item.isshow"
+              @click="item.isshow = !item.isshow"
+            />
+            <img
+              :src="Ufolder"
+              style="
+                width: 0.46rem;
+                height: 0.46rem;
+                object-fit: fill;
+                margin-bottom: 0.1rem;
+              "
+              v-show="item.isshow"
+              @click="item.isshow = !item.isshow"
+            />
+          </div>
+          <!-- <div class="bodyContent">
           <div class="contentList">
             <div class="listLeft">确认人：</div>
             <div
@@ -299,28 +469,29 @@
               />
             </div>
           </div>
-        </div>
-        <div class="bodyContent">
+        </div> -->
+          <!-- <div class="bodyContent">
           <div class="contentList">
             <div class="listLeft">确认日期：</div>
             <div class="listRight">{{ info.reviewerTm }}</div>
           </div>
-        </div>
-        <div
-          class="bodyContent"
-          v-if="
-            currentRole &&
-            currentRole.identityCd == 'identity30' &&
-            info.state == 3
-          "
-        >
-          <div class="contentList">
-            <div class="listLeft">当前状态：</div>
-            <div class="listRight" style="color: #2778be">待结案</div>
-          </div>
+        </div> -->
+          <!-- <div
+            class="bodyContent"
+            v-if="
+              currentRole &&
+              currentRole.identityCd == 'identity30' &&
+              info.state == 3
+            "
+          >
+            <div class="contentList">
+              <div class="listLeft">当前状态：</div>
+              <div class="listRight" style="color: #2778be">待结案</div>
+            </div>
+          </div> -->
         </div>
       </div>
-      <!-- 待结案/已完成结束 -->
+      <!--  除检验检测待执行结束  -->
     </div>
     <!-- 整改上报按钮开始 -->
     <div
@@ -390,6 +561,9 @@
               style="object-fit: fill; width: 3rem; height: 2rem"
             />
           </div>
+          <div class="listRight" v-else>
+            {{ info.closeUserNm }}
+          </div>
         </div>
       </div>
       <div class="bodyContent">
@@ -431,6 +605,8 @@ import { mapState } from "vuex";
 import moment from "moment";
 import tradingL from "@/assets/img/tradingL.png";
 import tradingR from "@/assets/img/tradingR.png";
+import Dfolder from "@/assets/img/person/down_folder.png";
+import Ufolder from "@/assets/img/person/up_folder.png";
 
 export default {
   mixins: [mixins],
@@ -438,6 +614,8 @@ export default {
     return {
       tradingL,
       tradingR,
+      Dfolder,
+      Ufolder,
       currentRole: "",
       // 再次下发列表
       reissueList: [],
@@ -476,8 +654,12 @@ export default {
     this.id = this.until.getQueryString("id");
     let data = await this.api.getRectifyDetail(this.id);
     this.info = data.shipDocsRectifyVo;
-    if (this.info.rectifyImg) this.albums = this.info.rectifyImg.split(",");
+    // if (this.info.rectifyImg) this.albums = this.info.rectifyImg.split(",");
     this.reissueList = data.reissueList;
+    this.reissueList.forEach((item) => {
+      this.$set(item, "isshow", true);
+    });
+    console.log(111, this.albums);
   },
   methods: {
     //切换设备
@@ -517,22 +699,45 @@ export default {
     async afterRead(e) {
       // 船厂identityCd == 'identity30'整改上报图片上传
       // 检测identityCd == 'identity50'二次下发图片上传
-      console.log(e);
+      console.log(1111, e);
       // this.$loading.show("正在上传");
       if (this.currentRole && this.currentRole.identityCd == "identity30")
         this.isvanloading = true;
       else if (this.currentRole && this.currentRole.identityCd == "identity50")
         this.isvanloading2 = true;
 
-      const formData = new FormData();
-      if (e.file.size > 1048576) {
-        // console.log("压缩图片");
-        const img = await readImg(e.file);
-        let blob = await compressImg(img);
-        formData.append("file", blob, "file.jpg");
-      } else {
-        formData.append("file", e.file, "file.jpg");
+      //多图上传
+      if (Array.isArray(e)) {
+        e.forEach(async (item) => {
+          const formData = new FormData();
+          if (item.file.size > 1048576) {
+            // console.log("压缩图片");
+            const img = await readImg(item.file);
+            let blob = await compressImg(img);
+            formData.append("file", blob, "file.jpg");
+          } else {
+            formData.append("file", item.file, "file.jpg");
+          }
+          this.uploadPic(formData);
+        });
       }
+      //单图上传
+      else {
+        const formData = new FormData();
+
+        if (e.file.size > 1048576) {
+          // console.log("压缩图片");
+          const img = await readImg(e.file);
+          let blob = await compressImg(img);
+          formData.append("file", blob, "file.jpg");
+        } else {
+          formData.append("file", e.file, "file.jpg");
+        }
+        this.uploadPic(formData);
+      }
+    },
+    //调取图片上传接口
+    uploadPic(formData) {
       this.api.uploadImg3(formData).then((imgurl) => {
         this.isvanloading = false;
         this.isvanloading2 = false;
@@ -563,8 +768,10 @@ export default {
     },
     // 整改上报
     async handleReport() {
-      if (this.info.rectifyReport == "") {
+      if (!this.info.rectifyReport) {
         Toast("上报内容不能为空");
+      } else if (!this.info.rectifyImg) {
+        Toast("执行图片不能为空");
       } else {
         let obj = {};
         //再下发说明列表
@@ -588,10 +795,13 @@ export default {
           Toast.success("上报成功");
           let data = await this.api.getRectifyDetail(this.id);
           this.info = data.shipDocsRectifyVo;
-          if (this.info.rectifyImg)
-            this.albums = this.info.rectifyImg.split(",");
+          // if (this.info.rectifyImg)
+          //   this.albums = this.info.rectifyImg.split(",");
 
           this.reissueList = data.reissueList;
+          this.reissueList.forEach((item) => {
+            this.$set(item, "isshow", true);
+          });
         } else {
           Toast.fail("上报失败");
         }
@@ -611,10 +821,13 @@ export default {
           Toast.success("结案成功");
           let data = await this.api.getRectifyDetail(this.id);
           this.info = data.shipDocsRectifyVo;
-          if (this.info.rectifyImg)
-            this.albums = this.info.rectifyImg.split(",");
+          // if (this.info.rectifyImg)
+          //   this.albums = this.info.rectifyImg.split(",");
 
           this.reissueList = data.reissueList;
+          this.reissueList.forEach((item) => {
+            this.$set(item, "isshow", true);
+          });
         } else {
           Toast.fail("结案失败");
         }
@@ -636,15 +849,18 @@ export default {
           Toast.success("再次下发成功");
           let data1 = await this.api.getRectifyDetail(this.id);
           this.info = data1.shipDocsRectifyVo;
-          if (this.info.rectifyImg) {
-            this.albums = this.info.rectifyImg.split(",");
-          }
+          // if (this.info.rectifyImg) {
+          //   this.albums = this.info.rectifyImg.split(",");
+          // }
           this.reissueList = data1.reissueList;
+          this.reissueList.forEach((item) => {
+            this.$set(item, "isshow", true);
+          });
+          this.Issueshow = false;
         } else {
           Toast.fail("再次下发失败");
         }
       }
-      this.Issueshow = false;
     },
     //传入图片路径，返回base64
     getBase64(url, callback) {
@@ -798,12 +1014,13 @@ export default {
           font-size: 0.28rem;
           font-weight: 500;
           color: #333333;
+          width: 2rem;
         }
         .listRight {
           font-size: 0.26rem;
           font-weight: 500;
           color: #333333;
-          margin-left: 0.8rem;
+          // margin-left: 0.8rem;
           .van-cell {
             height: 0.2rem;
             display: flex;
