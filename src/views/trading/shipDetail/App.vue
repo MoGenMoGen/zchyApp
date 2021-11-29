@@ -46,12 +46,13 @@
 				<!--<van-icon name="arrow" />-->
 			<!--</div>-->
 			<!--购买须知的弹出层-->
-			<van-popup v-model="show"  position="bottom" closeable round >
+			<van-popup v-model="show"  position="bottom" closeable round :style="{ 'max-height': '80%' }">
 				<div class="buyKnow">
 					<p>购买须知</p>
-					<ul>
+					<!-- <ul>
 						<li v-for="(item,index) in buyKnow" :key="index"><span></span><p>{{item}}</p></li>
-					</ul>
+					</ul> -->
+					<div v-html="buyKnow"></div>
 				</div>
 			</van-popup>
 			<div class="whiteBox3">
@@ -127,7 +128,7 @@
                     price:'100',
 				},
 				showBottom:false,
-                buyKnow:[],
+                buyKnow:'',
             };
         },
         computed: {
@@ -206,7 +207,8 @@
 				}
 				let cont =  await this.api.ruleDetail('5143053424022528')
 				console.log(cont)
-                this.buyKnow = cont.data.cont.split('-')
+				this.buyKnow = cont.data.cont
+                // this.buyKnow = cont.data.cont.split('-')
                 // this.$refs.shipDetail.getInfo(this.id)
             },
 			//收藏
@@ -293,6 +295,9 @@
 					text-align: center;
 					border-bottom: 1px solid rgba(0,0,0,0.1);
 					line-height: 1rem;
+				}
+				>div {
+					padding: 0 0.1rem;
 				}
 				ul{
 					padding: 0 0.5rem 0.3rem 0.34rem;

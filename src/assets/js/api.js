@@ -2301,7 +2301,14 @@ class api {
 	    })
 	  })
 	}
-
+	// 购买须知
+	getShopInfo() {
+	  return new Promise(resolve => {
+	    get("/sys/advertInfo/info/178").then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
 }
 
 
