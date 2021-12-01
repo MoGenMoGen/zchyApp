@@ -10,7 +10,7 @@
 			</div>
 			<div class="infoBasic">
 				<div>
-					<p class="priceP"><span style="font-size: 0.24rem;">￥</span>{{info.origMinPrice}}~{{info.origMaxPrice}}万</p>
+					<p class="priceP"><span style="font-size: 0.24rem;">￥</span>{{info.origMinPrice}}~{{info.origMaxPrice}}万<img :src="Vr" v-if="info.vrUrl" @click.stop="toVr(info.id)" style="width: 1.38rem;height: 0.43rem;margin-left: 0.1rem;"></p>
 					<p class="startP" @click="toCollect">
 						<i class="iconfont" :class="info.collected==1?'iconxing1':'iconxing'"></i>
 						<span>收藏</span>
@@ -75,16 +75,17 @@
 	import bottomShare from "../../../components/personal/bottomShare";
     import myHeader from '@/components/opacityHeader'
 	import {mapState} from "vuex";
+	import Vr from '@/assets/img/Vr.png'
     export default {
         data() {
             return {
 				backI,
 				shareI,
 				hookI,
+				Vr,
 				imgList:[],
 				id:"",
 				info:{},
-
 				showBottom:false,
 				showShare:false,
             };
@@ -160,6 +161,9 @@
             toPage(url){
 				window.location.href=url
             },
+			toVr(id) {
+				window.open(`../myFrame/index.html?typeCd=1&id=${id}`)
+			}
         },
 
     };
@@ -205,6 +209,8 @@
 						flex: 1;
 						color: #FF3C3E;
 						font-size: 0.37rem;
+						display: flex;
+						align-items: center;
 					}
 					.startP{
 						display: flex;

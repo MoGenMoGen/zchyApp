@@ -69,7 +69,7 @@
 						<span class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice !=price">￥{{item.goodsMinPrice}}</span>
 						<span class="price" v-if="item.goodsMinPrice!==item.goodsMaxPrice">￥{{item.goodsMinPrice}}-{{item.goodsMaxPrice}}</span>
 						<span class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice ==price">价格面议</span>
-						<span style="position: absolute; right: 2rem;"><img :src="Vr" v-if="item.vrUrl" @click.stop="toVr(item.vrUrl)" style="width: 1.38rem; height: 0.43rem;"></span>
+						<span style="position: absolute; right: 2rem;"><img :src="Vr" v-if="item.vrUrl" @click.stop="toVr(item.goodsId)" style="width: 1.38rem; height: 0.43rem;"></span>
 					</div>
 					</div>
 				</div>
@@ -258,8 +258,8 @@
                 this.pageNo++
 				this.getList()
 			},
-			toVr(url){
-				window.open(url)
+			toVr(id){
+				window.open(`../myFrame/index.html?typeCd=2&id=${id}`)
 			}
         },
 

@@ -17,8 +17,8 @@
 			</div>
 			<div class="infoBasic">
 				<div>
-					<p class="priceP" v-if="currentInfo && currentInfo.origPrice !=price"><span style="font-size: 0.24rem;">￥</span>{{currentInfo.origPrice}}</p>
-					<p class="priceP" v-if="currentInfo && currentInfo.origPrice ==price"><span style="font-size: 0.24rem;">价格面议</span></p>
+					<p class="priceP" v-if="currentInfo && currentInfo.origPrice !=price"><span style="font-size: 0.24rem;">￥</span>{{currentInfo.origPrice}}<img :src="Vr" v-if="info.vrUrl" @click.stop="toVr(info.id)" style="width: 1.38rem;height: 0.43rem;margin-left: 0.1rem;"></p>
+					<p class="priceP" v-if="currentInfo && currentInfo.origPrice ==price"><span style="font-size: 0.24rem;">价格面议<img :src="Vr" v-if="info.vrUrl" @click.stop="toVr(info.id)" style="width: 1.38rem;height: 0.43rem;margin-left: 0.1rem;"></span></p>
 					<p class="startP" @click="toCollect">
 						<i class="iconfont" :class="info.isCollect==1?'iconxing1':'iconxing'"></i>
 						<span>收藏</span>
@@ -27,6 +27,7 @@
 				<p>{{info.nm}}</p>
 				<span v-if="info.ship">船型编码： {{currentInfo ? currentInfo.shipCd : ''}}</span>
 				<span v-else>销量： {{info.salesQty}}</span>
+				<img src="" alt="">
 			</div>
 			<div class="whiteBox3" v-if="info.ship">
 				<div style="border-bottom: 0.01rem solid rgba(0,0,0,0.1);">
@@ -105,6 +106,7 @@
     import myHeader from '@/components/opacityHeader'
 
     import {mapState} from "vuex";
+	import Vr from '@/assets/img/Vr.png'
     export default {
         data() {
             return {
@@ -115,6 +117,7 @@
                 share2,
                 hookI,
                 shopImg,
+				Vr,
                 imgList:[],
                 id:"",
                 info:{},
@@ -240,6 +243,9 @@
             toPage(url){
                 window.location.href=url
             },
+			toVr(id){
+				window.open(`../myFrame/index.html?typeCd=2&id=${id}`)
+			}
         },
 
     };
@@ -328,6 +334,8 @@
 						flex: 1;
 						color: #FF3C3E;
 						font-size: 0.37rem;
+						display: flex;
+						align-items: center;
 					}
 					.startP{
 						display: flex;

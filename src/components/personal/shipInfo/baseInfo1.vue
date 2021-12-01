@@ -11,7 +11,12 @@
 
       <van-row class="row" type="flex" align="center">
         <van-col span="6"> 船舶编号：</van-col>
-        <van-col span="16" offset="2"> <span style="color: #2778BE;font-weight: bold ">{{info.cd}}</span></van-col>
+        <van-col span="16" offset="2"> 
+			<p style="color: #2778BE;font-weight: bold;display: flex;align-items: center;">
+				{{info.cd}}
+				<img :src="Vr" v-if="info.vrUrl" @click.stop="toVr(info.id)" style="width: 1.38rem; height: 0.43rem;margin-left: 0.1rem;">
+			</p>
+		</van-col>
       </van-row>
 
       <van-row class="row" type="flex" align="center">
@@ -51,6 +56,7 @@
 </template>
 
 <script>
+	import Vr from '@/assets/img/Vr.png'
     export default {
         name: "fangansheji",
         props:{
@@ -61,12 +67,16 @@
         },
         data(){
             return{
+				Vr
             }
         },
         mounted() {
 
         },
         methods:{
+			toVr(id){
+				window.open(`../myFrame/index.html?typeCd=3&id=${id}`)
+			}
         }
 
     }

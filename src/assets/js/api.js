@@ -515,7 +515,14 @@ class api {
 			});
 		});
 	}
-
+	// 个人中心-收付款记录分页列表 有商城和非商城的记录
+	payment3(query,data) {
+	  return new Promise((resolve, reject) => {
+	    get("/ship/paymentPlan/apis/page?query=" + query,data).then(res => {
+	      resolve(res)
+	    });
+	  });
+	}
 	//个人中心-提交确认/确认收款
 	confirmRev(data) {
 		return new Promise(resolve => {
@@ -1252,6 +1259,14 @@ class api {
 				resolve(res.data)
 			})
 		})
+	}
+	//产品详情
+	productGetVr(id) {
+	  return new Promise((resolve, reject) => {
+	    get("/ds/open/getVR?id=" + id).then(res => {
+	      resolve(res)
+	    });
+	  });
 	}
 	//关注店铺
 	followShop(data) {
@@ -2305,6 +2320,14 @@ class api {
 	getShopInfo() {
 	  return new Promise(resolve => {
 	    get("/sys/advertInfo/info/178").then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
+	// 首页招标公告分页列表
+	getZbggList(data){
+	  return new Promise(resolve => {
+	    get("/ship/bidAffiche/apis/api/pageWithStatus?query="+data).then(res=>{
 	      resolve(res)
 	    })
 	  })
