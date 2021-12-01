@@ -708,12 +708,11 @@ export default {
     // if (this.info.rectifyImg) this.albums = this.info.rectifyImg.split(",");
     this.reissueList = data.reissueList;
     this.inspId = this.reissueList[this.reissueList.length - 1].id;
-
     this.reissueList.pop();
     this.reissueList.forEach((item) => {
       this.$set(item, "isshow", true);
     });
-    console.log(111, this.albums);
+    console.log(111, this.inspId);
   },
   methods: {
     //切换设备
@@ -829,7 +828,7 @@ export default {
       } else {
         let obj = {};
         //再下发说明列表
-        if (this.reissueList.length > 1) {
+        if (this.reissueList.length > 0) {
           obj = {
             inspId: this.inspId,
           };
@@ -915,6 +914,7 @@ export default {
           //   this.albums = this.info.rectifyImg.split(",");
           // }
           this.reissueList = data1.reissueList;
+          this.reissueList.pop();
           this.reissueList.forEach((item) => {
             this.$set(item, "isshow", true);
           });
