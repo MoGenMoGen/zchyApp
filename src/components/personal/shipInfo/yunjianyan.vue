@@ -105,6 +105,7 @@
               color: red;
             }
           "
+          @click="toDetail(item.recitfyId)"
         >
           查看整改单
         </div>
@@ -183,6 +184,10 @@ export default {
     newRectify(id) {
       this.until.href(`./rectifyAdd.html?inspId=${id}`);
     },
+    toDetail(id){
+      this.until.href(`./rectifyDetail.html?id=${id}`);
+
+    }
   },
   created() {
     this.currentRole = JSON.parse(this.until.loGet("currentRole"));
