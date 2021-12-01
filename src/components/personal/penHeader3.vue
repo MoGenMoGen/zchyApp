@@ -4,12 +4,12 @@
     <div class="cont">
       <p>{{ title }}</p>
       <van-icon name="arrow-left" class="arrow-left" @click="onClickLeft" />
-      <span
+      <!-- <span
         class="right-icon"
         @click="onClickRight"
         v-if="currentRole && currentRole.identityCd == 'identity50'"
         >新增</span
-      >
+      > -->
     </div>
     <div class="place"></div>
   </div>
