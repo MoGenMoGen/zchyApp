@@ -5,10 +5,10 @@
 		<div class="body">
 		<div class="topMenu">
 			<div class="menuItem" v-for="(item,index) in info" :key="index" @click="changeMenu(index)">
-				<img :src="item.selectImgUrl" v-if="selectIndex>=index">
+				<img :src="item.selectImgUrl" v-if="selectIndex==index">
 				<img :src="item.imgUrl" v-else>
 				<div>
-				  <span :style="{color:selectIndex>=index?'#0064B2':''}">{{item.afficheTypeNm}}</span>
+				  <span :style="{color:selectIndex==index?'#0064B2':''}">{{item.afficheTypeNm}}</span>
 				  <span>{{item.releTm}}</span>
 				</div>
 				<img :src="jt1" v-if="selectIndex>=index&&info.length - 1>index">
@@ -18,9 +18,11 @@
 		<div class="contBody" v-html="cont">
 		
 		</div>
-		<div class="bottomBtn" v-if="signFlag" @click="sign">报名</div>
-			
+		<div class="bottomBtn" v-if="signFlag&&!IsSignUp&&selectIndex==0" @click="sign">报名</div>
+		<div class="bottomBtn" v-else-if="IsSignUp&&selectIndex==0">已报名</div>
 		</div>
+			
+		
 		<van-dialog v-model="signShow" title="提示" show-cancel-button style="text-align: center;" @confirm="confirmTo">
 		     <p style="font-size: 0.26rem;">当前账号： {{currentRole.company}}[{{currentRole.identityNm}}]</p>
 			 <p style="color: #E4393C; font-size: 0.26rem;">如需切换，请去个人中心切换</p>
@@ -31,6 +33,7 @@
 <script>
 	import penHeader from "../../../components/personal/penHeader";
 	import cg1 from '@/assets/img/person/采购公告.png'
+	// import cg2 from '@/assets/img/person/采购公告-灰.png'
 	import gz1 from '@/assets/img/person/更正公告.png'
 	import gz2 from '@/assets/img/person/更正公告-灰.png'
 	import jg1 from '@/assets/img/person/结果公告.png'
@@ -56,8 +59,10 @@
 				jg2,
 				jt1,
 				jt2,
+				// cg2,
 				cont:'',
-				signFlag:false,
+				signFlag:false,//是否不能报名
+				IsSignUp:false,//是否已报名
 				id:'',
 				info:[],
 				userInfo: {},
@@ -101,17 +106,31 @@
 					this.tabId = item.id
 				}
 			},
-			canSign() {
-			  this.api.getBidInfo(this.id).then(res => {
-			    this.bidInfo = res.data
-			    let nowDate = (new Date()).getTime()
-			    if((new Date(res.data.completeTm+' 23:59:59')).getTime()>nowDate) {
-			      this.signFlag = true
-			    } else {
-			      this.signFlag = false
-			    }
-			  })
-			},
+		canSign() {
+		  let role = JSON.parse(this.until.loGet("currentRole"));
+		  console.log(role)
+		  if (role) {
+		    let id = role.id;
+		    this.api.getBidInfo(this.id, id).then((res) => {
+		      this.bidInfo = res.data;
+		      console.log(this.bidInfo)
+		      if (this.bidInfo.applyNum > 0) this.IsSignUp = true;
+		      let nowDate = new Date().getTime();
+		      if (new Date(res.data.completeTm + " 23:59:59").getTime() > nowDate && this.until.loGet(
+		        "currentRole")) {
+		        if (role.identityCd == this.bidInfo.viewRangeCd || this.bidInfo.orgEnterIds.indexOf(role.id) > -1) {
+		          this.signFlag = true;
+		        } else {
+		          this.signFlag = false
+		        }
+		      } else {
+		        this.signFlag = false;
+		      }
+		    });
+		  } else {
+		    this.signFlag = false
+		  }
+		},
 			sign(){
 				if(this.until.loGet('currentRole')){
 					this.signShow=true
@@ -133,13 +152,13 @@
 			  this.api.getBidAfficheList2(this.query.toEncode(qry)).then(res => {
 			    res.data.list.forEach(item => {
 			      item.releTm = item.releTm.substring(0,10)
-			      if(item.afficheTypeNm=='采购公告'){
+			      if(item.afficheTypeCd=='5635882628584448'){
 			        item.selectImgUrl = cg1
-			        item.imgUrl = ''
-			      } else if(item.afficheTypeNm=='更正公告'){
+			        // item.imgUrl = cg2
+			      } else if(item.afficheTypeCd=='5635883070706688'){
 			        item.selectImgUrl = gz1
 			        item.imgUrl = gz2
-			      } else if(item.afficheTypeNm=='结果公告'){
+			      } else if(item.afficheTypeCd=='5635883361522688'){
 			        item.selectImgUrl = jg1
 			        item.imgUrl = jg2
 			      }

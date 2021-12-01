@@ -50,12 +50,66 @@
           <div class="right">{{ item.rmks }}</div>
         </div>
         <div
-          style="color: #2778be"
+          style="
+            color: #2778be;
+            width: 1.6rem;
+            margin-top: 0.12rem;
+            hover {
+              color: red;
+            }
+          "
           @click="tofpxpert"
           v-if="currentRole && currentRole.identityCd == 'identity50'"
         >
           检验入口
         </div>
+        <!-- state：0{
+            船厂:空，
+            检测：新增
+          },
+          state:1{
+            查看
+          }
+           -->
+        <div
+          style="
+            padding: 0.1rem;
+            width: 1.6rem;
+            font-size: 0.3rem;
+            color: #fff;
+            background-color: #2778be;
+            border-radius: 0.1rem;
+            cursor: pointer;
+            margin-top: 0.12rem;
+            text-align:center;
+          "
+          v-if="
+            item.state == 0 &&
+            currentRole &&
+            currentRole.identityCd == 'identity50'
+          "
+          @click="newRectify(item.id)"
+        >
+          新增整改单
+        </div>
+
+        <div
+          v-else-if="item.state == 1"
+          style="
+            width: 1.8rem;
+            font-size: 0.3rem;
+            color: #2778be;
+            cursor: pointer;
+            margin-top: 0.12rem;
+            hover {
+              color: red;
+            }
+          "
+          @click="toDetail(item.recitfyId)"
+        >
+          查看整改单
+        </div>
+        <div v-else></div>
       </div>
     </van-list>
   </div>
@@ -127,6 +181,13 @@ export default {
         this.pageNo++;
       });
     },
+    newRectify(id) {
+      this.until.href(`./rectifyAdd.html?inspId=${id}`);
+    },
+    toDetail(id){
+      this.until.href(`./rectifyDetail.html?id=${id}`);
+
+    }
   },
   created() {
     this.currentRole = JSON.parse(this.until.loGet("currentRole"));

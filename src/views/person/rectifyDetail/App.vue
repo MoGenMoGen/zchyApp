@@ -55,8 +55,11 @@
     <div class="containerBody">
       <div class="bodyTitle">
         <img :src="tradingL" />
-        <p>整改单</p>
+        <p>最新整改情况</p>
         <img :src="tradingR" />
+      </div>
+      <div style="font-size: 14px; font-weight: 700; text-align: center">
+        下发内容
       </div>
       <div class="bodyContent">
         <div class="contentList">
@@ -131,10 +134,7 @@
       </div>
 
       <div class="bodyContent">
-        <div
-          class="contentList"
-          style="display: flex; flex-direction: column; border-bottom: 0"
-        >
+        <div class="contentList" style="display: flex; flex-direction: column">
           <div class="listLeft">隐患图片:</div>
           <div class="listRightImg">
             <img
@@ -173,6 +173,55 @@
           <div class="listLeft">检查时间：</div>
           <div class="listRight" v-if="info.reviewerTm">
             {{ info.reviewerTm.slice(0, 10) }}
+          </div>
+        </div>
+      </div>
+      <div v-if="info1.rectifyReport" style="padding-bottom: 10px">
+        <div style="font-size: 14px; font-weight: 700; text-align: center">
+          整改上报内容
+        </div>
+        <div class="bodyContent">
+          <div class="contentList">
+            <div class="listLeft">整改上报：</div>
+            <div
+              class="listRight"
+              style="white-space: pre-line; margin-top: -20px"
+            >
+              {{ info.rectifyReport }}
+            </div>
+          </div>
+        </div>
+        <div class="bodyContent">
+          <div
+            class="contentList"
+            style="display: flex; flex-direction: column"
+          >
+            <div class="listLeft">执行图片</div>
+            <div class="listRightImg">
+              <img
+                :src="item"
+                v-for="(item, index) in (info.rectifyImg ? info.rectifyImg : '')
+                  .split(',')
+                  .filter((item4) => item4 != '')"
+                :key="index"
+                @click="
+                  Preview(
+                    index,
+                    (info.rectifyImg ? info.rectifyImg : '')
+                      .split(',')
+                      .filter((item4) => item4 != '')
+                  )
+                "
+              />
+            </div>
+          </div>
+        </div>
+        <div class="bodyContent">
+          <div class="contentList">
+            <div class="listLeft">整改日期:</div>
+            <div class="listRight" v-if="info.rectifyTm">
+              {{ info.rectifyTm.slice(0, 10) }}
+            </div>
           </div>
         </div>
       </div>
@@ -301,7 +350,7 @@
           style="background: #fff; margin-bottom: 0.12rem"
         >
           <!-- 第一次下发 -->
-          <div v-show="item.isshow && index == 0">
+          <div v-show="item.isshow">
             <div style="font-size: 14px; font-weight: 700; text-align: center">
               下发内容
             </div>
@@ -338,17 +387,17 @@
                 </div>
               </div>
             </div>
-            <div class="bodyContent">
+            <!-- <div class="bodyContent">
               <div class="contentList">
                 <div class="listLeft">下发日期：</div>
                 <div class="listRight" v-if="item.issueTm">
                   {{ item.issueTm.slice(0, 10) }}
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <!-- 二次下发 -->
-          <div v-show="item.isshow && index > 0">
+          <!-- <div v-show="item.isshow && index > 0">
             <div style="font-size: 14px; font-weight: 700; text-align: center">
               再次下发内容
             </div>
@@ -384,7 +433,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div v-show="item.isshow && item.rectifyReport">
             <div style="font-size: 14px; font-weight: 700; text-align: center">
               整改上报内容
@@ -620,6 +669,7 @@ export default {
       // 再次下发列表
       reissueList: [],
       info: {},
+      info1: {},
       // 上报图片列表
       albums: [],
       // 加载图片
@@ -629,6 +679,7 @@ export default {
       isvanloading2: false,
       // 二次下发弹窗
       Issueshow: false,
+      inspId: "",
     };
   },
   components: {
@@ -656,6 +707,9 @@ export default {
     this.info = data.shipDocsRectifyVo;
     // if (this.info.rectifyImg) this.albums = this.info.rectifyImg.split(",");
     this.reissueList = data.reissueList;
+    this.inspId = this.reissueList[this.reissueList.length - 1].id;
+
+    this.reissueList.pop();
     this.reissueList.forEach((item) => {
       this.$set(item, "isshow", true);
     });
@@ -768,7 +822,7 @@ export default {
     },
     // 整改上报
     async handleReport() {
-      if (!this.info.rectifyReport) {
+      if (!this.info1.rectifyReport) {
         Toast("上报内容不能为空");
       } else if (!this.info.rectifyImg) {
         Toast("执行图片不能为空");
@@ -784,7 +838,7 @@ export default {
           ...{
             id: this.id,
             cd: this.info.cd,
-            rectifyReport: this.info.rectifyReport,
+            rectifyReport: this.info1.rectifyReport,
             rectifyImg: this.info.rectifyImg,
             rmks: this.info.rmks,
           },
@@ -799,6 +853,10 @@ export default {
           //   this.albums = this.info.rectifyImg.split(",");
 
           this.reissueList = data.reissueList;
+          this.inspId = this.reissueList[this.reissueList.length - 1].id;
+
+          this.reissueList.pop();
+
           this.reissueList.forEach((item) => {
             this.$set(item, "isshow", true);
           });
@@ -825,6 +883,10 @@ export default {
           //   this.albums = this.info.rectifyImg.split(",");
 
           this.reissueList = data.reissueList;
+          this.inspId = this.reissueList[this.reissueList.length - 1].id;
+
+          this.reissueList.pop();
+
           this.reissueList.forEach((item) => {
             this.$set(item, "isshow", true);
           });

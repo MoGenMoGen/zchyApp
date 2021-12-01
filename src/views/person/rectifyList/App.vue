@@ -82,6 +82,10 @@
             :key="index"
             @click="toDetail(item.id)"
           >
+          <div class="row">
+              <div class="left">船舶编号:</div>
+              <div class="right">{{ item.docsCd }}</div>
+            </div>
             <div class="row">
               <div class="left">整改单号:</div>
               <div class="right">{{ item.cd }}</div>
