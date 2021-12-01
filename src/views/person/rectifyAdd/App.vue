@@ -216,14 +216,43 @@
 				</div>
 			</div>
 			<div class="bodyContent">
-				<div class="contentList" style="display: flex; flex-direction: column;">
+				<div class="contentList">
+					<div class="listLeft">
+						检验检测单位：
+					</div> 
+					<div class="listRight">
+						<van-field
+						  readonly
+						  clickable
+						  :value="value10"
+						  placeholder="选择检验检测单位"
+						  @click="showPickerFour = true"
+						  style="font-size: 0.22rem;"
+						/>
+						<van-popup v-model="showPickerFour" round position="bottom">
+							<van-search v-model="searchThree" shape="round" background=" #2778BE"  @input="onSearchThree"
+								placeholder="请输入搜索关键词" />
+						  <van-picker
+						    show-toolbar
+							value-key="company"
+						    :columns="optionsSearchThree"
+						    @cancel="showPickerFour = false"
+						    @confirm="onConfirm5"
+						  />
+						</van-popup> 
+					</div>
+				</div>
+			</div>
+		
+			<div class="bodyContent">
+				<div class="contentList" style="display: flex; flex-direction: column; align-items: flex-start;">
 					<div class="listLeft" style="width: 2rem;">
 						整改负责人签字：
 					</div>
 					<div class="listRight"style="margin: 0 auto;">
 						<signature ref='s1' v-show="!sign"/>
 						<img :src="sign" class="signImg" v-if="sign" style="border: 0.01rem solid #cccccc; box-sizing: border-box;">
-						<p class="signBtn"> <span @click="clear">重签</span> <span style="margin-left: 0.3rem" @click="confirm">确定</span></p>
+						<div class="signBtn"> <div @click="clear">重签</div> <div style="margin-left: 0.3rem" @click="confirm">确定</div></div>
 					</div>
 					</div>
 			</div>
@@ -264,19 +293,22 @@
 				</div>
 			</div> -->
 			<div class="bodyContent">
-				<div class="contentList" style="display: flex; flex-direction: column;">
+				<div class="contentList" style="display: flex; flex-direction: column;align-items: flex-start;">
 					<div class="listLeft">
 						复查人签字：
 					</div>
 					<div class="listRight" style="margin: 0 auto;" >
 						<signature ref='s2' v-show="!sign2"/>
 						<img :src="sign2" class="signImg" v-if="sign2" style="border: 0.01rem solid #cccccc; box-sizing: border-box;">
-						<p class="signBtn"> <span @click="clear2">重签</span> <span style="margin-left: 0.3rem" @click="confirm2">确定</span></p>
+						<div class="signBtn">
+							<div @click="clear2">重签</div> 
+							<div style="margin-left: 0.3rem" @click="confirm2">确定</div>
+						</div>
 					</div>
 					</div>
 			</div>
 			<div class="bodyContent">
-				<div class="contentList" style="display: flex;flex-direction: column; border-bottom:0 ;">
+				<div class="contentList" style="display: flex;flex-direction: column; border-bottom:0 ; align-items: flex-start;">
 					<div class="listLeft">
 						隐患图片:
 					</div>
@@ -301,7 +333,7 @@
 
 <script>
 	import { ImagePreview } from 'vant';
-    import signature from "../../../components/personal/signature";
+    import signature from "../../../components/personal/signature2";
     import penHeader from "../../../components/personal/penHeader";
     import bButton from "../../../components/personal/bButton";
     import searchView from "../../../components/personal/searchView";
@@ -315,6 +347,8 @@
 		mixins:[mixins],
         data() {
             return {
+				id:'',
+				docsId:'',
 				sign:'',
 				sign2:'',
 				Numbers:'',
@@ -333,18 +367,23 @@
 				value7:'',//整改期限
 				value8:'',//复查日期
 				value9:'',//复查情况
+				value10:'',//检验检测机构
 				orgEnterId:'',//整改单位id
 				rectifyer:'',//整改负责人id
+				orgTestEnterId:'',//检验检测机构id
 				currentRoleId:'',
 				showPicker:false,
 				showPicker2:false,
 				showPickerTwo:false,
 				showPickerThree:false,
+				showPickerFour:false,
 				search:'',
+				searchThree:'',
 				options:[],
 				optionsSearch:[],
 				optionsTwo:[],
 				optionsThree:[],
+				optionsSearchThree:[],
 				columns:[
 					
 				],
@@ -374,6 +413,25 @@
             },
         },
 		async mounted() {
+			this.id=this.until.getQueryString('inspId')
+			this.api.getDocsInspDetail(this.id).then(res=>{
+				this.docsId=res.data.docsId
+				let urlStr=res.data.imgUrl.split(",")
+				urlStr.forEach(item => {
+				           let obj = new Object();
+				           obj.url = item;
+				           this.imgList.push(obj)
+						   this.imgListUpd.push(obj.url)
+				         });
+						 this.api.getRecitifyList(this.docsId).then(res => {
+						   this.options = res.data.list
+						   this.optionsSearch=res.data.list
+						 })
+						 this.api.getRecitifyListTest(this.docsId).then(res => {
+						   this.optionsThree = res.data.list
+						    this.optionsSearchThree=res.data.list
+						 })
+			})
 			this.changeDevice()
 			window.onresize = () => {
 				this.changeDevice()
@@ -383,19 +441,6 @@
 			})
 			//获取整改单位列表
 			this.currentRoleId = JSON.parse(this.until.loGet('currentRole')).id
-			let qry1 = this.query.new()
-			let qry3 = this.query.new()
-			this.query.toW(qry1, 'identityCd', 'identity30', 'EQ')
-			this.query.toW(qry1, 'audit', '2', 'EQ')
-			this.query.toW(qry3, 'identityCd', 'identity50', 'EQ')
-			this.query.toW(qry3, 'audit', '2', 'EQ')
-			this.api.getRecitifyList(this.query.toEncode(qry1)).then(res => {
-			  this.options = res.data.list
-			  this.optionsSearch=res.data.list
-			})
-			this.api.getRecitifyList(this.query.toEncode(qry3)).then(res => {
-			  this.optionsThree = res.data.list
-			})
 			this.currentDate=new Date(new Date().getTime())
 		},
 		methods: {
@@ -443,7 +488,7 @@
 					let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
 					　　formData.append('file', file.file); //接口需要传的参数
 					this.api.uploadImg4(formData).then(res=>{
-						　　	console.log(res,111111);
+						　　	console.log(res,111111);     
 							this.imgListUpd.push(res)
 							console.log('qqq',this.imgListUpd);
 							})
@@ -496,6 +541,10 @@
 				this.showNext=false
 			},
 			confirmTo(){
+				if(!this.orgTestEnterId){
+					Toast('检验检测单位未选')
+					return false
+				}
 				if(!this.sign){
 					Toast('整改责任人未签字')
 					return false
@@ -510,11 +559,11 @@
 				}
 				console.log(this.imgListUpd);
 				let obj={
-					docsId:0,
+					docsId:this.docsId,
 					cd:this.Numbers,
 					nm:this.value1,
 					orgEnterId:this.orgEnterId,
-					orgTestEnterId: this.currentRoleId,
+					orgTestEnterId: this.orgTestEnterId,
 					inspArea:this.value3,
 					rectifyer:this.rectifyer,
 					explains:this.value4,
@@ -524,6 +573,7 @@
 					rectifyTmLimit:this.value7,
 					reviewerTm:this.value8,
 					reviewerSign:this.sign2,
+					docsInspId:this.id,
 					rmks:'',
 				}
 				this.api.postDocsRectifyAdd(obj).then(res=>{
@@ -575,6 +625,11 @@
 				this.value8=this.formatTime(val)
 				this.showPickerThree=false	
 			},
+			onConfirm5(val){
+				this.value10=val.company
+				this.orgTestEnterId=val.id
+				this.showPickerFour=false
+			},
 			formatTime(date) {
 			  let myDate = new Date(date)
 			  let year = myDate.getFullYear();
@@ -614,6 +669,15 @@
 				else {
 					this.optionsSearch = this.options
 				}
+			 },
+			 onSearchThree(a){
+				 if(a){
+				this.optionsSearchThree=this.optionsThree.filter((item)=>
+				item.company.includes(a))
+				 }
+				 else{
+					 this.optionsSearchThree=this.optionsThree
+				 }
 			 }
 			
 
@@ -654,8 +718,9 @@
 					padding-bottom: 0.2rem;
 					box-sizing: border-box;
 					border-bottom: 0.01rem solid #E5E5E5;
+					align-items: center;
 					.listLeft{
-						width: 1.5rem;
+						width: 1.7rem;
 						font-size: 0.24rem;
 						font-weight: 500;
 						color: #333333;
@@ -664,14 +729,23 @@
 						font-size: 0.24rem;
 						font-weight: 500;
 						color: #333333;
-						margin-left: 0.8rem;
-						.van-cell{
-							height: 0.2rem;
+						margin-left: 0.5rem;
+						.signBtn{
 							display: flex;
-							align-items: center;
-							padding-left: 0;
-							font-size: 0.24rem;
+							div{
+								  padding: 0.2rem 0.4rem;
+								    background-color: #2778BE;
+								    margin: 0.1rem;
+								    border-radius: 0.2rem;
+									color: #ffffff;
+							}
+						}
+						.van-cell{
 							width: 4rem;
+							border: 0.01rem solid #DDDDDD;
+						    height: 0.6rem;
+							display: flex;
+							 align-items: center;
 						}
 						.van-cell::after{
 							border-bottom: 0;
@@ -680,14 +754,39 @@
 							color: #999999;
 						}
 						textarea{
-							width: 4rem;
+							width: 4.57rem;
 							height: 2.12rem;
+							border: 0.01rem solid #DDDDDD;
+							padding: 0.2rem 0.32rem;
 							box-sizing: border-box;
-							font-size: 0.24rem;
+							font-size: 0.22rem;
 						}
 						textarea::placeholder{
 							color: #999999;
 						}
+						// .van-cell{
+						// 	height: 0.2rem;
+						// 	display: flex;
+						// 	align-items: center;
+						// 	padding-left: 0;
+						// 	font-size: 0.24rem;
+						// 	width: 4rem;
+						// }
+						// .van-cell::after{
+						// 	border-bottom: 0;
+						// }
+						// .van-cell::placeholder{
+						// 	color: #999999;
+						// }
+						// textarea{
+						// 	width: 4rem;
+						// 	height: 2.12rem;
+						// 	box-sizing: border-box;
+						// 	font-size: 0.24rem;
+						// }
+						// textarea::placeholder{
+						// 	color: #999999;
+						// }
 					}
 					.listRightImg{
 						display: flex;

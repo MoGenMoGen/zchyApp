@@ -2196,6 +2196,14 @@ class api {
 			})
 		})
 	}
+	//云检验详情
+	getDocsInspDetail(data){
+	  return new Promise(resolve => {
+	    get("/ship/docsInsp/apis/info/"+data).then(res=>{
+	      resolve(res)
+	    })
+	  })
+	}
 	//船舶的合同列表
 	shipContractList(query, data) {
 		return new Promise(resolve => {
@@ -2222,12 +2230,20 @@ class api {
 		})
 	}
 	//获取整改单位
-	getRecitifyList(query) {
-		return new Promise(resolve => {
-			get('/ship/orgEnter/api/list?query=' + query).then(res => {
-				resolve(res)
-			})
-		})
+	getRecitifyList(data) {
+	  return new Promise(resolve => {
+	    get('/ship/orgEnter/getOrg?docsId=' + data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//获取检验检测机构
+	getRecitifyListTest(data) {
+	  return new Promise(resolve => {
+	    get('/ship/orgEnter/getOrgTest?docsId=' + data).then(res => {
+	      resolve(res)
+	    })
+	  })
 	}
 	//获取整改单位人员列表
 	getMemberOrgEnterLink(query) {
@@ -2302,9 +2318,9 @@ class api {
 	  })
 	}
 	// 招投标详情
-	getBidInfo(data) {
+	getBidInfo(data,orgId) {
 	  return new Promise(resolve => {
-	    get("/ship/bid/apis/api/info/"+data).then(res=>{
+	    get("/ship/bid/apis/api/info/"+data+'?orgId='+orgId).then(res=>{
 	      resolve(res)
 	    })
 	  })
