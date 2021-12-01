@@ -32,12 +32,12 @@
 
 <script>
 	import penHeader from "../../../components/personal/penHeader";
-	import cg1 from '@/assets/img/person/采购公告.png'
-	// import cg2 from '@/assets/img/person/采购公告-灰.png'
-	import gz1 from '@/assets/img/person/更正公告.png'
-	import gz2 from '@/assets/img/person/更正公告-灰.png'
-	import jg1 from '@/assets/img/person/结果公告.png'
-	import jg2 from '@/assets/img/person/结果公告-灰.png'
+	import cg1 from '@/assets/img/person/采购公告2.png'
+	import cg2 from '@/assets/img/person/采购公告.png'
+	import gz1 from '@/assets/img/person/更正公告2.png'
+	import gz2 from '@/assets/img/person/更正公告.png'
+	import jg1 from '@/assets/img/person/结果公告2.png'
+	import jg2 from '@/assets/img/person/结果公告.png'
 	import jt1 from '@/assets/img/person/箭头.png'
 	import jt2 from '@/assets/img/person/箭头-灰.png'
 	// import {
@@ -59,7 +59,7 @@
 				jg2,
 				jt1,
 				jt2,
-				// cg2,
+				cg2,
 				cont:'',
 				signFlag:false,//是否不能报名
 				IsSignUp:false,//是否已报名
@@ -154,7 +154,7 @@
 			      item.releTm = item.releTm.substring(0,10)
 			      if(item.afficheTypeCd=='5635882628584448'){
 			        item.selectImgUrl = cg1
-			        // item.imgUrl = cg2
+			        item.imgUrl = cg2
 			      } else if(item.afficheTypeCd=='5635883070706688'){
 			        item.selectImgUrl = gz1
 			        item.imgUrl = gz2
