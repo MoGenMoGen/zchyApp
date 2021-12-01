@@ -176,7 +176,7 @@
           </div>
         </div>
       </div>
-      <div v-if="info.rectifyReport" style="padding-bottom: 10px">
+      <div v-if="info1.rectifyReport" style="padding-bottom: 10px">
         <div style="font-size: 14px; font-weight: 700; text-align: center">
           整改上报内容
         </div>
@@ -669,6 +669,7 @@ export default {
       // 再次下发列表
       reissueList: [],
       info: {},
+      info1: {},
       // 上报图片列表
       albums: [],
       // 加载图片
@@ -678,6 +679,7 @@ export default {
       isvanloading2: false,
       // 二次下发弹窗
       Issueshow: false,
+      inspId: "",
     };
   },
   components: {
@@ -705,6 +707,8 @@ export default {
     this.info = data.shipDocsRectifyVo;
     // if (this.info.rectifyImg) this.albums = this.info.rectifyImg.split(",");
     this.reissueList = data.reissueList;
+    this.inspId = this.reissueList[this.reissueList.length - 1].id;
+
     this.reissueList.pop();
     this.reissueList.forEach((item) => {
       this.$set(item, "isshow", true);
@@ -818,7 +822,7 @@ export default {
     },
     // 整改上报
     async handleReport() {
-      if (!this.info.rectifyReport) {
+      if (!this.info1.rectifyReport) {
         Toast("上报内容不能为空");
       } else if (!this.info.rectifyImg) {
         Toast("执行图片不能为空");
@@ -834,7 +838,7 @@ export default {
           ...{
             id: this.id,
             cd: this.info.cd,
-            rectifyReport: this.info.rectifyReport,
+            rectifyReport: this.info1.rectifyReport,
             rectifyImg: this.info.rectifyImg,
             rmks: this.info.rmks,
           },
@@ -849,6 +853,8 @@ export default {
           //   this.albums = this.info.rectifyImg.split(",");
 
           this.reissueList = data.reissueList;
+          this.inspId = this.reissueList[this.reissueList.length - 1].id;
+
           this.reissueList.pop();
 
           this.reissueList.forEach((item) => {
@@ -877,6 +883,8 @@ export default {
           //   this.albums = this.info.rectifyImg.split(",");
 
           this.reissueList = data.reissueList;
+          this.inspId = this.reissueList[this.reissueList.length - 1].id;
+
           this.reissueList.pop();
 
           this.reissueList.forEach((item) => {
