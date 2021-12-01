@@ -31,10 +31,12 @@
 					  style="font-size: 0.22rem;"
 					/>
 					<van-popup v-model="showPicker" round position="bottom">
+						<van-search v-model="search" shape="round" background=" #2778BE"  @input="onSearch"
+							placeholder="请输入搜索关键词" />
 					  <van-picker
 					    show-toolbar
 						value-key="company"
-					    :columns="options"
+					    :columns="optionsSearch"
 					    @cancel="showPicker = false"
 					    @confirm="onConfirm1"
 					  />
@@ -338,7 +340,9 @@
 				showPicker2:false,
 				showPickerTwo:false,
 				showPickerThree:false,
+				search:'',
 				options:[],
+				optionsSearch:[],
 				optionsTwo:[],
 				optionsThree:[],
 				columns:[
@@ -387,6 +391,7 @@
 			this.query.toW(qry3, 'audit', '2', 'EQ')
 			this.api.getRecitifyList(this.query.toEncode(qry1)).then(res => {
 			  this.options = res.data.list
+			  this.optionsSearch=res.data.list
 			})
 			this.api.getRecitifyList(this.query.toEncode(qry3)).then(res => {
 			  this.optionsThree = res.data.list
@@ -427,20 +432,20 @@
 					file.forEach(item=>{
 						let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
 						　　formData.append('file', item.file); //接口需要传的参数
-						this.api.uploadImg3(formData).then(res=>{
+						this.api.uploadImg4(formData).then(res=>{
 							　　	console.log(res,111111);
 								this.imgListUpd.push(res)
-								console.log(this.imgList);
+								console.log('www',this.imgListUpd);
 						})
 					})
 				}
 				else{
 					let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
 					　　formData.append('file', file.file); //接口需要传的参数
-					this.api.uploadImg3(formData).then(res=>{
+					this.api.uploadImg4(formData).then(res=>{
 						　　	console.log(res,111111);
 							this.imgListUpd.push(res)
-							console.log(this.imgListUpd);
+							console.log('qqq',this.imgListUpd);
 							})
 				}
 				
@@ -485,7 +490,7 @@
 					return false
 				}
 				this.showNext=true
-				
+				console.log('www',this.imgListUpd);
 			},
 			lastStep(){
 				this.showNext=false
@@ -600,7 +605,16 @@
 				  closeable: true,
 				    startPosition: index,
 				});
-			}
+			},
+			 onSearch(a){
+				if(a){
+				   this.optionsSearch=this.options.filter((item) =>
+					item.company.includes(a));
+				}
+				else {
+					this.optionsSearch = this.options
+				}
+			 }
 			
 
 

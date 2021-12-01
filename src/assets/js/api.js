@@ -287,6 +287,14 @@ class api {
 			})
 		})
 	}
+	uploadImg4(e) {
+		return new Promise(resolve => {
+			post('/general/oss/upload', e).then(res => {
+	
+				resolve(res.data)
+			})
+		})
+	}
 	//选型记录复制
 	xuanxingCopy(id) {
 		return new Promise(resolve => {
