@@ -176,7 +176,7 @@
           </div>
         </div>
       </div>
-      <div v-if="info1.rectifyReport" style="padding-bottom: 10px">
+      <div v-if="info.rectifyReport" style="padding-bottom: 10px">
         <div style="font-size: 14px; font-weight: 700; text-align: center">
           整改上报内容
         </div>
@@ -271,7 +271,7 @@
           style="border-bottom: 1px solid #e5e5e5; padding: 0"
         >
           <van-field
-            v-model="info.rectifyReport"
+            v-model="info1.rectifyReport"
             rows="1"
             autosize
             clearable
@@ -792,7 +792,7 @@ export default {
     },
     //调取图片上传接口
     uploadPic(formData) {
-      this.api.uploadImg3(formData).then((imgurl) => {
+      this.api.uploadImg4(formData).then((imgurl) => {
         this.isvanloading = false;
         this.isvanloading2 = false;
         console.log("上传后地址", imgurl);
@@ -831,7 +831,7 @@ export default {
         //再下发说明列表
         if (this.reissueList.length > 1) {
           obj = {
-            inspId: this.reissueList[this.reissueList.length - 1].id,
+            inspId: this.inspId,
           };
         }
         let res = await this.api.handleRectifyReport({
@@ -901,7 +901,7 @@ export default {
         Toast("请将信息填写完整");
       } else {
         let data = await this.api.handleRectifyReturn({
-          inspId: this.reissueList[this.reissueList.length - 1].id,
+          inspId: this.inspId,
           id: this.id,
           cd: this.info.cd,
           reissueImg: this.info.reissueImg,
