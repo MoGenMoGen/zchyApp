@@ -2308,18 +2308,18 @@ class api {
 	    })
 	  })
 	}
-	//投标报价
-	bidOffer(data) {
-	  return new Promise(resolve => {
-	    post("/ship/bidOffer/apis/offer", data).then(res => {
-	      resolve(res)
-	    })
-	  })
-	}
+	// //投标报价
+	// bidOffer(data) {
+	//   return new Promise(resolve => {
+	//     post("/ship/bidOffer/apis/offer", data).then(res => {
+	//       resolve(res)
+	//     })
+	//   })
+	// }
 	//签到
 	bidSign(data) {
 	  return new Promise(resolve => {
-	    post("/ship/bidSignin/bidSignin/"+data).then(res => {
+	    get("/ship/bidSignin/bidSignin/"+data).then(res => {
 	      resolve(res)
 	    })
 	  })
