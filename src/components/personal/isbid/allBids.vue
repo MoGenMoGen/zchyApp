@@ -50,14 +50,14 @@
 		<van-dialog v-model="offer" title="投标报价" show-cancel-button @cancel="cancelTo2" @confirm='confirmTo2'
 			:before-close="onBeforeClose2">
 			<div class="popBox">
-				<div class="boxList">
+			<!-- 	<div class="boxList">
 					<div class="listLeft">
 						投标金额：
 					</div>
 					<div class="listRight">
 						<input type="" name="" v-model="offerAmt" placeholder="请输入投标金额"  :disabled="!(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))"/>
 					</div>
-				</div>
+				</div> -->
 				<div class="boxList">
 					<div class="listLeft">
 						附件上传：
