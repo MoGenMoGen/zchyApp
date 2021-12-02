@@ -35,7 +35,7 @@ module.exports = {
     proxyTable: {
       '/': {
         // target:'https://order.ilikeit-runner.com',
-        target: 'https://www.ship88.cn',
+        target: 'http://lwkacgr.nat.ipyingshe.com',
         changeOrigin: true,
         pathRewrite: {
           '^/': '/mob'

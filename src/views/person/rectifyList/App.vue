@@ -60,7 +60,7 @@
             clearable
             label=""
             v-model="searchInfo.content"
-            placeholder="整改单号、整改内容"
+            placeholder="整改名称、内容"
           />
           <button class="btn" @click="Search">查询</button>
         </div>
@@ -89,6 +89,10 @@
             <div class="row">
               <div class="left">整改单号:</div>
               <div class="right">{{ item.cd }}</div>
+            </div>
+            <div class="row">
+              <div class="left">整改名称:</div>
+              <div class="right">{{ item.nm }}</div>
             </div>
             <div class="row">
               <div class="left">整改内容:</div>

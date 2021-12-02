@@ -326,14 +326,14 @@
 
       <!-- 船厂待执行结束 -->
       <!-- 除检验检测待执行开始 -->
-      <div
-        v-if="
+      <!-- v-if="
           !(
             currentRole &&
             currentRole.identityCd == 'identity50' &&
             info.state == 2
           )
-        "
+        " -->
+      <div
         style="background: #efefef"
         :style="{
           'padding-top':
@@ -707,12 +707,13 @@ export default {
     this.info = data.shipDocsRectifyVo;
     // if (this.info.rectifyImg) this.albums = this.info.rectifyImg.split(",");
     this.reissueList = data.reissueList;
+    if (this.reissueList.length > 0) {
     this.inspId = this.reissueList[this.reissueList.length - 1].id;
+    }
     this.reissueList.pop();
     this.reissueList.forEach((item) => {
       this.$set(item, "isshow", true);
     });
-    console.log(111, this.inspId);
   },
   methods: {
     //切换设备
@@ -850,10 +851,8 @@ export default {
           this.info = data.shipDocsRectifyVo;
           // if (this.info.rectifyImg)
           //   this.albums = this.info.rectifyImg.split(",");
-
           this.reissueList = data.reissueList;
           this.inspId = this.reissueList[this.reissueList.length - 1].id;
-
           this.reissueList.pop();
 
           this.reissueList.forEach((item) => {
@@ -880,12 +879,9 @@ export default {
           this.info = data.shipDocsRectifyVo;
           // if (this.info.rectifyImg)
           //   this.albums = this.info.rectifyImg.split(",");
-
           this.reissueList = data.reissueList;
           this.inspId = this.reissueList[this.reissueList.length - 1].id;
-
           this.reissueList.pop();
-
           this.reissueList.forEach((item) => {
             this.$set(item, "isshow", true);
           });
