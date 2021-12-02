@@ -46,7 +46,7 @@
 					<p>平台发布</p>
 					<span @click="toPage('../tradeInfo/index.html?tabId=1')">更多 ></span>
 				</div>
-				<div class="msgBox" v-for="(item,index) in publishList" :key="index" @click="toPage('../tradeInfo/infoDetail.html?id='+item.id)">
+				<div class="msgBox" v-for="(item,index) in publishList" :key="index" @click="toPage('../tradeInfo/infoDetailTwo.html?id='+item.bidId)">
 					<p class="title">· {{item.title}}</p>
 					<p class="content">{{item.releTm}}</p>
 				</div>

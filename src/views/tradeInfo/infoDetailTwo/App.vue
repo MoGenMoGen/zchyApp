@@ -22,7 +22,7 @@
 		
 		</div>
 		<div class="bottomBtn" v-if="signFlag&&!IsSignUp&&selectIndex==0" @click="sign">报名</div>
-		<div class="bottomBtn" v-else-if="IsSignUp&&selectIndex==0">已报名</div>
+		<div class="bottomBtn" style="background-color: #cccccc;" v-else-if="IsSignUp&&selectIndex==0">已报名</div>
 		</div>
 			
 		
@@ -190,6 +190,7 @@
 			    this.api.bidApply(obj).then(res => {
 				Notify({ type: 'success', message: '报名成功' });
 			      this.signShow = false
+				  this.getData()
 			    })
 			}
 		},
