@@ -15,6 +15,9 @@
 				<img :src="jt2" v-if="selectIndex<index&&info.length - 1>index">
 			</div>
 		</div>
+		<div class="contTitle" style="text-align: center; background-color: #ffffff; padding:0.1rem; font-size: 0.3rem;">
+			{{title}}
+		</div>
 		<div class="contBody" v-html="cont">
 		
 		</div>
@@ -64,6 +67,7 @@
 				signFlag:false,//是否不能报名
 				IsSignUp:false,//是否已报名
 				id:'',
+				title:'',
 				info:[],
 				userInfo: {},
 				selectIndex:0,
@@ -166,11 +170,13 @@
 			    })
 			    this.info = res.data.list
 			    this.cont = this.info[this.selectIndex].cont
+				this.title=this.info[this.selectIndex].title
 			  })
 			},
 			changeMenu(index){
 				this.selectIndex=index
 				this.cont=this.info[this.selectIndex].cont
+				this.title=this.info[this.selectIndex].title
 			},
 			confirmTo(){
 				let obj={

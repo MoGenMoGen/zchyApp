@@ -5,15 +5,18 @@
 		<div class="body">
 		<div class="topMenu">
 			<div class="menuItem" v-for="(item,index) in info" :key="index" @click="changeMenu(index)">
-				<img :src="item.selectImgUrl" v-if="selectIndex>=index">
+				<img :src="item.selectImgUrl" v-if="selectIndex==index">
 				<img :src="item.imgUrl" v-else>
 				<div>
-				  <span :style="{color:selectIndex>=index?'#0064B2':''}">{{item.afficheTypeNm}}</span>
+				  <span :style="{color:selectIndex==index?'#0064B2':''}">{{item.afficheTypeNm}}</span>
 				  <span>{{item.releTm}}</span>
 				</div>
 				<img :src="jt1" v-if="selectIndex>=index&&info.length - 1>index">
 				<img :src="jt2" v-if="selectIndex<index&&info.length - 1>index">
 			</div>
+		</div>
+		<div class="contTitle" style="text-align: center; background-color: #ffffff; padding:0.1rem; font-size: 0.3rem;">
+			{{title}}
 		</div>
 		<div class="contBody" v-html="cont">
 		
@@ -25,11 +28,12 @@
 
 <script>
 	import penHeader from "../../../components/personal/penHeader";
-	import cg1 from '@/assets/img/person/采购公告.png'
-	import gz1 from '@/assets/img/person/更正公告.png'
-	import gz2 from '@/assets/img/person/更正公告-灰.png'
-	import jg1 from '@/assets/img/person/结果公告.png'
-	import jg2 from '@/assets/img/person/结果公告-灰.png'
+	import cg1 from '@/assets/img/person/采购公告2.png'
+	import cg2 from '@/assets/img/person/采购公告.png'
+	import gz1 from '@/assets/img/person/更正公告2.png'
+	import gz2 from '@/assets/img/person/更正公告.png'
+	import jg1 from '@/assets/img/person/结果公告2.png'
+	import jg2 from '@/assets/img/person/结果公告.png'
 	import jt1 from '@/assets/img/person/箭头.png'
 	import jt2 from '@/assets/img/person/箭头-灰.png'
 	import {
@@ -49,7 +53,9 @@
 				jg2,
 				jt1,
 				jt2,
+				cg2,
 				cont:'',
+				title:'',
 				id:'',
 				info:[],
 				userInfo: {},
@@ -89,32 +95,34 @@
 					this.tabId = item.id
 				}
 			},
-			getData(){
-			  let qry = this.query.new()
-			  this.query.toW(qry,'bidId',this.id,'EQ')
-			  this.query.toO(qry,'afficheTypeCd','esc')
-			  this.api.getBidAfficheList2(this.query.toEncode(qry)).then(res => {
-			    res.data.list.forEach(item => {
-			      item.releTm = item.releTm.substring(0,10)
-			      if(item.afficheTypeNm=='采购公告'){
-			        item.selectImgUrl = cg1
-			        item.imgUrl = ''
-			      } else if(item.afficheTypeNm=='更正公告'){
-			        item.selectImgUrl = gz1
-			        item.imgUrl = gz2
-			      } else if(item.afficheTypeNm=='结果公告'){
-			        item.selectImgUrl = jg1
-			        item.imgUrl = jg2
-			      }
-			      item.cont = this.until.imgStyle(item.cont)
-			    })
-			    this.info = res.data.list
-			    this.cont = this.info[this.selectIndex].cont
-			  })
-			},
+		getData(){
+		  let qry = this.query.new()
+		  this.query.toW(qry,'bidId',this.id,'EQ')
+		  this.query.toO(qry,'afficheTypeCd','esc')
+		  this.api.getBidAfficheList2(this.query.toEncode(qry)).then(res => {
+		    res.data.list.forEach(item => {
+		      item.releTm = item.releTm.substring(0,10)
+		      if(item.afficheTypeCd=='5635882628584448'){
+		        item.selectImgUrl = cg1
+		        item.imgUrl = cg2
+		      } else if(item.afficheTypeCd=='5635883070706688'){
+		        item.selectImgUrl = gz1
+		        item.imgUrl = gz2
+		      } else if(item.afficheTypeCd=='5635883361522688'){
+		        item.selectImgUrl = jg1
+		        item.imgUrl = jg2
+		      }
+		      item.cont = this.until.imgStyle(item.cont)
+		    })
+		    this.info = res.data.list
+		    this.cont = this.info[this.selectIndex].cont
+			this.title=this.info[this.selectIndex].title
+		  })
+		},
 			changeMenu(index){
 				this.selectIndex=index
 				this.cont=this.info[this.selectIndex].cont
+				this.title=this.info[this.selectIndex].title
 			}
 		},
 

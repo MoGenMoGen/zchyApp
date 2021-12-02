@@ -442,6 +442,7 @@
 			//获取整改单位列表
 			this.currentRoleId = JSON.parse(this.until.loGet('currentRole')).id
 			this.currentDate=new Date(new Date().getTime())
+			this.currentDate2=new Date(new Date().getTime())
 		},
 		methods: {
 			//切换设备
@@ -577,7 +578,7 @@
 					rmks:'',
 				}
 				this.api.postDocsRectifyAdd(obj).then(res=>{
-						this.until.back()
+						this.until.href('./rectifyList.html')
 				})
 			},
 			clear(){

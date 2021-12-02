@@ -63,7 +63,7 @@
 						附件上传：
 					</div>
 					<div class="listRight" style="width: 4rem;">
-						<van-uploader  @click-preview='filePreview' :after-read="afterRead2" v-model="fileList" :before-delete="deleteFile"  :disabled="!(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))"  :deletable="(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))">
+						<van-uploader @click-preview='filePreview' :after-read="afterRead2" v-model="fileList" :before-delete="deleteFile"  :disabled="!(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))"  :deletable="(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))">
 						<!--  <div style="background-color:#2778BE ; color: #ffffff; width: 1.3rem; height: 0.6rem; font-size: 10px; text-align: center;line-height: 0.6rem;border-radius: 0.1rem;" >
 						  	文件上传
 						  </div> -->
@@ -496,9 +496,14 @@
 			},
 			sign(item){
 				let id=item.signin.shipBidSigninVo.id
+				
 				this.api.bidSign(id).then(res => {
 				 Notify({ type: 'success', message: '签到成功' });
+				 this.pageNo=1
+				 this.list=[]
+				 this.getBidData()
 				})
+			
 			},
 		
 			
