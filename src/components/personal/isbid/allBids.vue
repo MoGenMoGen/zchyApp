@@ -63,7 +63,7 @@
 						附件上传：
 					</div>
 					<div class="listRight" style="width: 4rem;">
-						<van-uploader :after-read="afterRead2" v-model="fileList" :before-delete="deleteFile"  :disabled="!(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))"  :deletable="(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))">
+						<van-uploader  @click-preview='filePreview' :after-read="afterRead2" v-model="fileList" :before-delete="deleteFile"  :disabled="!(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))"  :deletable="(!applyInfo.bidDecideTm&&returnDate(2,applyInfo.bidEndTm))">
 						<!--  <div style="background-color:#2778BE ; color: #ffffff; width: 1.3rem; height: 0.6rem; font-size: 10px; text-align: center;line-height: 0.6rem;border-radius: 0.1rem;" >
 						  	文件上传
 						  </div> -->
@@ -235,7 +235,7 @@
 			getBidData() {
 				let qry = this.query.new()
 				this.query.toO(qry, 'publishTm', 'desc')
-				this.query.toP(qry, this.pageNum, this.pageSize)
+				this.query.toP(qry, this.pageNo, this.pageSize)
 				this.query.toW(qry, 'viewRangeCd', this.identityCd + '', 'LK')
 				this.api.getMyBidList(this.query.toEncode(qry), this.currentRoleId).then(res => {
 					this.list.push(...res.data.list)
@@ -256,8 +256,14 @@
 				 this.applyInfo = item
 				 console.log(item);
 				 this.depositAmt=item.depositMoney
-				 this.imgList=item.despoit.shipBidDepositVo.depositImgUrl.split(",");
-				 this.imgListUpd=item.despoit.shipBidDepositVo.depositImgUrl.split(",");
+				 let urlStr=item.despoit.shipBidDepositVo.depositImgUrl.split(",");
+				 urlStr.forEach(item => {
+				            let obj = new Object();
+				            obj.url = item;
+				            this.imgList.push(obj)
+				 		   this.imgListUpd.push(obj.url)
+				          });
+						  console.log(789,this.imgList);
 			},
 			openOffer(item){
 				this.offer = true;
@@ -266,18 +272,36 @@
 			openOfferDetail(item){
 				this.offer = true;
 				this.applyInfo=item
+				console.log(777,this.applyInfo);
 				this.nowDate=(new Date()).getTime()
 				this.completeTm=this.applyInfo.bidEndTm
 				//已经报价过
 				if(this.applyInfo.offer){
 					this.offerAmt=this.applyInfo.offer.shipBidOfferVo.offerAmt;
 					if(this.applyInfo.offer.shipBidOfferVo.attachment){
-						this.fileList=this.applyInfo.offer.shipBidOfferVo.attachment.split(",")
-						this.fileListUpd=this.applyInfo.offer.shipBidOfferVo.attachment.split(",")
+						let urlStr=this.applyInfo.offer.shipBidOfferVo.attachment.split(",")
+						urlStr.forEach(item => {
+									console.log(123,item);
+						           let obj = new Object();
+								   let index=item.indexOf('_')
+						           obj.url = item.substring(index+1,item.length);
+							       obj.openUrl = item;
+						           this.fileList.push(obj)
+								   this.fileListUpd.push(item)
+						         });
 					}
-					else if(this.applyInfo.offer.shipBidOfferVo.attachDecode){
-						this.fileList=this.applyInfo.offer.shipBidOfferVo.attachDecode.split(",");
-						this.fileListUpd=this.applyInfo.offer.shipBidOfferVo.attachment.split(",")
+					if(this.applyInfo.offer.shipBidOfferVo.attachDecode){
+						this.fileList=[]
+						this.fileListUpd=[]
+						let urlStr=this.applyInfo.offer.shipBidOfferVo.attachDecode.split(",")
+						urlStr.forEach(item => {
+						           let obj = new Object();
+						           let index=item.indexOf('_')
+						           obj.url = item.substring(index+1,item.length);
+						           obj.openUrl = item;
+						           this.fileList.push(obj)
+								   this.fileListUpd.push(item)
+						         });
 					}
 					else{
 						this.fileList=[]
@@ -286,12 +310,16 @@
 					
 				}
 			},
+			filePreview(file){
+					console.log(111,file);
+					window.open(file.openUrl)
+			},
 			afterRead(file) {
 				if (file instanceof Array && file.length) {
 					file.forEach(item => {
 						let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
 						formData.append('file', item.file); //接口需要传的参数
-						this.api.uploadImg3(formData).then(res => {
+						this.api.uploadImg4(formData).then(res => {
 							console.log(res, 111111);
 							this.imgListUpd.push(res)
 							console.log(this.imgList);
@@ -300,7 +328,7 @@
 				} else {
 					let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
 					formData.append('file', file.file); //接口需要传的参数
-					this.api.uploadImg3(formData).then(res => {
+					this.api.uploadImg4(formData).then(res => {
 						console.log(res, 111111);
 						this.imgListUpd.push(res)
 						console.log(this.imgListUpd);
@@ -355,7 +383,7 @@
 			confirmTo() {
 				console.log(this.applyInfo);
 				if (!this.depositAmt) {
-					Notify('请填写保证金金额');
+					Notify('请填写保证金金+额');
 					return false
 				}
 				if(this.imgListUpd.length==0){
@@ -377,6 +405,8 @@
 					 this.depositAmt=''
 					 this.imgListUpd=[]
 					 this.imgList=[]
+					 this.pageNo=1
+					 this.list=[]
 					 this.getBidData()
 					})
 				}
@@ -386,11 +416,15 @@
 						this.depositAmt=''
 						this.imgListUpd=[]
 						this.imgList=[]
+						this.pageNo=1
+						this.list=[]
 						this.getBidData()
+						
 					})
 				}
 			
 			},
+			
 			confirmTo2() {
 				if (!this.offerAmt) {
 					Notify('请填写投标金额');
@@ -421,6 +455,8 @@
 						this.offerAmt=''
 						this.fileListUpd=[]
 						this.fileList=[]
+						this.pageNo=1
+						this.list=[]
 						this.getBidData()
 					})
 				}
@@ -430,6 +466,8 @@
 						this.offerAmt=''
 						this.fileListUpd=[]
 						this.fileList=[]
+						this.pageNo=1
+						this.list=[]
 						this.getBidData()
 					})
 				}

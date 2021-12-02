@@ -292,6 +292,12 @@ class until{
     })
     return box;
   }
+  TimeStep2(times) {
+    let start = new Date(times);
+    let end = new Date();
+    let count = (end.getTime() - start.getTime()) / 1000;
+    return count;
+  }
   //随机生成 n~m 之间的数
   Random(min,max){
     let choices = max - min + 1;
@@ -395,7 +401,7 @@ class reg{
   }
   //验证手机号
   checkPhone(str){
-    let regPhone  = /^1[3456789]\d{9}$/;
+    let regPhone  = /^0?(13[0-9]|15[012356789]|18[012346789]|14[57]|17[678]|170[059]|14[57]|166|19[89])[0-9]{8}$/;
     if(str==""){
       return "请输入手机号";
     }
@@ -463,6 +469,7 @@ class reg{
       }
       return 'ok';
   }
+  
 
 }
 class app{
