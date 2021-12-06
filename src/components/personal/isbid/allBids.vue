@@ -397,11 +397,11 @@ export default {
           this.fileList.push(obj);
           this.fileListUpd.push(item);
         });
-      } else {
-        this.fileList = [];
-        this.fileListUpd = [];
       }
-
+	   // else {
+    //     this.fileList = [];
+    //     this.fileListUpd = [];
+    //   }
       // }
     },
     filePreview(file) {
@@ -446,7 +446,7 @@ export default {
         this.api.uploadImg3(formData).then((res) => {
           console.log(res, 111111);
           this.fileListUpd.push(res);
-          console.log(this.fileListUpd);
+          console.log(22,this.fileList,this.fileListUpd);
         });
       }
     },
