@@ -11,13 +11,13 @@
     >
       <div class="popBox">
         <div class="boxList">
-          <div class="listLeft">投标金额：</div>
+          <div class="listLeft">保证金金额：</div>
           <div class="listRight">
             <input
               type=""
               name=""
               v-model="depositAmt"
-              placeholder="请输入投标金额"
+              placeholder="请输入保证金金额"
               :disabled="
                 !(
                   (applyInfo.despoit &&
@@ -475,7 +475,7 @@ export default {
     confirmTo() {
       console.log(this.applyInfo);
       if (!this.depositAmt) {
-        Notify("请填写保证金金+额");
+        Notify("请填写保证金金额");
         return false;
       }
       if (this.imgListUpd.length == 0) {
