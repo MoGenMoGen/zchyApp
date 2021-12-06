@@ -65,7 +65,7 @@ Vue.use(Lazyload, {
 import lrz from 'lrz'  //图片压缩
 
 // import Calendar from 'vue-mobile-calendar' //日期选择器
-//import Vconsole from 'vconsole'
+// import Vconsole from 'vconsole'
 
 
 // import chooseSelect from '@/components/chooseSelect'
@@ -75,7 +75,7 @@ export default{
     // Vue.use(Calendar);
     // Vue.use(vuePickers);
     Vue.prototype.lrz = lrz;
-   // Vue.prototype.Vconsole = new Vconsole()
+//    Vue.prototype.Vconsole = new Vconsole()
     Vue.prototype.axios = axios;
     Vue.prototype.api = new api();
     Vue.prototype.until = new until();

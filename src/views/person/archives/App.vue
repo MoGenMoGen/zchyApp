@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import penHeader from "../../../components/personal/penHeader";
+import penHeader from "../../../components/personal/penHeader";  
 import baseInfo1 from "../../../components/personal/shipInfo/baseInfo1";
 import baseInfo2 from "../../../components/personal/shipInfo/baseInfo2";
 import baseInfo11 from "../../../components/personal/shipInfo/baseInfo11";

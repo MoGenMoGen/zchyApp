@@ -199,6 +199,7 @@
             <div class="listLeft">执行图片</div>
             <div class="listRightImg">
               <img
+                rel="noreferrer"
                 :src="item"
                 v-for="(item, index) in (info.rectifyImg ? info.rectifyImg : '')
                   .split(',')
@@ -708,7 +709,7 @@ export default {
     // if (this.info.rectifyImg) this.albums = this.info.rectifyImg.split(",");
     this.reissueList = data.reissueList;
     if (this.reissueList.length > 0) {
-    this.inspId = this.reissueList[this.reissueList.length - 1].id;
+      this.inspId = this.reissueList[this.reissueList.length - 1].id;
     }
     this.reissueList.pop();
     this.reissueList.forEach((item) => {
