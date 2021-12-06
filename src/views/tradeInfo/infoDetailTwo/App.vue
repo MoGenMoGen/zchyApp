@@ -191,6 +191,7 @@
 				Notify({ type: 'success', message: '报名成功' });
 			      this.signShow = false
 				  this.getData()
+				  this.canSign()
 			    })
 			}
 		},
