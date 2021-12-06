@@ -79,7 +79,7 @@
 		</van-dialog> -->
     <van-dialog
       v-model="offer"
-      title="投标报价"
+      title="资料上传"
       show-cancel-button
       @cancel="cancelTo2"
       @confirm="confirmTo2"
@@ -512,6 +512,7 @@ export default {
           this.getBidData();
         });
       }
+	  this.bail = false
     },
 
     confirmTo2() {
@@ -524,8 +525,9 @@ export default {
         return false;
       }
       if (this.until.TimeStep2(this.completeTm) >= 0) {
-        Notify("已经过了截止时间");
-        return false;
+        // Notify("已经过了截止时间");
+		this.offer = false
+        return;
       }
       let obj = {
         orgId: this.applyInfo.orgId,
@@ -559,6 +561,7 @@ export default {
           this.getBidData();
         });
       }
+	  this.offer = false
     },
     onBeforeClose(action, done) {
       console.log(this.imgListUpd);
