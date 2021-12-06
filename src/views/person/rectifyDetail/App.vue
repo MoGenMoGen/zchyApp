@@ -308,7 +308,7 @@
             </div>
           </div>
         </div>
-        <div
+        <!-- <div
           class="bodyContent"
           style="border-bottom: 1px solid #e5e5e5; padding: 0"
         >
@@ -321,7 +321,7 @@
             type="textarea"
             placeholder="请输入备注"
           />
-        </div>
+        </div> -->
       </div>
 
       <!-- 船厂待执行结束 -->
@@ -456,14 +456,14 @@
                 <div class="listLeft">执行图片:</div>
                 <div class="listRightImg">
                   <img
-                    :src="item"
-                    v-for="(item, index) in item.rectifyImg
+                    :src="item2"
+                    v-for="(item2, index2) in item.rectifyImg
                       ? item.rectifyImg.split(',')
                       : []"
-                    :key="index"
+                    :key="index2"
                     @click="
                       Preview(
-                        index,
+                        index2,
                         item.rectifyImg ? item.rectifyImg.split(',') : []
                       )
                     "
