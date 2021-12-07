@@ -393,7 +393,7 @@
 						rmks: this.rmks,
 						invoiceAddr: this.addrNm.replace(/-/g, '') + this.address
 					}
-				} else if (this.headUp=='公司'&&flag) {
+				} else if (this.headUp=='公司'&&this.flag) {
 					if (this.buyerName == '') {
 						Toast('请输入单位名称!')
 						return

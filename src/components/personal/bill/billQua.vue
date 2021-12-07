@@ -293,8 +293,8 @@
 			      this.isPass = true
 			      this.info = res.data
 			      this.id = res.data.id
-			      this.phone = this.info.tel.replace(/.(?=.{4})/g, '*')
-			      this.account = this.info.account.replace(/.(?=.{4})/g, '*')
+			      this.phone = this.info.tel
+			      this.account = this.info.account
 			      this.getRecInfo()
 			    } else {
 			      this.audit=1
@@ -310,7 +310,7 @@
 			      this.audit2 = 3
 			      this.isPass2 = true
 			      this.recInfo = res.data.list[0]
-			      this.phone2 = this.recInfo.phone.replace(/.(?=.{4})/g, '*')
+			      this.phone2 = this.recInfo.phone
 			    } else {
 			      this.audit2 = 1
 			    }
