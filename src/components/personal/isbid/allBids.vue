@@ -515,6 +515,7 @@ export default {
 	  this.bail = false
     },
 
+
     confirmTo2() {
       // if (!this.offerAmt) {
       // 	Notify('请填写投标金额');
@@ -592,6 +593,107 @@ export default {
     },
     sign(item) {
       let id = item.signin.shipBidSigninVo.id;
+	  this.api.bidSign(id).then(res => {
+	   Notify({ type: 'success', message: '签到成功' });
+	   this.pageNo=1
+	   this.list=[]
+	   this.getBidData()
+	  })
+
+			},
+			afterRead2(file){
+				console.log(file);
+				if (file instanceof Array && file.length) {
+					file.forEach(item => {
+						let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+						formData.append('file', item.file); //接口需要传的参数
+						this.api.uploadImg3(formData).then(res => {
+							console.log(res, 111111);
+							this.fileListUpd.push(res)
+						})
+					})
+				} else {
+					let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+					formData.append('file', file.file); //接口需要传的参数
+					this.api.uploadImg3(formData).then(res => {
+						console.log(res, 111111);
+						this.fileListUpd.push(res)
+						console.log(this.fileListUpd);
+					})
+				}
+			},
+			deleteImg(file, detail) {
+			console.log(detail);
+				this.imgListUpd.splice(detail.index, 1)
+				this.imgList.splice(detail.index, 1)
+				console.log(this.imgListUpd);
+			},
+			deleteFile(file,detail){
+				this.fileListUpd.splice(detail.index, 1)
+				this.fileList.splice(detail.index, 1)
+				console.log(this.fileListUpd);
+			},
+			cancelTo() {
+				this.depositAmt = ''
+				this.imgList = []
+				this.imgListUpd = []
+			},
+			cancelTo2() {
+				console.log('sb');
+				this.offerAmt = ''
+				this.fileList = []
+				this.fileListUpd = []
+			},
+			confirmTo() {
+				console.log(this.applyInfo);
+				if (!this.depositAmt) {
+					Notify('请填写保证金金+额');
+					return false
+				}
+				if(this.imgListUpd.length==0){
+					Notify('请选择凭证');
+					return false
+				}
+				let obj={
+					orgId:this.applyInfo.orgId,
+					orgNm:this.applyInfo.orgNm,
+					bidId:this.applyInfo.bidId,
+					bidNm:this.applyInfo.bidNm,
+					depositAmt:this.depositAmt,
+					depositImgUrl:this.imgListUpd.join(",")
+				}
+				if(this.applyInfo.despoit){
+					obj.id = this.applyInfo.despoit.shipBidDepositVo.id
+					this.api.bidBailUpd(obj).then(() => {
+					 Notify({ type: 'success', message: '修改成功' });
+					 this.depositAmt=''
+					 this.imgListUpd=[]
+					 this.imgList=[]
+					 this.pageNo=1
+					 this.list=[]
+					 this.getBidData()
+					})
+				}
+				else{
+					this.api.bidBail(obj).then(res=>{
+						Notify({ type: 'success', message: '上传成功' });
+						this.depositAmt=''
+						this.imgListUpd=[]
+						this.imgList=[]
+						this.pageNo=1
+						this.list=[]
+						this.getBidData()
+						
+					})
+				}
+			
+			},
+			
+			
+		
+			
+			
+
 
       this.api.bidSign(id).then((res) => {
         Notify({ type: "success", message: "签到成功" });
