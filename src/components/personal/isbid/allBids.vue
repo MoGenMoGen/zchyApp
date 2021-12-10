@@ -695,14 +695,9 @@ export default {
 			
 
 
-      this.api.bidSign(id).then((res) => {
-        Notify({ type: "success", message: "签到成功" });
-        this.pageNo = 1;
-        this.list = [];
-        this.getBidData();
-      });
+    
     },
-  },
+  
   created() {
     this.identityCd = JSON.parse(this.until.loGet("currentRole")).identityCd;
     this.currentRoleId = JSON.parse(this.until.loGet("currentRole")).id;
