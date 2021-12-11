@@ -411,19 +411,27 @@ export default {
     afterRead(file) {
       if (file instanceof Array && file.length) {
         file.forEach((item) => {
+		  item.message='上传中...'
+		  file.status = 'uploading';
           let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
           formData.append("file", item.file); //接口需要传的参数
           this.api.uploadImg4(formData).then((res) => {
-            console.log(res, 111111);
+			item.message='上传成功'
+			file.status = 'success';
             this.imgListUpd.push(res);
             console.log(this.imgList);
           });
         });
       } else {
+		  file.status = 'uploading';
+		  file.message='上传中...'
+		  console.log(file, 111111);
         let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
         formData.append("file", file.file); //接口需要传的参数
         this.api.uploadImg4(formData).then((res) => {
           console.log(res, 111111);
+		  file.status = 'success';
+		   file.message='上传成功'
           this.imgListUpd.push(res);
           console.log(this.imgListUpd);
         });
@@ -433,18 +441,26 @@ export default {
       console.log(file);
       if (file instanceof Array && file.length) {
         file.forEach((item) => {
+			item.status = 'uploading';
+			item.message='上传中...'
           let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
           formData.append("file", item.file); //接口需要传的参数
           this.api.uploadImg3(formData).then((res) => {
             console.log(res, 111111);
+			item.status = 'success';
+			item.message='上传成功'
             this.fileListUpd.push(res);
           });
         });
       } else {
+		  file.status = 'uploading';
+		  file.message='上传中...'
+		  console.log(file, 111111);
         let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
         formData.append("file", file.file); //接口需要传的参数
         this.api.uploadImg3(formData).then((res) => {
-          console.log(res, 111111);
+		  file.status = 'success';
+		  file.message='上传成功'
           this.fileListUpd.push(res);
           console.log(22,this.fileList,this.fileListUpd);
         });
@@ -601,27 +617,27 @@ export default {
 	  })
 
 			},
-			afterRead2(file){
-				console.log(file);
-				if (file instanceof Array && file.length) {
-					file.forEach(item => {
-						let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
-						formData.append('file', item.file); //接口需要传的参数
-						this.api.uploadImg3(formData).then(res => {
-							console.log(res, 111111);
-							this.fileListUpd.push(res)
-						})
-					})
-				} else {
-					let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
-					formData.append('file', file.file); //接口需要传的参数
-					this.api.uploadImg3(formData).then(res => {
-						console.log(res, 111111);
-						this.fileListUpd.push(res)
-						console.log(this.fileListUpd);
-					})
-				}
-			},
+			// afterRead2(file){
+			// 	console.log(file);
+			// 	if (file instanceof Array && file.length) {
+			// 		file.forEach(item => {
+			// 			let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+			// 			formData.append('file', item.file); //接口需要传的参数
+			// 			this.api.uploadImg3(formData).then(res => {
+			// 				console.log(res, 111111);
+			// 				this.fileListUpd.push(res)
+			// 			})
+			// 		})
+			// 	} else {
+			// 		let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+			// 		formData.append('file', file.file); //接口需要传的参数
+			// 		this.api.uploadImg3(formData).then(res => {
+			// 			console.log(res, 111111);
+			// 			this.fileListUpd.push(res)
+			// 			console.log(this.fileListUpd);
+			// 		})
+			// 	}
+			// },
 			deleteImg(file, detail) {
 			console.log(detail);
 				this.imgListUpd.splice(detail.index, 1)
