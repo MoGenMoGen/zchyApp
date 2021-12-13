@@ -9,16 +9,16 @@
 				<img :src="item.imgUrl" v-else>
 				<div>
 				  <span :style="{color:selectIndex==index?'#0064B2':''}">{{item.afficheTypeNm}}</span>
-				  <span>{{item.releTm}}</span>
+				  <span>{{item.releTmTwo}}</span>
 				</div>
 				<img :src="jt1" v-if="selectIndex>=index&&info.length - 1>index">
 				<img :src="jt2" v-if="selectIndex<index&&info.length - 1>index">
 			</div>
 		</div>
-		<div class="contTitle" style="text-align: center; background-color: #ffffff; padding:0.1rem; font-size: 0.3rem;">
+		<div class="contTitle" style="text-align: center; background-color: #ffffff; padding:0.1rem; font-size: 0.3rem;" v-if="timeFlag==true">
 			{{title}}
 		</div>
-		<div class="contBody" v-html="cont">
+		<div class="contBody" v-html="cont" v-if="timeFlag==true">
 		
 		</div>
 		<div class="bottomBtn" v-if="signFlag&&!IsSignUp&&selectIndex==0" @click="sign">报名</div>
@@ -66,6 +66,7 @@
 				cont:'',
 				signFlag:false,//是否不能报名
 				IsSignUp:false,//是否已报名
+				timeFlag:true,
 				id:'',
 				title:'',
 				info:[],
@@ -155,7 +156,7 @@
 			  this.query.toO(qry,'afficheTypeCd','esc')
 			  this.api.getBidAfficheList2(this.query.toEncode(qry)).then(res => {
 			    res.data.list.forEach(item => {
-			      item.releTm = item.releTm.substring(0,10)
+			      item.releTmTwo= item.releTm.substring(0,10)
 			      if(item.afficheTypeCd=='5635882628584448'){
 			        item.selectImgUrl = cg1
 			        item.imgUrl = cg2
@@ -177,6 +178,16 @@
 				this.selectIndex=index
 				this.cont=this.info[this.selectIndex].cont
 				this.title=this.info[this.selectIndex].title
+				console.log(44,this.info[this.selectIndex].releTm);
+				console.log(11,new Date().getTime())
+				console.log(112,new Date(this.info[this.selectIndex].releTm).getTime())
+				if(new Date().getTime()>new Date(this.info[this.selectIndex].releTm).getTime()){
+					this.timeFlag=true
+				}
+				else{
+					this.timeFlag=false
+				}
+				console.log(22,this.timeFlag)
 			},
 			confirmTo(){
 				let obj={
