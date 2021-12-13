@@ -56,6 +56,7 @@
 </template>
 
 <script>
+	import { Toast } from 'vant';
 	import myHeader from '@/components/myHeader'
 
     import checked from '@/assets/img/已勾选.png'
@@ -225,17 +226,24 @@
 			},
 			//上传图片
             async afterRead(file,detail){
-
+				Toast.loading({
+				  duration: 0,
+				  message: '上传中...',
+				  forbidClick: true,
+				  overlay: true,
+				});
                 console.log(file)
 				console.log(detail)
 				if(file.file){
                     let img = await this.api.uploadImg2(file.file)
                     this.img.push(img)
+					Toast.clear();
 				}else {
                     for(let i=0;i<file.length;i++){
                         let img = await this.api.uploadImg2(file[i].file)
                         this.img.push(img)
                     }
+					Toast.clear();
                 }
 			},
             toPage(url){
