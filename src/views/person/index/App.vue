@@ -40,8 +40,8 @@
 					<button @click="copyUrl(info.inviCd)">点击复制</button>
 				</div>
 			</div>
-			<p style="margin: 0 auto 0.3rem;font-size: 0.24rem;">您尚未入驻，点击查看<span
-					style="color: #E4393C;text-decoration:underline;" @click="showTips">入驻说明</span>，若有疑问可询问在线客服！</p>
+			<p class="tips">您尚未入驻，点击查看<span
+					style="text-decoration:underline;" @click="showTips">入驻说明</span>，若有疑问可询问在线客服！</p>
 			<!--除设计院和船厂-->
 			<div class="whiteBox " style="padding: 30px 0;" v-if="
                  (!info.pid || permiList.findIndex(item=>item.nm==='船舶订单'&&item.checked)>-1)
@@ -906,6 +906,20 @@
 						}
 					}
 				}
+			}
+			
+			.tips {
+				width: 100%;
+				height: 0.6rem;
+				background-color: #FFFAF4;
+				border: 1px solid #F05511;
+				border-radius: 0.1rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 0.24rem;
+				color: #F05511;
+				margin-bottom: 0.3rem;
 			}
 
 			.myCollBox {

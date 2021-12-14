@@ -60,11 +60,11 @@
                             <p  v-else >{{item.statusNm}}</p>
                         </van-col>
                     </van-row>
-<!--                 商品列表   -->
+<!--                 商品列表   width: 90%;padding: 0.2rem 0;-->
                     <van-row class="row" align="center" >
                         <van-row   type="flex" v-for="j in item.itms" :key="j.id">
-                            <van-col span="8" ><img style="width: 90%;border-radius: 5px" :src="j.goodsImgUrl"></van-col>
-                            <van-col span="16" style="display: flex;flex-direction: column;justify-content: space-between;padding: 0.2rem 0;box-sizing: border-box">
+                            <van-col span="8" ><img style="border-radius: 5px" :src="j.goodsImgUrl"></van-col>
+                            <van-col span="16" style="display: flex;flex-direction: column;justify-content: space-between;box-sizing: border-box">
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left">{{j.goodsNm}}</p></van-col>
                                     <van-col span="8"><p style="text-align: right">{{j.goodsPrice !=0 ? j.goodsPrice : '价格面议'}}</p></van-col>
@@ -155,11 +155,11 @@
                             <p  v-else style="white-space: nowrap">{{item.statusNm}}</p>
                         </van-col>
                     </van-row>
-                    <!--                 商品列表   -->
+                    <!--                 商品列表  width: 90%; padding: 0.2rem 0;-->
                     <van-row class="row" align="center" >
                         <van-row   type="flex" v-for="j in item.itms" :key="j.id">
-                            <van-col span="8" ><img style="width: 90%;border-radius: 5px" :src="j.goodsImgUrl"></van-col>
-                            <van-col span="16" style="display: flex;flex-direction: column;justify-content: space-between;padding: 0.2rem 0;box-sizing: border-box">
+                            <van-col span="8" ><img style="border-radius: 5px" :src="j.goodsImgUrl"></van-col>
+                            <van-col span="16" style="display: flex;flex-direction: column;justify-content: space-between;box-sizing: border-box">
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left">{{j.goodsNm}}</p></van-col>
                                     <van-col span="8"><p style="text-align: right">{{j.goodsPrice !=0 ? j.goodsPrice :'价格面议'}}</p></van-col>
@@ -684,7 +684,7 @@
             },
 		    //申请开票
             toInvoice(item){
-                this.until.href("./invoice.html?item="+JSON.stringify(item))
+                this.until.href(`./myBillApply.html?id=${item.id}&orderCd=${item.orderCd}`)
             },
             //删除订单
             delOrder(item){
