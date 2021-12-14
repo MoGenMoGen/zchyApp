@@ -169,24 +169,24 @@
 
         <div class="listContent">
           <div class="left">状态：</div>
-          <div class="right" v-if="item.bidDecideTm" style="color: #e4393c">
+          <div class="right" v-if="item.bidDecideTm" style="color: #E4393C">
             已定标
           </div>
           <div
             class="right"
             v-else-if="returnDate(1, item.bidOpenTm)"
-            style="color: #2778be"
+            style="color: #2778BE"
           >
             评标中
           </div>
           <div
             class="right"
             v-else-if="returnDate(1, item.bidEndTm)"
-            style="color: #3fab2e"
+            style="color: #3FAB2E"
           >
             投标中
           </div>
-          <div class="right" v-else style="color: #e67e22">待开标</div>
+          <div class="right" v-else style="color: #FF3C00">待开标</div>
         </div>
         <div class="listContent">
           <div class="left">保证金：</div>

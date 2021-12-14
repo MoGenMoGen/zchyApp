@@ -39,13 +39,13 @@
 			<div class="left">
 			状态：
 			</div>
-			<div class="right" v-if="item.myOfferStatus==0" style="color: #333333;;">
+			<div class="right" v-if="item.myOfferStatus==0" style="color: #F57313;">
 				未中标
 			</div>
-			<div class="right" v-if="item.myOfferStatus==1" style="color:#FF2626 ;">
+			<div class="right" v-if="item.myOfferStatus==1" style="color: #2778BE;">
 				已中标
 			</div>
-			<div class="right" v-if="item.myOfferStatus==2" style="color: #FF2626 ;">
+			<div class="right" v-if="item.myOfferStatus==2" style="color: #303030;">
 				已驳回
 			</div>
 		</div>
