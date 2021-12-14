@@ -198,6 +198,7 @@ class api {
 		return new Promise(resolve => {
 			get("/ship/memberOrgEnterLink/apis/listIdentities", '', { "sinovat-token": window.localStorage.getItem("token") }).then(res => {
 				console.log('diaoyong', window.localStorage.getItem('currentRole'))
+				window.localStorage.setItem("currentRoleList", JSON.stringify(res.data.list))
 				if (res.data.list.length > 0 && !window.localStorage.getItem('currentRole')) {
 					// store.commit('currentRole',res.data.list[0])
 
