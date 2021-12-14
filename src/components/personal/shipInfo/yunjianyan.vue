@@ -9,9 +9,14 @@
       finished-text="没有更多了"
       @load="getList"
     >
-      <div class="item" v-for="(item, index) in List" :key="index">
+      <div
+        class="item"
+        v-for="(item, index) in List"
+        :key="index"
+        style="position: relative"
+      >
         <div class="row">
-          <div class="left">检查起止时间：</div>
+          <div class="left">检查时间：</div>
           <div class="right">
             <div>{{ item.startTm }}</div>
             <div>{{ item.endTm }}</div>
@@ -51,12 +56,15 @@
         </div>
         <div
           style="
-            color: #2778be;
+            color: rgb(39, 120, 190);
             width: 1.6rem;
             margin-top: 0.12rem;
-            hover {
-              color: red;
-            }
+            border: 1px solid rgb(39, 120, 190);
+            border-radius: 0.23rem;
+            text-align: center;
+            position: absolute;
+            top: 1.2rem;
+            right: 0.2rem;
           "
           @click="tofpxpert"
           v-if="currentRole && currentRole.identityCd == 'identity50'"
@@ -73,15 +81,20 @@
            -->
         <div
           style="
-            padding: 0.1rem;
-            width: 1.6rem;
-            font-size: 0.3rem;
-            color: #fff;
-            background-color: #2778be;
-            border-radius: 0.1rem;
-            cursor: pointer;
-            margin-top: 0.12rem;
-            text-align:center;
+            width: 1.69rem;
+            height: 0.47rem;
+            line-height: 0.47rem;
+            background: rgba(39, 120, 190, 0);
+            border: 1px solid #e74c3c;
+            border-radius: 0.23rem;
+            font-size: 0.24rem;
+            text-align: center;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #e74c3c;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.2rem;
           "
           v-if="
             item.state == 0 &&
@@ -96,14 +109,20 @@
         <div
           v-else-if="item.state == 1"
           style="
-            width: 1.8rem;
-            font-size: 0.3rem;
-            color: #2778be;
-            cursor: pointer;
-            margin-top: 0.12rem;
-            hover {
-              color: red;
-            }
+            width: 1.69rem;
+            height: 0.47rem;
+            line-height: 0.47rem;
+            background: rgba(39, 120, 190, 0);
+            border: 1px solid #f57313;
+            border-radius: 0.23rem;
+            font-size: 0.24rem;
+            text-align: center;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #f57313;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.2rem;
           "
           @click="toDetail(item.recitfyId)"
         >
@@ -184,10 +203,9 @@ export default {
     newRectify(id) {
       this.until.href(`./rectifyAdd.html?inspId=${id}`);
     },
-    toDetail(id){
+    toDetail(id) {
       this.until.href(`./rectifyDetail.html?id=${id}`);
-
-    }
+    },
   },
   created() {
     this.currentRole = JSON.parse(this.until.loGet("currentRole"));

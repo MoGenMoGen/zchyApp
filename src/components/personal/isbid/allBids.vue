@@ -704,14 +704,6 @@ export default {
 				}
 			
 			},
-			
-			
-		
-			
-			
-
-
-    
     },
   
   created() {

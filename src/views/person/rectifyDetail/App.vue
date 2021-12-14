@@ -58,7 +58,7 @@
         <p>最新整改情况</p>
         <img :src="tradingR" />
       </div>
-      <div style="font-size: 14px; font-weight: 700; text-align: center">
+      <div style="font-size: 14px; font-weight: 700; text-align: center;margin-top:18px;">
         下发内容
       </div>
       <div class="bodyContent">
@@ -352,7 +352,7 @@
         >
           <!-- 第一次下发 -->
           <div v-show="item.isshow">
-            <div style="font-size: 14px; font-weight: 700; text-align: center">
+            <div style="font-size: 14px; font-weight: 700; text-align: center;margin-top:18px;">
               下发内容
             </div>
 
