@@ -31,10 +31,10 @@
 			<div class="left">
 				报名状态：
 			</div>
-			<div class="right" v-if="item.audit==1" style="color: #3FAB2E;">
+			<div class="right" v-if="item.audit==1" style="color: #2778BE;">
 				待审核
 			</div>
-			<div class="right" v-if="item.audit==2" style="color: #2778BE;">
+			<div class="right" v-if="item.audit==2" style="color: #3FAB2E;">
 				通过
 			</div>
 			<div class="right" v-if="item.audit==3" style="color: #FF2626;">

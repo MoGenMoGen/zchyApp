@@ -359,6 +359,12 @@ class until{
     }(),
     language:(navigator.browserLanguage || navigator.language).toLowerCase()
   }
+  // 给金额加千分符
+  formatNumberRgx(num) {
+      let parts = num.toString().split(".")
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      return parts.join(".")
+  }
 }
 //touch判断方向
 class judge{

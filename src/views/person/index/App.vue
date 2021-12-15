@@ -12,7 +12,9 @@
 				</p>
 			</div>
 			<div class="infoBox">
-				<img :src="info.imgUrl" alt="">
+				<img :src="info.imgUrl" v-if="info.imgUrl">
+				<p style="width: 1.2rem;height: 1.2rem;margin-left: 0.37rem;
+					margin-right: 0.29rem;border: 1px solid #F0F0EE;" v-else></p>
 				<div>
 					<p>{{info.realNm}}<span>({{info.mob}})</span><!-- <img :src="qi" alt=""> -->
 					</p>

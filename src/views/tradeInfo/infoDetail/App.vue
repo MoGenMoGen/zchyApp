@@ -98,6 +98,7 @@
            async  getDetail(id){
                 let res = await this.api.detailInfo(id)
                 this.info=res.data
+				this.info.cont = this.until.imgTagAddStyle(this.info.cont)
                 console.log("资讯项去")
                console.log( this.info)
             },
@@ -154,7 +155,7 @@
                     overflow-x: hidden;
                     max-width: 100%;
                     img { -ms-interpolation-mode: bicubic; }
-                    img { width: 90%; }
+                    img { width: auto; }
                 }
             }
 
