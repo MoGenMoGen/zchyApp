@@ -89,7 +89,7 @@
 			.price{
 				color: @redColor;
 				span{
-					font-size: 0.3rem;
+					font-size: 0.24rem;
 				}
 			}
 		}

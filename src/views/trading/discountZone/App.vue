@@ -194,6 +194,7 @@
                                                         color: #FFFFFF;
 														font-size: 0.24rem;
 														font-weight: 600;
+														line-height: initial;
 													}
 													.mktS{
 														color: rgba(255,255,255,0.2);

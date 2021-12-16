@@ -10,7 +10,7 @@
                 <van-swipe class="homeLunBo" :autoplay="3000" indicator-color="white">
                     <van-swipe-item v-for="(item,index) in list" :key="index"  @click="toPage('./shipDetail.html?id='+item.goodsId)">
                         <img :src="item.img" alt="">
-                        <p>{{item.shopNm}}<span> {{item.nm}}</span></p>
+                        <p>{{item.nm}}</p>
                     </van-swipe-item>
                 </van-swipe>
             </div>
@@ -128,11 +128,13 @@
         border-radius: 0.15rem !important;
         margin-bottom: 0.2rem;
         .van-swipe-item{
+			width: 100%;
+			height: 6rem;
             >img{
                 border-radius: 0.15rem;
+				position: relative;
                 height: 100%;
                 min-height: 100%;
-                position: relative;
                 display: block;
             }
             >p{
