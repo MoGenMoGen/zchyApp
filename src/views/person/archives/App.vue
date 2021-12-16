@@ -27,7 +27,7 @@
           <weibao />
         </div>
         <div v-if="showYunXing">
-          <yunxing />
+          <biangeng />
         </div>
 
         <div style="padding-bottom: 0.2rem" v-if="!showWeiBao && !showYunXing">
@@ -105,6 +105,7 @@ import jianlijianzao from "../../../components/personal/shipInfo/jianlijianzao";
 import yunjianzao from "../../../components/personal/shipInfo/yunjianzao";
 import yunjianyan from "../../../components/personal/shipInfo/yunjianyan";
 import weibao from "../../../components/personal/shipInfo/weibao";
+import biangeng from "../../../components/personal/shipInfo/biangeng";
 import yunxing from "../../../components/personal/shipInfo/yunxing";
 import shipEquip from "../../../components/shipEquip";
 import fangansheji from "../../../components/personal/shipInfo/fangansheji";
@@ -147,6 +148,10 @@ export default {
         //   id: 4,
         //   nm: "运行记录",
         // },
+		{
+		  id: 4,
+		  nm: "变更记录",
+		},
       ],
       tab21: [
         {
@@ -239,7 +244,7 @@ export default {
     baseInfo2,
     weibao,
     yunxing,
-
+	biangeng,
     shipEquip,
     fangansheji,
     shejiEdit,

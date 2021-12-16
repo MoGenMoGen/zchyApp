@@ -640,6 +640,7 @@
 					this.toolList1.push(...this.toolList14)
 				} else if (this.currentRole.identityCd == 'identity60') { //供应商
 					this.toolList1.push(...this.toolList15)
+					this.toolList1.splice(2,1)
 				} else if (this.currentRole.identityCd == 'identity70') { //经销商
 					this.toolList1.push(...this.toolList16)
 				} else if (this.currentRole.identityCd == 'identity80') { //代理商

@@ -2220,6 +2220,14 @@ class api {
 			})
 		})
 	}
+	//船舶档案——变更记录
+	bianRecords(query) {
+	  return new Promise(resolve => {
+	    get('/ship/docsChgRecords/apis/page?query=' + query).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
 	// 云检验审核通过分页列表
 	getCloudTestAdoptList(data) {
 		return new Promise(resolve => {

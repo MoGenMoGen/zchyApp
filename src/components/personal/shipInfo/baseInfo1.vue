@@ -39,7 +39,7 @@
         <van-col span="16" offset="2"> <span >{{info.deliveryTm}}</span></van-col>
       </van-row>
 
-      <van-row class="row" type="flex" align="center">
+     <!-- <van-row class="row" type="flex" align="center">
         <van-col span="6"> 合同编号：</van-col>
         <van-col span="16" offset="2"> <span >{{info.contractNo}}</span></van-col>
       </van-row>
@@ -47,7 +47,7 @@
       <van-row class="row" type="flex" align="center">
         <van-col span="6"> 订单编号：</van-col>
         <van-col span="16" offset="2"> <span >{{info.orderNo}}</span></van-col>
-      </van-row>
+      </van-row> -->
 
     </div>
 
