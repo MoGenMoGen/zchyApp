@@ -24,7 +24,7 @@
 							<span @click="toPage('../trading/shipDetail.html?id='+i.goodsId)">{{i.goodsNm}}</span>
 							<p>
 								<span v-if="i.origPrice === price">价格面议</span>
-								<span v-else> ￥ <b>{{i.origPrice}}</b></span>
+								<span v-else> ￥ <b>{{fmoney(i.origPrice)}}</b></span>
 								<van-stepper v-model="i.qty" min="1" class="stepGoods" integer @change="numChange(i)"/>
 							</p>
 						</div>
@@ -37,7 +37,7 @@
 				<i class="iconfont icondanxuankuang-copy" v-if="allShow"></i>
 				<i class="iconfont iconyuan" v-else></i>全选
 			</p>
-			<p class="totalBox" v-show="!editorShow">合计 :<span>{{sumPirce}}</span></p>
+			<p class="totalBox" v-show="!editorShow">合计 :<span>{{fmoney(sumPirce)}}</span></p>
 			<p class="totalBox" v-show="editorShow"></p>
 			<p class="btnBox" @click="submit">{{editorShow?'删除':'结算'}}</p>
 		</div>
@@ -98,6 +98,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )

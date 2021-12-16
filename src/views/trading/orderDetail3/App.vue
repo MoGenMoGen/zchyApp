@@ -40,7 +40,7 @@
 						<div>
 							<p class="title">配送信息</p>
 							<p><span>配送方式:</span>{{info.logiEntpNm}}</p>
-							<p><span>运 费:</span>￥{{info.payShip}}</p>
+							<p><span>运 费:</span>￥{{fmoney(info.payShip)}}</p>
 						</div>
 <!--						<div>-->
 <!--							<p class="title">付款信息</p>-->
@@ -67,16 +67,16 @@
 								</p>
 							</div>
 							<div v-else>
-								<p style="color: #303030;"><span>{{item.goodsNm}}</span><span>￥{{item.goodsPrice}}</span></p>
+								<p style="color: #303030;"><span>{{item.goodsNm}}</span><span>￥{{fmoney(item.goodsPrice)}}</span></p>
 								<p style="color: #666666;"><span>{{item.goodsSkuAttrNm}}</span><span>×{{item.qty}}</span></p>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="whiteBox priceBox">
-					<p><span class="title">商品总额</span><span class="priceS">￥{{moneySum}}</span></p>
+					<p><span class="title">商品总额</span><span class="priceS">￥{{fmoney(moneySum)}}</span></p>
 <!--					<p><span class="title">运费总额</span><span class="title">￥{{info.payShip}}</span></p>-->
-					<p><span class="title">应付总额</span><span class="priceS">￥{{moneySum+info.payShip}}</span></p>
+					<p><span class="title">应付总额</span><span class="priceS">￥{{fmoney(moneySum+info.payShip)}}</span></p>
 				</div>
 			</div>
 		</div>
@@ -119,6 +119,16 @@
 			this.getInfo()
 		},
     methods: {
+		fmoney(s, n) {
+		    n = n > 0 && n <= 20 ? n : 2;
+		    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+		    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+		    var t = "";
+		    for (let i = 0; i < l.length; i++) {
+		        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+		    }
+		    return t.split("").reverse().join("") + "." + r;
+		},
 			async getInfo(){
 				this.info=await this.api.shopBasicDetail(this.id)
 

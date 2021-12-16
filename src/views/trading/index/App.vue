@@ -22,12 +22,14 @@
 						<span>{{item.nm}}</span>
 					</p>
 				</div>
-				<p><span class="line"></span><span style="margin: 0 0.24rem;">平台交易金额</span><span class="line"></span></p>
-				<div class="dealTotal">
-					<p><span class="num">{{volume.shipOrder}}</span><span>船舶交易总额</span></p>
-					<span class="lineC"></span>
-					<p><span class="num">{{volume.goodsOrder}}</span><span>产品交易总额</span></p>
-				</div>
+			</div>
+			<p class="total-money"><span>交易总额GMV:</span><span style="font-size: 0.36rem;margin: 0 0.1rem;">{{fmoney(volume.total)}}</span><span style="font-size: 0.2rem;">万元</span></p>
+			<div class="whiteBox dealTotal">
+				<p><span>船舶销售</span><span class="num">{{fmoney(volume.shipOrder)}}<span style="font-size: 0.14rem;">万元</span></span></p>
+				<span class="lineC"></span>
+				<p><span>产品销售</span><span class="num">{{fmoney(volume.goodsOrder)}}<span style="font-size: 0.14rem;">万元</span></span></p>
+				<span class="lineC"></span>
+				<p><span>其他业务</span><span class="num">{{fmoney(volume.other)}}<span style="font-size: 0.14rem;">万元</span></span></p>
 			</div>
 			<!-- 重点推荐 -->
 			<div class="whiteBox recomBox" style="padding: 0.3rem 0.2rem;">
@@ -36,8 +38,8 @@
 					<div :style="{width: (recomList.length*1.72)-0.2+'rem'}">
 						<p v-for="(item,index) in recomList" :key="index"  @click="toPage('shipDetail.html?id='+item.goodsId)">
 							<img :src="item.img" alt="">
-							<span v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice !=price">￥{{item.goodsMinPrice}}</span>
-							<span v-if="item.goodsMinPrice!==item.goodsMaxPrice">￥{{item.goodsMinPrice}}-{{item.goodsMaxPrice}}</span>
+							<span v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice !=price">￥{{fmoney(item.goodsMinPrice)}}</span>
+							<span v-if="item.goodsMinPrice!==item.goodsMaxPrice">￥{{fmoney(item.goodsMinPrice)}}-{{fmoney(item.goodsMaxPrice)}}</span>
 							<span v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice ==price">价格面议</span>
 							<!--<span class="childA">￥{{item.mktPrice}}</span>-->
 						</p>
@@ -103,8 +105,8 @@
 						<!--<img :src="v.img" alt="">-->
 						<p :title="v.nm">{{v.nm}}</p>
 						<!--<span>￥{{v.origPrice}}</span>-->
-						<span v-if="v.goodsMinPrice===v.goodsMaxPrice && v.goodsMinPrice !=price">￥{{v.goodsMinPrice}}</span>
-						<span v-if="v.goodsMinPrice!==v.goodsMaxPrice">￥{{v.goodsMinPrice}}-{{v.goodsMaxPrice}}</span>
+						<span v-if="v.goodsMinPrice===v.goodsMaxPrice && v.goodsMinPrice !=price">￥{{fmoney(v.goodsMinPrice)}}</span>
+						<span v-if="v.goodsMinPrice!==v.goodsMaxPrice">￥{{fmoney(v.goodsMinPrice)}}-{{fmoney(v.goodsMaxPrice)}}</span>
 						<span v-if="v.goodsMinPrice===v.goodsMaxPrice && v.goodsMinPrice ==price">价格面议</span>
 					</div>
 				</div>
@@ -233,6 +235,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )
@@ -296,6 +308,8 @@
 				// this.volume = await this.api.volume() //平台成交总量
                 this.volume.shipOrder = await this.api.volumeShip() //平台成交总量
                 this.volume.goodsOrder = await this.api.volumePro() //平台成交总量
+				this.volume.total = await this.api.volumeTotal() //平台成交总量
+				this.volume.other = await this.api.volumeOther() //平台成交总量
 				this.recomList = await this.api.shopRecomdPro() //重点推荐
 				console.log('重点推荐')
 				console.log(this.recomList)
@@ -430,32 +444,50 @@
 						background-color: rgba(0,0,0,0.1);
 					}
 				}
-				.dealTotal{
-					padding: 0 0.9rem;
+			}
+			.total-money {
+				width: 7.1rem;
+				height: 1rem;
+				border-top-left-radius: 0.1rem;
+				border-top-right-radius: 0.1rem;
+				background-color: #2778BE;
+				color: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin: 0.2rem auto 0;
+				font-size: 0.24rem;
+			}
+			.dealTotal{
+				width: 7.1rem;
+				box-sizing: border-box;
+				padding: 0.4rem 0.3rem;
+				margin-bottom: 0.2rem;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				>p{
 					display: flex;
-					justify-content: space-between;
+					flex-direction: column;
 					align-items: center;
-					>p{
-						display: flex;
-						flex-direction: column;
-						align-items: center;
-						.num{
-							font-size: 0.36rem;
-							color: #FF3E3E;
-							font-weight: 600;
-							margin-bottom: 0.2rem;
-						}
-						>span{
-							font-size: 0.24rem;
-							color: #666666;
-						}
+					.num{
+						font-size: 0.3rem;
+						color: #FF0000;
+						margin-bottom: 0;
 					}
-					.lineC{
-						display: block;
-						width: 0.01rem;
-						height: 0.48rem;
-						background-color: rgba(0,0,0,0.1);
+					>span{
+						margin-bottom: 0.1rem;
+						font-size: 0.24rem;
+						color: #606060;
 					}
+				}
+				.lineC{
+					display: block;
+					width: 0.01rem;
+					height: 0.48rem;
+					background-color: rgba(0,0,0,0.1);
 				}
 			}
 			.recomBox{

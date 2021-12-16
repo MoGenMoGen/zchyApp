@@ -1,179 +1,201 @@
 <template>
-    <div class="shipEquip">
-			<div class="tab">
-				<p @click="index=j" :class="{active:index==j}" v-for="(item,j) in nmList" :key="j">
-				  <span>{{item.nm}}</span>
-				</p>
-			</div>
-			<div class="equipBox" v-if="list[index]">
-				<div v-for="(i,k) in list[index].equipList" :class="{open:i.check}" @click="toCheck(k)">
-					<p><span>{{i.nm}}</span><i class="iconfont iconarrdown"></i></p>
-					<div v-if="i.check">
-						<p><span style="flex: 1.5;">序号</span><span>图片</span><span style="flex: 5;">名称</span>
-						<span>型号</span><span>供应商</span><span>备注</span></p>
-						<p v-for="(z,y) in i.tabList" :key="y">
-							<span style="flex: 1.5;">{{y+1}}</span><span><img :src="z.imgUrl"></span>
-							<span style="flex: 5;">{{z.nm}}</span><span>{{z.deviceType}}</span>
-							<span>{{z.deviceSupply}}</span><span>{{z.rmks?z.rmks:'-'}}</span>
-						</p>
-					</div>
+	<div class="shipEquip">
+		<div class="tab">
+			<p @click="index=j" :class="{active:index==j}" v-for="(item,j) in nmList" :key="j">
+				<span>{{item.nm}}</span>
+			</p>
+		</div>
+		<div class="equipBox" v-if="list[index]">
+			<div v-for="(i,k) in list[index].equipList" :class="{open:i.check}" @click="toCheck(k)">
+				<p><span>{{i.nm}}</span><i class="iconfont iconarrdown"></i></p>
+				<div v-if="i.check" class="box">
+					<p><span style="flex: 1.5;">序号</span><span>图片</span><span style="flex: 5;">名称</span>
+						<span>型号</span><span>供应商</span><span>备注</span>
+					</p>
+					<p v-for="(z,y) in i.tabList" :key="y">
+						<span style="flex: 1.5;">{{y+1}}</span><span><img :src="z.imgUrl"></span>
+						<span style="flex: 5;">{{z.nm}}</span><span>{{z.deviceType}}</span>
+						<span>{{z.deviceSupply}}</span><span>{{z.rmks?z.rmks:'-'}}</span>
+					</p>
 				</div>
 			</div>
-    </div>
+		</div>
+	</div>
 </template>
 
 <script>
-    export default {
-			props:['id'],
-      data(){
-          return{
-						index:0,
-						nmList:[],
-						list:[],
-          }
-      },
-      watch:{
-				index(){
-					console.log('点击 :'+this.index)
-				}
-      },
-			mounted(){
-				this.getClassify()
-			},
-      methods:{
-				async toCheck(k){
-					if(this.list[this.index].equipList[k].check){
-						this.list[this.index].equipList[k].check=false
-					}else{
-						this.list[this.index].equipList.forEach((i,j)=>{
-							if(j==k){
-								this.list[this.index].equipList[j].check=true
-							}else{
-								this.list[this.index].equipList[j].check=false
-							}
-						})
-
-						let qry = this.query.new()
-						this.query.toW(qry,'solutionId',this.id,'EQ')
-						this.query.toW(qry,'cid2',this.list[this.index].equipList[k].id,'EQ')
-						this.list[this.index].equipList[k].tabList=await this.api.designGoodsList(this.query.toEncode(qry))
-						this.list[this.index].equipList[k].tabList.forEach(item=>{
-							item.nm=item.nm.split('[')[0]
-						})
-						console.log(this.list[this.index].equipList[k].tabList)
-					}
-					this.$set(this.list,this.index,this.list[this.index])
-
-				},
-        async getClassify(){
-          let data = await this.api.shipDetailEqupClassify(this.id)
-          console.log('分类列表')
-          console.log(data)
-          this.list = []
-          for(let [k,v] of Object.entries(data)){
-            if(v.length>0){
-              this.list.push({
-                nm:k,
-                equipList:v
-              })
-            }
-          }
-					this.list.forEach((item,index)=>{
-					  this.nmList.push({
-					    nm:item.nm,
-					    index:index
-					  })
+	export default {
+		props: ['id'],
+		data() {
+			return {
+				index: 0,
+				nmList: [],
+				list: [],
+			}
+		},
+		watch: {
+			index() {
+				console.log('点击 :' + this.index)
+			}
+		},
+		mounted() {
+			this.getClassify()
+		},
+		methods: {
+			async toCheck(k) {
+				if (this.list[this.index].equipList[k].check) {
+					this.list[this.index].equipList[k].check = false
+				} else {
+					this.list[this.index].equipList.forEach((i, j) => {
+						if (j == k) {
+							this.list[this.index].equipList[j].check = true
+						} else {
+							this.list[this.index].equipList[j].check = false
+						}
 					})
-          console.log('左侧列表')
-          console.log(this.list)
-          console.log(this.id)
-          for(let i=0;i<this.list.length;i++){
-            if(this.list[i].equipList.length>0){
-							this.list[i].equipList.forEach(item=>{
-								item.check=false
-							})
-              this.$set(this.list,i,this.list[i])
-            }
-          }
-          console.log(this.list)
-        },
-      }
-    }
+
+					let qry = this.query.new()
+					this.query.toW(qry, 'solutionId', this.id, 'EQ')
+					this.query.toW(qry, 'cid2', this.list[this.index].equipList[k].id, 'LK')
+					this.list[this.index].equipList[k].tabList = await this.api.designGoodsList(this.query.toEncode(
+						qry))
+					this.list[this.index].equipList[k].tabList.forEach(item => {
+						item.nm = item.nm.split('[')[0]
+					})
+					console.log(this.list[this.index].equipList[k].tabList)
+				}
+				this.$set(this.list, this.index, this.list[this.index])
+
+			},
+			async getClassify() {
+				let data = await this.api.shipDetailEqupClassify(this.id)
+				console.log('分类列表')
+				console.log(data)
+				this.list = []
+				for (let [k, v] of Object.entries(data)) {
+					if (v.length > 0) {
+						this.list.push({
+							nm: k,
+							equipList: v
+						})
+					}
+				}
+				this.list.forEach((item, index) => {
+					this.nmList.push({
+						nm: item.nm,
+						index: index
+					})
+				})
+				console.log('左侧列表')
+				console.log(this.list)
+				console.log(this.id)
+				for (let i = 0; i < this.list.length; i++) {
+					if (this.list[i].equipList.length > 0) {
+						this.list[i].equipList.forEach(item => {
+							item.check = false
+						})
+						this.$set(this.list, i, this.list[i])
+					}
+				}
+				console.log(this.list)
+			},
+		}
+	}
 </script>
 
 <style lang="less" scoped>
-  @import url("../assets/css/mobile.less");
-  .shipEquip{
-    .tab{
+	@import url("../assets/css/mobile.less");
+
+	.shipEquip {
+		.tab {
 			display: flex;
 			height: 1rem;
-			>p{
+
+			>p {
 				box-sizing: border-box;
 				flex: 1;
 				height: 1rem;
 				padding: 0.3rem 0.5rem;
 				font-size: 0.24rem;
 				color: #9A9A9A;
-				>span{
+
+				>span {
 					padding: 0.08rem 0.2rem;
 					border-radius: 0.3rem;
 					white-space: nowrap;
 				}
 			}
-			.active{
+
+			.active {
 				color: #ffffff;
-				>span{background-color: @themeColor;}
+
+				>span {
+					background-color: @themeColor;
+				}
 			}
 		}
-		.equipBox{
-			>div{
+
+		.equipBox {
+			>div {
 				// display: flex;
 				// flex-direction: column;
 
-				border-bottom: 1px solid rgba(0,0,0,0.1);
-				&:last-of-type{
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+				&:last-of-type {
 					border-bottom: 0;
 				}
-				p{
+
+				p {
 					display: flex;
 					align-items: center;
 					padding: 0.2rem 0.39rem 0.2rem 0.46rem;
-					span{
+
+					span {
 						flex: 3;
 						font-size: 0.24rem;
 						color: #343434;
 					}
-					>i{
+
+					>i {
 						font-size: 0.3rem;
 						color: #999999;
 
 					}
 				}
-				>div{
+
+				>div {
 					/*padding: 0 0.39rem 0 0.46rem;*/
 
-					>p{
-						&:last-of-type{
+					>p {
+						&:last-of-type {
 							border-bottom: 0;
 						}
-						>span{
+
+						>span {
 							text-align: center;
 
 						}
 					}
 				}
 			}
-			.open{
+
+			.open {
 				background-color: #F1F3F2;
-				p{
-					border-bottom: 1px solid rgba(0,0,0,0.1);
-					>i{
-						transform:rotate(180deg);
+
+				p {
+					border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+					>i {
+						transform: rotate(180deg);
 					}
 				}
 
+				.box {
+					width: 100%;
+					overflow-y: auto;
+				}
 			}
 		}
-  }
-
+	}
 </style>

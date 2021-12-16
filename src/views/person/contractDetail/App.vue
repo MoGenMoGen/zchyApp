@@ -33,7 +33,7 @@
             <van-col span="6"><p>合同总额:</p></van-col>
             <van-col span="18"
               ><p style="color: #ff2727">
-                ￥<span style="color: #ff2727">{{ info.totalPrice }}</span>
+                ￥<span style="color: #ff2727">{{ fmoney(info.totalPrice) }}</span>
               </p></van-col
             >
           </van-row>
@@ -48,14 +48,14 @@
           <van-row class="row" type="flex">
             <van-col span="6"><p>已付金额:</p></van-col>
             <van-col span="18"
-              ><p>￥{{ info.paid }}</p></van-col
+              ><p>￥{{ fmoney(info.paid) }}</p></van-col
             >
           </van-row>
 
           <van-row class="row" type="flex">
             <van-col span="6"><p>未付金额:</p></van-col>
             <van-col span="18"
-              ><p>￥{{ info.totalPrice - info.paid }}</p></van-col
+              ><p>￥{{ fmoney(info.totalPrice - info.paid) }}</p></van-col
             >
           </van-row>
 
@@ -131,6 +131,16 @@ export default {
     };
   },
   methods: {
+	  fmoney(s, n) {
+	      n = n > 0 && n <= 20 ? n : 2;
+	      s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+	      var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+	      var t = "";
+	      for (let i = 0; i < l.length; i++) {
+	          t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+	      }
+	      return t.split("").reverse().join("") + "." + r;
+	  },
     //切换设备
     changeDevice() {
       console.log("=========== " + window.location.pathname + " ===========");

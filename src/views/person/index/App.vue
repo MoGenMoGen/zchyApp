@@ -964,7 +964,7 @@
 					>button {
 						font-size: 0.2rem;
 						border-radius: 0.3rem;
-						padding: 0.06rem 0.18rem;
+						padding: 0.06rem 0.1rem;
 						background-color: @themeColor;
 						color: #ffffff;
 					}

@@ -39,13 +39,13 @@
 						<div>
 							<p class="title">配送信息</p>
 							<p><span>配送方式:</span>{{info.logiEntpNm}}</p>
-							<p><span>运 费:</span>￥{{info.payShip}}</p>
+							<p><span>运 费:</span>￥{{fmoney(info.payShip)}}</p>
 						</div>
 						<div>
 							<p class="title">付款信息</p>
 							<p><span>付款方式:</span>{{payType}}</p>
 							<p><span>付款时间:</span>{{info.payTm}}</p>
-							<p><span>支付金额:</span>￥{{info.orderPrice}}</p>
+							<p><span>支付金额:</span>￥{{fmoney(info.orderPrice)}}</p>
 						</div>
 					</div>
 				</div>
@@ -62,7 +62,7 @@
 								<p style="color: #666666;" v-if="item.leadTime">交货期：{{item.leadTime}}天</p>
 								<p style="color: #666666;">{{item.goodsSkuAttrNm}}</p>
 								<p>
-									<span v-if="item.goodsPrice!==price">￥{{item.goodsPrice}}</span>
+									<span v-if="item.goodsPrice!==price">￥{{fmoney(item.goodsPrice)}}</span>
 									<span v-else>价格面议</span>
 									<span style="color: #303030;font-size: 0.22rem;">×{{item.qty}}</span>
 								</p>
@@ -70,7 +70,7 @@
 							<div v-else>
 								<p style="color: #303030;">
 									<span>{{item.goodsNm}}</span>
-									<span v-if="item.goodsPrice!==price">￥{{item.goodsPrice}}</span>
+									<span v-if="item.goodsPrice!==price">￥{{fmoney(item.goodsPrice)}}</span>
 									<span v-else>价格面议</span>
 								</p>
 								<p style="color: #666666;" v-if="item.leadTime"><span>交货期：{{item.leadTime}}天</span></p>
@@ -81,12 +81,12 @@
 				</div>
 				<div class="whiteBox priceBox">
 					<p><span class="title">商品总额</span>
-						<span class="priceS" v-if="moneySum!==price">￥{{moneySum}}</span>
+						<span class="priceS" v-if="moneySum!==price">￥{{fmoney(moneySum)}}</span>
 						<span class="priceS" v-else>价格面议</span>
 					</p>
-					<p><span class="title">运费总额</span><span class="title">￥{{info.payShip}}</span></p>
+					<p><span class="title">运费总额</span><span class="title">￥{{fmoney(info.payShip)}}</span></p>
 					<p><span class="title">应付总额</span>
-						<span class="priceS" v-if="moneySum!==price">￥{{moneySum+info.payShip}}</span>
+						<span class="priceS" v-if="moneySum!==price">￥{{fmoney(moneySum+info.payShip)}}</span>
 						<span class="priceS" v-else>价格面议</span>
 					</p>
 				</div>
@@ -141,6 +141,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )

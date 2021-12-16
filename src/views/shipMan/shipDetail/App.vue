@@ -10,7 +10,7 @@
 			</div>
 			<div class="infoBasic">
 				<div>
-					<p class="priceP"><span style="font-size: 0.24rem;">￥</span>{{info.origMinPrice}}~{{info.origMaxPrice}}万<img :src="Vr" v-if="info.vrUrl" @click.stop="toVr(info.id)" style="width: 1.38rem;height: 0.43rem;margin-left: 0.1rem;"></p>
+					<p class="priceP"><span style="font-size: 0.24rem;">￥</span>{{fmoney(info.origMinPrice)}}~{{fmoney(info.origMaxPrice)}}万<img :src="Vr" v-if="info.vrUrl" @click.stop="toVr(info.id)" style="width: 1.38rem;height: 0.43rem;margin-left: 0.1rem;"></p>
 					<p class="startP" @click="toCollect">
 						<i class="iconfont" :class="info.collected==1?'iconxing1':'iconxing'"></i>
 						<span>收藏</span>
@@ -113,6 +113,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			isMyApp(){
 				let u = navigator.userAgent;
 				this.showShare = u.indexOf('zhongChuang') > -1;

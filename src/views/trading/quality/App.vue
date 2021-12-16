@@ -25,8 +25,8 @@
                         <div class="pt" v-for="(v,t) in item.items" :key="t" @click="toPage('../../views/trading/shipDetail.html?id='+v.goodsId)">
                             <img :src="v.img"/>
                             <!--<p>￥{{v.origPrice}}</p>-->
-                            <p v-if="v.goodsMinPrice===v.goodsMaxPrice && v.goodsMinPrice !=price">￥{{v.goodsMinPrice}}</p>
-                            <p v-if="v.goodsMinPrice!==v.goodsMaxPrice">￥{{v.goodsMinPrice}}-{{v.goodsMaxPrice}}</p>
+                            <p v-if="v.goodsMinPrice===v.goodsMaxPrice && v.goodsMinPrice !=price">￥{{fmoney(v.goodsMinPrice)}}</p>
+                            <p v-if="v.goodsMinPrice!==v.goodsMaxPrice">￥{{fmoney(v.goodsMinPrice)}}-{{fmoney(v.goodsMaxPrice)}}</p>
                             <p v-if="v.goodsMinPrice===v.goodsMaxPrice && v.goodsMinPrice ==price">价格面议</p>
                         </div>
                     </div>
@@ -76,6 +76,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )
@@ -234,6 +244,9 @@
                                 line-height: 0.41rem;
                                 color: #FFFFFF;
                                 width: 100%;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
                             }
                         }
                     }

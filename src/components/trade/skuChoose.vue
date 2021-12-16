@@ -16,7 +16,7 @@
 		  <template #sku-header-price="props">
 			  <div class="van-sku__goods-price"  v-show="props.price!=price">
 				  <span class="van-sku__price-symbol">￥</span>
-				  <span class="van-sku__price-num">{{ props.price }}</span>
+				  <span class="van-sku__price-num">{{ fmoney(props.price) }}</span>
 			  </div>
 			  <div class="van-sku__goods-price"  v-show="props.price==price">
 				  价格面议
@@ -255,6 +255,16 @@
       	// console.log('info123',this.info)
     },
     methods:{
+		fmoney(s, n) {
+		    n = n > 0 && n <= 20 ? n : 2;
+		    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+		    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+		    var t = "";
+		    for (let i = 0; i < l.length; i++) {
+		        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+		    }
+		    return t.split("").reverse().join("") + "." + r;
+		},
         openK(){	//打开客服
             ysf('open');
         },

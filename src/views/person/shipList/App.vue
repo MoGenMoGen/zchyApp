@@ -17,10 +17,10 @@
                         <van-col span="18"><p>{{item.nm}}</p></van-col>
                     </van-row>
 
-                    <van-row class="row"  align="center" type="flex">
+                    <!-- <van-row class="row"  align="center" type="flex">
                         <van-col span="6"><p >整船金额：</p></van-col>
                         <van-col span="18"><p>{{item.totalPrice}}</p></van-col>
-                    </van-row>
+                    </van-row> -->
 
                     <van-row class="row"  align="center" type="flex">
                         <van-col span="6"><p >船舶状态：</p></van-col>
@@ -135,7 +135,7 @@
             },
 		   async	getList(){
 				let qry = this.query.new()
-				this.query.toO(qry,'seq','desc')
+				this.query.toO(qry,'cd','asc')
 				this.query.toP(qry,this.pageNo,this.pageSize)
                let param={
                    keyWord:this.searchText,

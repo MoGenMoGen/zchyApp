@@ -1967,6 +1967,22 @@ class api {
 			});
 		});
 	}
+	//在线交易——平台成交总量--其他
+	volumeOther() {
+	  return new Promise((resolve, reject) => {
+	    axios.get("/visual/sales/api/other").then(res => {
+	      resolve(res.data.value)
+	    });
+	  });
+	}
+	//在线交易——平台成交总量--总额
+	volumeTotal() {
+	  return new Promise((resolve, reject) => {
+	    axios.get("/visual/sales/api/total").then(res => {
+	      resolve(res.data.value)
+	    });
+	  });
+	}
 	//缓存保存 对象
 	toSave(key, data) {
 		return new Promise(resolve => {
@@ -2355,6 +2371,14 @@ class api {
 	    get("/ship/bidAffiche/apis/api/pageWithStatus?query="+data).then(res=>{
 	      resolve(res)
 	    })
+	  })
+	}
+	//船舶的合同列表总金额
+	shipContractSum(data) {
+	  return new Promise(resolve => {
+		get("/ship/contract/apis/allSum",data).then(res=>{
+			resolve(res)
+		})
 	  })
 	}
 }

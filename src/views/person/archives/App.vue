@@ -73,7 +73,7 @@
         style="margin-top: 0.2rem; padding-bottom: 0.2rem"
         v-if="tab2Id == 20"
       >
-        <base-info11 v-if="tab2Id == 20" :info="shipBaseInfo1"></base-info11>
+        <base-info11 v-if="tab2Id == 20" :info="shipBaseInfo1" :paraList="paraList"></base-info11>
       </div>
       <div
         class="list-cont"
@@ -83,7 +83,6 @@
         <base-info12
           v-if="tab2Id == 20"
           :info="shipBaseInfo1"
-          :paraList="paraList"
         ></base-info12>
       </div>
     </div>
@@ -180,14 +179,14 @@ export default {
           id: 22,
           nm: "检验证书",
         },
-        {
-          id: 23,
-          nm: "历史资料",
-        },
-        {
-          id: 24,
-          nm: "合同列表",
-        },
+		{
+		  id: 24,
+		  nm: "合同列表",
+		},
+		{
+		  id: 23,
+		  nm: "历史资料",
+		},
       ],
       tab23: [
         {

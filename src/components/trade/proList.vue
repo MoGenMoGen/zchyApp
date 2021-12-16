@@ -5,8 +5,8 @@
 		  <div class="content">
 			  <p class="nm">{{item.nm}}</p>
 			  <!--<p class="price">￥<span>{{item.origPrice}}</span></p>-->
-			  <p  class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice !=price">￥<span>{{item.goodsMinPrice}}</span></p>
-			  <p class="price" v-if="item.goodsMinPrice!==item.goodsMaxPrice">￥<span>{{item.goodsMinPrice}}-{{item.goodsMaxPrice}}</span></p>
+			  <p  class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice !=price">￥<span>{{fmoney(item.goodsMinPrice)}}</span></p>
+			  <p class="price" v-if="item.goodsMinPrice!==item.goodsMaxPrice">￥<span>{{fmoney(item.goodsMinPrice)}}-{{fmoney(item.goodsMaxPrice)}}</span></p>
 			  <p class="price" v-if="item.goodsMinPrice===item.goodsMaxPrice && item.goodsMinPrice ==price">价格面议</p>
 		  </div>
 	  </div>
@@ -39,6 +39,16 @@
         })
     },
     methods:{
+		fmoney(s, n) {
+		    n = n > 0 && n <= 20 ? n : 2;
+		    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+		    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+		    var t = "";
+		    for (let i = 0; i < l.length; i++) {
+		        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+		    }
+		    return t.split("").reverse().join("") + "." + r;
+		},
         toDetail(id){
 			this.until.href('shipDetail.html?id='+id)
 		}

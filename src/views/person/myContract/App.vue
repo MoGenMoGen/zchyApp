@@ -64,13 +64,13 @@
                         <van-col span="18"><p>{{item.contractNo}}</p></van-col>
                     </van-row>
                     <van-row class="row"  align="center" type="flex">
-                        <van-col span="6"><p>船舶名称：</p></van-col>
+                        <van-col span="6"><p>合同名称：</p></van-col>
                         <van-col span="18"><p>{{item.nm}}</p></van-col>
                     </van-row>
 
                     <van-row class="row"  align="center" type="flex">
                         <van-col span="6"><p >签约日期：</p></van-col>
-                        <van-col span="18"><p>{{item.signTm}}</p></van-col>
+                        <van-col span="18"><p>{{item.signTm.substring(0,10)}}</p></van-col>
                     </van-row>
 
                     <van-row class="row"  align="center"  type="flex">
@@ -79,15 +79,15 @@
                     </van-row>
                     <van-row class="row"  align="center"  type="flex">
                         <van-col span="6"><p >合同总额：</p></van-col>
-                        <van-col span="18"><p>￥<span style="color: #FF2727">{{item.totalPrice}}</span></p></van-col>
+                        <van-col span="18"><p><span style="color: #FF2727">￥{{fmoney(item.totalPrice)}}</span></p></van-col>
                     </van-row>
                     <van-row class="row"  align="center"  type="flex">
                         <van-col span="6"><p >已付金额：</p></van-col>
-                        <van-col span="18"><p>￥{{item.paid}}</p></van-col>
+                        <van-col span="18"><p>￥{{fmoney(item.paid)}}</p></van-col>
                     </van-row>
                     <van-row class="row"  align="center"  type="flex">
                         <van-col span="6"><p >未付金额：</p></van-col>
-                        <van-col span="18"><p>￥{{item.totalPrice-item.paid}}</p></van-col>
+                        <van-col span="18"><p>￥{{fmoney(item.totalPrice-item.paid)}}</p></van-col>
                     </van-row>
                     <van-icon name="arrow"  class="arrow"/>
 
@@ -258,6 +258,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )

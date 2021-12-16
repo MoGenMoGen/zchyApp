@@ -6,66 +6,65 @@
       <van-row  class="row" type="flex" align="center">
         <van-col span="24"> <p class="title1"><img  src="https://sinovat.oss-cn-shanghai.aliyuncs.com/7b0c807a3a5f46a2b1dd201e30acd5f7_主要参数.png" ></p></van-col>
       </van-row>
-
-
+	  <van-row class="row" type="flex" align="center" justify="space-between">
+	  	<van-col span="11"> 船舶状态：{{info.statusNm}}</van-col>
+	    <van-col span="11"> 船舶证签发日期：{{info.signDate}}</van-col>
+	  </van-row>
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 船籍：{{info.registry}}</van-col>
-        <van-col span="10"> 船舶类型：{{info.typesNm}}</van-col>
+		<van-col span="11"> 船舶类型：{{info.typesNm}}</van-col>
+        <van-col span="11"> 户籍：{{info.registry}}</van-col>
       </van-row>
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 航区：{{info.sailingAreaNm}}</van-col>
-        <van-col span="10"> 船体材质：{{info.hullMaterialNm}}</van-col>
-      </van-row>
-
-      <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 船体总长(m)：{{info.totalLen}}</van-col>
-        <van-col span="10"> 公约总长(m)：{{info.pactLen}}</van-col>
+        <van-col span="11"> 船舶航区：{{info.sailingAreaNm}}</van-col>
+        <van-col span="11"> 船舶总长(M)：{{info.totalLen}}</van-col>
       </van-row>
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 型宽(m)：{{info.width}}</van-col>
-        <van-col span="10"> 型深(m)：{{info.deep}}</van-col>
+        <van-col span="11"> 船体材质：{{info.hullMaterialNm}}</van-col>
+        <van-col span="11"> 完工日期：{{info.completeDate}}</van-col>
       </van-row>
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 满载吃水(m)：{{info.loadDraught}}</van-col>
-        <van-col span="10"> 满载排水量(t)：{{info.loadDisplacement}}</van-col>
+        <van-col span="11"> 公约长度：{{info.lengthNm}}</van-col>
+        <van-col span="11"> 公约船长(M)：{{info.pactLen}}</van-col>
       </van-row>
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 航速(kn)：{{info.speed}}</van-col>
-        <van-col span="10"> 定员(P)：{{info.complement}}</van-col>
+        <van-col span="11"> 主机品牌：{{info.hostBrand}}</van-col>
+        <van-col span="11"> 主机功率(KW)：{{info.hostPower}}</van-col>
       </van-row>
-
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 主机品牌：{{info.hostBrand}}</van-col>
-        <van-col span="10"> 主机功率(kW)：{{info.hostPower}}</van-col>
+        <van-col span="11"> 主机型号：{{info.hostBrandModel}}</van-col>
+        <van-col span="11"> 齿轮箱品牌：{{info.gearBrand}}</van-col>
       </van-row>
-
-
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 齿轮箱品牌：{{info.gearBrand}}</van-col>
-        <van-col span="10"> 齿轮箱型号：{{info.gearModel}}</van-col>
+        <van-col span="11"> 齿轮箱型号：{{info.gearModel}}</van-col>
+        <van-col span="11"> 发电机组品牌：{{info.generatorSetBrand}}</van-col>
       </van-row>
-
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 发电机品牌：{{info.generatorSetBrand}}</van-col>
-        <van-col span="10"> 发电机功率：{{info.generatorSetPower}}</van-col>
+        <van-col span="11"> 发电机组功率(kW)：{{info.generatorSetPower}}</van-col>
+        <van-col span="11"> 发电机组型号：{{info.generatorSetBrandModel}}</van-col>
       </van-row>
-
-
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 制冷机品牌：{{info.refrigeratorBrand}}</van-col>
-        <van-col span="10"> 制冷机功率(kW)：{{info.refrigeratorPower}}</van-col>
+        <van-col span="11"> 制冷机组品牌：{{info.refrigeratorBrand}}</van-col>
+        <van-col span="11"> 制冷机组功率(KW)：{{info.refrigeratorPower}}</van-col>
       </van-row>
-
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="10"> 总吨位：{{info.totalTon}}</van-col>
-        <van-col span="10"> 净吨位(kW)：{{info.netTon}}</van-col>
+        <van-col span="11"> 船舶型宽(M)：{{info.width}}</van-col>
+        <van-col span="11"> 船舶型深(M)：{{info.deep}}</van-col>
       </van-row>
-
-
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="18"> 完工日期：{{info.completeDate}}</van-col>
+        <van-col span="11"> 满载排水(L)：{{info.loadDisplacement}}</van-col>
+        <van-col span="11"> 满载吃水(L)：{{info.loadDraught}}</van-col>
       </van-row>
-
+	  <van-row class="row" type="flex" align="center" justify="space-between">
+	    <van-col span="11"> 船舶定员：{{info.complement}}</van-col>
+	    <van-col span="11"> 船舶航速(M/S)：{{info.speed}}</van-col>
+	  </van-row>
+	  <van-row class="row" type="flex" align="center" justify="space-between">
+	    <van-col span="11"> 总吨位(吨)：{{info.totalTon}}</van-col>
+	    <van-col span="11"> 净吨位(吨)：{{info.netTon}}</van-col>
+	  </van-row>
+	  <div class="entireLine" v-for="item in paraList">
+	    <p class="colNm" v-show="item.colNm">{{item.colNm}} : <span> {{item.value}}</span></p>
+	  </div>
     </div>
 
   </div>
@@ -78,8 +77,10 @@
         props:{
           info:{
               type:Object,
-
-          }
+          },
+		  paraList:{
+			  type:Array,
+		  }
         },
         data(){
             return{
@@ -111,6 +112,17 @@
         }
       }
     }
+	.entireLine{
+	  padding: 0.09rem 0;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  flex-wrap: wrap;
+	  .colNm{
+		width: 36%;
+	    margin-right: 0.4rem;
+	  }
+	}
   }
 
 

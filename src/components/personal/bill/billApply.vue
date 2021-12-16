@@ -16,11 +16,11 @@
 				<div class="list-shop-item" v-for="newItem in item.itms" :key="newItem.id">
 					<img :src="newItem.goodsImgUrl">
 					<div class="list-shop-info">
-						<div>
+						<div style="color: #303030;">
 							<span style="width: 75%;">{{newItem.goodsNm}}</span>
-							<span>￥{{newItem.goodsPrice}}</span>
+							<span>￥{{fmoney(newItem.goodsPrice)}}</span>
 						</div>
-						<div>
+						<div style="color: #909090;">
 							<span style="width: 75%;">{{newItem.goodsSkuAttrNm}}</span>
 							<span>x {{newItem.qty}}</span>
 						</div>
@@ -56,6 +56,16 @@
           }
         },
         methods:{
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
             getList() {
 				let qry = this.query.new()
 				this.query.toO(qry,'crtTm','desc')
@@ -135,7 +145,7 @@
 			}
 			.list-shop-item {
 				display: flex;
-				align-items: center;
+				// align-items: center;
 				padding: 0.3rem 0.3rem;
 				box-sizing: border-box;
 				font-size: 0.22rem;
@@ -157,7 +167,7 @@
 						justify-content: space-between;
 					}
 					div:first-child {
-						margin-bottom: 0.8rem;
+						margin-bottom: 0.2rem;
 					}
 				}
 			}

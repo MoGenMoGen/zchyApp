@@ -54,20 +54,20 @@
 <!--                    店铺名称-->
                     <van-row class="row" align="center" type="flex">
                         <van-col span="1" style="display: flex;align-items: center;justify-content: center"><img style="width: 100%" :src="icShop"></van-col>
-                        <van-col span="18" offset="1"><p>店铺：{{item.shopNm}}</p></van-col>
-                        <van-col span="4">
-                            <p class="orderStatus1" v-if="item.statusCd==10" style="white-space: nowrap">{{item.statusNm}}</p>
-                            <p  v-else >{{item.statusNm}}</p>
+                        <van-col span="16" offset="1"><p>店铺：{{item.shopNm}}</p></van-col>
+                        <van-col span="6">
+                            <p class="orderStatus1" v-if="item.statusCd==10" style="white-space: nowrap;text-align: center;">{{item.statusNm}}</p>
+							<p  v-else style="white-space: nowrap;text-align: center;">{{item.statusNm}}</p>
                         </van-col>
                     </van-row>
 <!--                 商品列表   width: 90%;padding: 0.2rem 0;-->
                     <van-row class="row" align="center" >
                         <van-row   type="flex" v-for="j in item.itms" :key="j.id">
                             <van-col span="8" ><img style="border-radius: 5px" :src="j.goodsImgUrl"></van-col>
-                            <van-col span="16" style="display: flex;flex-direction: column;justify-content: space-between;box-sizing: border-box">
+                            <van-col span="16" style="display: flex;flex-direction: column;box-sizing: border-box">
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left">{{j.goodsNm}}</p></van-col>
-                                    <van-col span="8"><p style="text-align: right">{{j.goodsPrice !=0 ? j.goodsPrice : '价格面议'}}</p></van-col>
+                                    <van-col span="8"><p style="text-align: right">{{j.goodsPrice !=0 ? '￥'+fmoney(j.goodsPrice) : '价格面议'}}</p></van-col>
                                 </van-row>
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left;font-size: 0.22rem;color: #666666">{{j.goodsSkuAttrNm}}</p></van-col>
@@ -80,7 +80,7 @@
 <!--                    总数-->
 
                     <van-row class="row" align="center" type="flex" style="border-bottom: 1px solid rgba(0,0,0,0.1)">
-                        <van-col span="24" ><p style="text-align: right">应付款:￥{{item.orderPrice !=0 ? item.orderPrice : '价格面议'}}</p></van-col>
+                        <van-col span="24" ><p style="text-align: right">应付款:{{item.orderPrice !=0 ? '￥'+fmoney(item.orderPrice) : '价格面议'}}</p></van-col>
 
                     </van-row>
 <!--待付款-->
@@ -149,20 +149,20 @@
                     <!--                    店铺名称-->
                     <van-row class="row" align="center" type="flex">
                         <van-col span="1" style="display: flex;align-items: center;justify-content: center"><img style="width: 100%" :src="icShop"></van-col>
-                        <van-col span="18" offset="1"><p>店铺：{{item.shopNm}}</p></van-col>
-                        <van-col span="4">
-                            <p class="orderStatus1" v-if="item.statusCd==10" style="white-space: nowrap">{{item.statusNm}}</p>
-                            <p  v-else style="white-space: nowrap">{{item.statusNm}}</p>
+                        <van-col span="16" offset="1"><p>店铺：{{item.shopNm}}</p></van-col>
+                        <van-col span="6">
+                            <p class="orderStatus1" v-if="item.statusCd==10" style="white-space: nowrap;text-align: center;">{{item.statusNm}}</p>
+                            <p  v-else style="white-space: nowrap;text-align: center;">{{item.statusNm}}</p>
                         </van-col>
                     </van-row>
                     <!--                 商品列表  width: 90%; padding: 0.2rem 0;-->
                     <van-row class="row" align="center" >
                         <van-row   type="flex" v-for="j in item.itms" :key="j.id">
                             <van-col span="8" ><img style="border-radius: 5px" :src="j.goodsImgUrl"></van-col>
-                            <van-col span="16" style="display: flex;flex-direction: column;justify-content: space-between;box-sizing: border-box">
+                            <van-col span="16" style="display: flex;flex-direction: column;box-sizing: border-box">
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left">{{j.goodsNm}}</p></van-col>
-                                    <van-col span="8"><p style="text-align: right">{{j.goodsPrice !=0 ? j.goodsPrice :'价格面议'}}</p></van-col>
+                                    <van-col span="8"><p style="text-align: right">{{j.goodsPrice !=0 ? '￥'+fmoney(j.goodsPrice) :'价格面议'}}</p></van-col>
                                 </van-row>
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left;font-size: 0.22rem;color: #666666">{{j.goodsSkuAttrNm}}</p></van-col>
@@ -175,7 +175,7 @@
                     <!--                    总数-->
 
                     <van-row class="row" align="center" type="flex" style="border-bottom: 1px solid rgba(0,0,0,0.1)">
-                        <van-col span="24" ><p style="text-align: right">应付款:￥{{item.orderPrice !=0 ? item.orderPrice : '价格面议'}}</p></van-col>
+                        <van-col span="24" ><p style="text-align: right">应付款:{{item.orderPrice !=0 ? '￥'+fmoney(item.orderPrice) : '价格面议'}}</p></van-col>
 
                     </van-row>
                     <!--待付款-->
@@ -215,7 +215,7 @@
                         <van-col span="24" >
                             <div class="row-bottom">
 
-                                <p  class="commonButton" @click.stop="toContract(item)">查看合同</p>
+                                <!-- <p  class="commonButton" @click.stop="toContract(item)">查看合同</p> -->
                                 <p  class="commonButton" @click.stop="delOrder(item)">删除订单</p>
                                 <p  class="commonButton2" @click.stop="toOrderDetail(item)">订单详情</p>
                             </div>
@@ -235,20 +235,20 @@
                 <div class="list-item" v-for="item in list" :key="item.id" >
                     <!--                    店铺名称-->
                     <van-row class="row" align="center" >
-                        <van-col span="18" offset="1"><p>订单号：{{item.orderCd}}</p></van-col>
-                        <van-col span="4">
-                            <p class="orderStatus1" v-if="item.statusCd==10" style="white-space: nowrap">{{item.statusNm}}</p>
-                            <p  v-else style="white-space: nowrap">{{item.statusNm}}</p>
+                        <van-col span="16" offset="1"><p>订单号：{{item.orderCd}}</p></van-col>
+                        <van-col span="6">
+                            <p class="orderStatus1" v-if="item.statusCd==10" style="white-space: nowrap;text-align: center;">{{item.statusNm}}</p>
+                            <p  v-else style="white-space: nowrap;text-align: center;">{{item.statusNm}}</p>
                         </van-col>
                     </van-row>
                     <!--                 商品列表   -->
                     <van-row class="row" align="center" >
                         <van-row   type="flex" v-for="j in item.dsPurchaseItms" :key="j.id">
                             <van-col span="8" ><img style="width: 90%;border-radius: 5px" :src="j.goodsImgUrl"></van-col>
-                            <van-col span="16" style="display: flex;flex-direction: column;justify-content: space-between;padding: 0.2rem 0;box-sizing: border-box">
+                            <van-col span="16" style="display: flex;flex-direction: column;padding: 0.2rem 0;box-sizing: border-box">
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left">{{j.goodsNm}}</p></van-col>
-                                    <van-col span="8"><p style="text-align: right">{{j.goodsPrice !=0 ? j.goodsPrice : '价格面议'}}</p></van-col>
+                                    <van-col span="8"><p style="text-align: right">{{j.goodsPrice !=0 ? '￥'+fmoney(j.goodsPrice) : '价格面议'}}</p></van-col>
                                 </van-row>
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left;font-size: 0.22rem;color: #666666">{{j.goodsSkuAttrNm}}</p></van-col>
@@ -261,7 +261,7 @@
                     <!--                    总数-->
 
                     <van-row class="row" align="center" type="flex" style="border-bottom: 1px solid rgba(0,0,0,0.1)">
-                        <van-col span="24" ><p style="text-align: right">应付款:￥{{item.orderPrice !=0 ? item.orderPrice : '价格面议'}}</p></van-col>
+                        <van-col span="24" ><p style="text-align: right">应付款:{{item.orderPrice !=0 ? '￥'+fmoney(item.orderPrice) : '价格面议'}}</p></van-col>
 
                     </van-row>
                     <!--待付款-->
@@ -278,7 +278,7 @@
                     <van-row class="row" align="center" type="flex" v-if="item.status==20">
                         <van-col span="24" >
                             <div class="row-bottom">
-                                <p  class="commonButton" @click.stop="toContract(item)">查看合同</p>
+                                <!-- <p  class="commonButton" @click.stop="toContract(item)">查看合同</p> -->
                             </div>
                         </van-col>
                     </van-row>
@@ -315,10 +315,10 @@
                 <div class="list-item" v-for="item in list" :key="item.id" >
                     <!--                    店铺名称-->
                     <van-row class="row" align="center" >
-                        <van-col span="18" offset="1"><p>订单号：{{item.cd}}</p></van-col>
-                        <van-col span="4">
-                            <p class="orderStatus1" v-if="item.statusCd==10" style="white-space: nowrap">{{item.statusNm}}</p>
-                            <p  v-else style="white-space: nowrap">{{item.statusNm}}</p>
+                        <van-col span="16" offset="1"><p>订单号：{{item.cd}}</p></van-col>
+                        <van-col span="6">
+                            <p class="orderStatus1" v-if="item.statusCd==10" style="white-space: nowrap;text-align: center;">{{item.statusNm}}</p>
+                            <p  v-else style="white-space: nowrap;text-align: center;">{{item.statusNm}}</p>
                         </van-col>
                     </van-row>
 
@@ -329,20 +329,20 @@
 
                     <van-row class="row" align="center" justify="space-between" type="flex">
                         <van-col span="16" offset="1"><p style="text-align: left">{{item.goodsNms}}</p></van-col>
-                        <van-col span="7"><p style="text-align: right;color: #FF3636">￥{{item.amt}}</p></van-col>
+                        <van-col span="7"><p style="text-align: right;color: #FF3636">￥{{fmoney(item.amt)}}</p></van-col>
                     </van-row>
 
                     <!--                    总数-->
 
                     <van-row class="row" align="center" type="flex" style="border-bottom: 1px solid rgba(0,0,0,0.1)">
-                        <van-col span="24" ><p style="text-align: right">实收款:<span style="color: #FF3636">￥{{item.paid}}</span></p></van-col>
+                        <van-col span="24" ><p style="text-align: right">实收款:<span style="color: #FF3636">￥{{fmoney(item.paid)}}</span></p></van-col>
 
                     </van-row>
                     <!--代收款-->
                     <van-row class="row" align="center" type="flex" v-if="item.statusCd=='ORDER_STATUS.01'">
                         <van-col span="24" >
                             <div class="row-bottom">
-                                <p  class="commonButton" @click.stop="toContract(item)">查看合同</p>
+                                <!-- <p  class="commonButton" @click.stop="toContract(item)">查看合同</p> -->
                                 <p  class="commonButton3" @click.stop="confirmRev(item)">确认收款</p>
                                 <p  class="commonButton2" @click.stop="toOrderDetail(item)">订单详情</p>
                             </div>
@@ -354,7 +354,7 @@
                     <van-row class="row" align="center" type="flex" v-if="item.statusCd=='ORDER_STATUS.03'">
                         <van-col span="24" >
                             <div class="row-bottom">
-                                <p  class="commonButton" @click.stop="toContract(item)">查看合同</p>
+                                <!-- <p  class="commonButton" @click.stop="toContract(item)">查看合同</p> -->
                                 <p  class="commonButton3" @click.stop="confirmFinish(item)">确认完成</p>
                                 <p  class="commonButton2" @click.stop="toOrderDetail(item)">订单详情</p>
                             </div>
@@ -365,7 +365,7 @@
                     <van-row class="row" align="center" type="flex" v-if="item.statusCd=='ORDER_STATUS.04'">
                         <van-col span="24" >
                             <div class="row-bottom">
-                                <p  class="commonButton" @click.stop="toContract(item)">查看合同</p>
+                                <!-- <p  class="commonButton" @click.stop="toContract(item)">查看合同</p> -->
                                 <p  class="commonButton2" @click.stop="toOrderDetail(item)">订单详情</p>
                             </div>
                         </van-col>
@@ -569,6 +569,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )
@@ -928,7 +938,7 @@
 
                 .row{
                     padding: 0.1rem 0.3rem;
-
+					font-size: 0.24rem;
                     .row-bottom{
                         display: flex;
                         align-items: center;

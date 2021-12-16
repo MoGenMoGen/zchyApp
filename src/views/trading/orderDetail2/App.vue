@@ -28,7 +28,7 @@
 							<p class="title">收款记录</p>
                             <ul>
                                 <li v-for="item in listCurrent" :key="item.id">
-                                    <p>款项金额：￥{{item.payment}}</p>
+                                    <p>款项金额：￥{{fmoney(item.payment)}}</p>
                                     <p>付款时间：{{item.payDt}}</p>
                                 </li>
                             </ul>
@@ -75,6 +75,16 @@
             this.getPayList();
 		},
     methods: {
+		fmoney(s, n) {
+		    n = n > 0 && n <= 20 ? n : 2;
+		    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+		    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+		    var t = "";
+		    for (let i = 0; i < l.length; i++) {
+		        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+		    }
+		    return t.split("").reverse().join("") + "." + r;
+		},
             //订单信息
 			async getInfo(){
 				this.info=await this.api.shipOrderDetail(this.id)
