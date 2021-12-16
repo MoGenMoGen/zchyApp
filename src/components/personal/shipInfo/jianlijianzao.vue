@@ -27,9 +27,9 @@
     <div v-for="(item,index) in list" :key="index">
       <div class="title" @click="item.show=!item.show">
 
-        <span>{{item.nm}}（ 检验时间 : {{item.actDt}} ）</span>
+        <span>{{item.title}}（ 时间 : {{item.actDt}} ）</span>
         <p>
-          <span style="color: #2778BE;font-weight: bold">完成检验</span>
+          <span style="color: #2778BE;font-weight: bold">检验完成</span>
           <img :src="arrowDown" v-if="item.show">
           <img :src="arrowUp" v-else>
         </p>
@@ -38,16 +38,17 @@
 
 
       <div class="rich" v-if="item.show">
-        <div class="detail" v-if="item.description"  v-html="item.description"></div>
+        <!-- <div class="detail" v-if="item.description"  v-html="item.description"></div> -->
         <p class="desc" v-show="catCd!='DOCS_SURVEY_CYCLE.70'">
-          1. 期报：
+           期报：
         </p>
         <div class="doc" v-show="catCd!='DOCS_SURVEY_CYCLE.70'">
           <p v-for="j in item.fileList" @click="toLink(j.url)">
             <img :src="j.img">
-            <span>{{j.fileNm}}</span>
+            <span style="color: #06c;">{{j.fileNm}}</span>
           </p>
         </div>
+        <p style="margin-top: 20px"> {{item.nm}}报告：</p>
         <div class="report" v-show="catCd!='DOCS_SURVEY_CYCLE.70'">
           <p v-for="j in item.imgList" @click="toLink(j.url)">
             <img :src="j.img">
@@ -59,7 +60,7 @@
           </p>
         </div>
 
-        <p style="margin-top: 20px" v-show="catCd!='DOCS_SURVEY_CYCLE.70'">2. 附件：</p>
+        <p style="margin-top: 20px" v-show="catCd!='DOCS_SURVEY_CYCLE.70'"> 附件：</p>
         <div class="doc"  v-show="catCd!='DOCS_SURVEY_CYCLE.70'">
           <p v-for="j in item.attachmentList" @click="toLink(j.url)">
             <img :src="j.img">
@@ -238,9 +239,10 @@
           },
           toLink(url){
             console.log(url)
-            this.$bridge.callHandler('h5_load',url,res=>{
-              console.log('res',res)
-            })
+            // this.$bridge.callHandler('h5_load',url,res=>{
+            //   console.log('res',res)
+            // })
+            window.open(url)
           },
         }
 
