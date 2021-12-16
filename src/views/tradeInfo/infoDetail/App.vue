@@ -1,7 +1,7 @@
 <template>
 <!--	消息详情-->
     <div id="container"  :style="{backgroundImage:'url('+bg+')'}">
-        <pen-header v-if="isMyApp()"  title="新闻资讯详情" :show-right="showRight" @rightClick="rightClick"></pen-header>
+        <pen-header   title="新闻资讯详情" :show-right="showRight" @rightClick="rightClick"></pen-header>
         <div class="top" >
             <div class="top-1" :style="{backgroundImage:'url('+bg+')'}">
             </div>
@@ -48,7 +48,7 @@
             return {
                 bg,
                 info:{},//
-                showRight:true,//显示头部右侧分享按钮
+                showRight:false,//显示头部右侧分享按钮
                 showBottom:false,//显示底部
             };
         },
@@ -75,6 +75,7 @@
             let id=this.until.getQueryString("id")
             this.getDetail(id)
 			this.changeDevice()
+            this.isMyApp();
 			window.onresize = () => {
 				this.changeDevice()
 			}
@@ -82,8 +83,8 @@
 		methods: {
             isMyApp(){
                 let u = navigator.userAgent;
-                let flag = u.indexOf('zhongChuang') > -1;
-                return flag;
+                this.showRight = u.indexOf('zhongChuang') > -1;
+                // return flag;
             },
 
 			//切换设备
