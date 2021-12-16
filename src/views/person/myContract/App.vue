@@ -125,17 +125,18 @@
                 ],
                 //船厂identity30
                 tab2:[
+					{
+					    id:1,
+					    nm:'采购合同',
+					    cd: "CONTRACT_TYPE.07",//{"w":[{"k":"contractTypeCd","v":"CONTRACT_TYPE.07","m":"EQ"},{"k":"partyaId","v":4954475896755200,"m":"EQ"}]
+					
+					},
                     {
                         id:0,
                         nm:'建造合同',
                         cd: "CONTRACT_TYPE.02",  //{"w":[{"k":"contractTypeCd","v":"CONTRACT_TYPE.02","m":"EQ"}]
                     },
-                    {
-                        id:1,
-                        nm:'采购合同',
-                        cd: "CONTRACT_TYPE.07",//{"w":[{"k":"contractTypeCd","v":"CONTRACT_TYPE.07","m":"EQ"},{"k":"partyaId","v":4954475896755200,"m":"EQ"}]
-
-                    }
+                    
                 ],
                 //设计院identity20
                 tab3:[
