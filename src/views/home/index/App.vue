@@ -42,7 +42,7 @@
 			<div class="tradeBox">
 				<div class="newsTitle" style="border: none;">
 					<img :src="news" alt="">
-					<p>行业新闻</p>
+					<p>产业新闻</p>
 					<span @click="toPage('../tradeInfo/index.html?tabId=5002994345202688')">更多 ></span>
 				</div>
 				<div class="msgBox" v-for="(item,index) in infoList" :key="index" @click="toPage('../tradeInfo/infoDetail.html?id='+item.id)">
