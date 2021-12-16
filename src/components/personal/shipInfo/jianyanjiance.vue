@@ -144,7 +144,7 @@
                   }
                   item.fileList=fileList2
                 })
-                item.validUntil=item.validUntil?item.validUntil.split(' ')[0]:'-'
+                item.validUntil=item.validUntil?item.validUntil.split(' ')[0]:''
                 this.list.push(item)
                 // if(item.types==1){
 

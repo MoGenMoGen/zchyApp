@@ -1062,7 +1062,7 @@ export default {
       }
     }
     .bodyContent {
-      padding: 0.3rem 0 0.3rem 0;
+      padding: 0.1rem 0 0.1rem 0;
       box-sizing: border-box;
       .contentList {
         display: flex;
