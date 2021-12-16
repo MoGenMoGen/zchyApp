@@ -39,7 +39,7 @@
         <van-col span="11"> 发电机组品牌：{{info.generatorSetBrand}}</van-col>
       </van-row>
       <van-row class="row" type="flex" align="center" justify="space-between">
-        <van-col span="11"> 发电机组功率(kW)：{{info.generatorSetPower}}</van-col>
+        <van-col span="11"> 发电机组功率(KW)：{{info.generatorSetPower}}</van-col>
         <van-col span="11"> 发电机组型号：{{info.generatorSetBrandModel}}</van-col>
       </van-row>
       <van-row class="row" type="flex" align="center" justify="space-between">
