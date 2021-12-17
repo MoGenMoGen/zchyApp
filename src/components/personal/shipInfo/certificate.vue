@@ -14,6 +14,12 @@
             <p>{{item.nm}}</p>
               <p>有效期:</p>
             <p>{{item.validUntil}}</p>
+			<div style="display: flex;">
+			<div class="fileCont" style="margin-right: 0.2rem;" v-for="(item1,index1) in item.file" :key="index1" @click="toFile(item1.url)" > 
+				<van-icon name="description" size="1.8rem"/>
+				<p>{{item1.nm}}</p>
+			</div>
+			</div>
           </li>
             <li v-for="(item,index) in 3-list1.length%3" :key="index" v-if="list1.length/5!=0">
 
@@ -21,7 +27,7 @@
         </ul>
 
 
-        <van-row  class="row" type="flex" align="center" style="margin-top: 0.3rem">
+       <!-- <van-row  class="row" type="flex" align="center" style="margin-top: 0.3rem">
             <van-col span="5"> <p class="title1"><img  src="https://sinovat.oss-cn-shanghai.aliyuncs.com/5d1d0cfc66bd4a7d9920ca4658a549e2_产品证书.png" ></p></van-col>
         </van-row>
         <ul>
@@ -36,7 +42,7 @@
             <li v-for="(item,index) in 3-list2.length%3" :key="index" v-if="list2.length/5!=0">
 
             </li>
-        </ul>
+        </ul> -->
     </div>
 </template>
 
@@ -128,11 +134,15 @@
         this.getInfo()
       },
       methods:{
+		  toFile(url){
+			window.open(url)  
+		  },
         async getInfo(){
           this.certificateList=[]
           let qry = this.query.new()
           // this.currentRole=JSON.parse(this.until.seGet('currentRole'))
           this.query.toW(qry,'docsId',this.id,'EQ')
+		  // this.query.toW(qry,'types',0,'EQ')
           this.query.toP(qry,'1','100')
           let data=await this.api.certificate(this.query.toEncode(qry))
           this.total=data.page.total
@@ -145,6 +155,20 @@
 
             if(item.types==0){
               this.list1.push(item)
+			  this.list1.forEach(item=>{
+				  if(item.attachment){
+					  item.attachment=item.attachment.split(',')
+					  item.file=[]
+					  item.attachment.forEach(item1=>{
+						  let fileObj={}
+						  fileObj.url=item1
+						  fileObj.nm=item1.substring(item1.indexOf('_')+1,item1.length)
+						  item.file.push(fileObj)
+					  })
+				  }
+				  console.log(123, this.list1);
+				  
+			  })
             }else {
               this.list2.push(item)
             }

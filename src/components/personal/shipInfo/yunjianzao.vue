@@ -74,7 +74,7 @@
                 let id=this.until.getQueryString("id")
                 let qry = this.query.new()
                 this.query.toP(qry,this.pageNo,this.pageSize)
-                // this.query.toW(qry,"docsIds",id,"EQ")
+                this.query.toW(qry,"docsIds",id,"EQ")
                 let res =await  this.api.myVideoList(this.query.toEncode(qry))
                 res.data.list.forEach(item=>{
                     let fileList=  item.attachment.split(",")

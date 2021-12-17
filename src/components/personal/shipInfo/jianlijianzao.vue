@@ -54,7 +54,6 @@
             <img :src="j" />
           </p>
         </div>
-
         <p
           style="margin-top: 20px"
           v-show="
@@ -64,6 +63,7 @@
           附件：
         </p>
         <div class="doc" v-show="catCd != 'DOCS_SURVEY_CYCLE.70'">
+
           <p v-for="j in item.attachmentList" @click="toLink(j.url)">
             <img :src="j.img" />
             <span>{{ j.fileNm }}</span>

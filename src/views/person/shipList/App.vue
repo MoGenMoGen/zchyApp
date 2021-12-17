@@ -142,6 +142,9 @@
                    orgEnterId:this.currentRole.id
                }
 				let res =await  this.api.getMyShipList(this.query.toEncode(qry),param)
+				res.data.list.forEach(item=>{
+					item.deliveryTm=item.deliveryTm.substring(0,10)
+				})
                this.list.push(...res.data.list)
                // 加载状态结束
                this.finished = this.list.length >= res.page.total

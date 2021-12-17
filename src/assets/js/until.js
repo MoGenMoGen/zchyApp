@@ -28,6 +28,7 @@ class until{
         // eslint-disable-next-line no-useless-escape
         var regex1 = new RegExp("(i?)(\<img)(?!(.*?style=['\"](.*)['\"])[^\>]+\>)", 'gmi')
         // 给不含style="" 或 style='' 的img标签加上style=""
+		   console.log( 'kankan', htmlstr)
         htmlstr = htmlstr.replace(regex1, '$2 style=""$3')
         console.log('增加style=""后的html字符串：' + htmlstr)
         // 正则匹配含有style的img标签

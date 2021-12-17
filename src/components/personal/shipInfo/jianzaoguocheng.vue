@@ -23,7 +23,12 @@
       <div class="rich" v-if="item.show">
 
         <p v-html="item.attachment"></p>
-<!--        <p class="desc">-->
+		<p>{{item.nm}}报告：</p>
+		<div class="imgBox" >
+			
+		<img :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1" >
+		</div>
+<!--       <p class="desc">-->
 <!--          {{item.description}}-->
 <!--        </p>-->
 <!--        <div class="doc">-->
@@ -34,7 +39,7 @@
 <!--            <img :src="j.img">-->
 <!--            <span>{{j.fileNm}}</span>-->
 <!--          </p>-->
-<!--        </div>-->
+<!--        </div> -->
       </div>
 
     </div>
@@ -94,8 +99,12 @@
             let data=await this.api.buildStep(this.query.toEncode(qry))
             data.forEach((item,index)=>{
               item.show=false
-
-              item.attachment = this.until.imgTagAddStyle(item.attachment)
+			  if(item.imgUrl){
+				  item.imgUrl=item.imgUrl.split(',')
+			  }
+			  if(item.attachment){
+				  item.attachment = this.until.imgTagAddStyle(item.attachment)
+			  }
             })
             console.log(data)
             this.list=data

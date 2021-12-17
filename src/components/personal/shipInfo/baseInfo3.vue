@@ -10,7 +10,7 @@
     </van-row>
 
     <van-row class="row" type="flex" align="center">
-      <van-col span="14" > <span style="color: #666666">优势设计:{{info.business}}</span></van-col>
+      <van-col span="20" > <span style="color: #666666">优势设计:{{info.business}}</span></van-col>
     </van-row>
     <van-row class="row" type="flex" align="center">
       <van-col span="24" > <span style="color: #999999;font-size: 0.27rem" >{{info.summery}}</span></van-col>
@@ -23,7 +23,7 @@
     </van-row>
 
     <van-row class="row" type="flex" align="center">
-      <van-col span="5" > <span style="color: #999999;font-size: 0.27rem" >联 系 人:</span></van-col>
+      <van-col span="5" > <span style="color: #999999;font-size: 0.27rem" >公司网址:</span></van-col>
       <van-col span="19" > <span style="color: #999999;font-size: 0.27rem" >{{info.linkMan}}</span></van-col>
     </van-row>
 
