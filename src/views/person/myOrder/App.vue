@@ -631,7 +631,7 @@
                   this.until.href("../trading/orderDetail.html?id="+item.id)
               }  else if(this.orderType==3 || this.orderType==5){
                   //建造订单或者设计订单
-                  this.until.href("../trading/orderDetail.html?id="+item.id)
+                  this.until.href("../trading/orderDetail2.html?id="+item.id)
               }
             },
 

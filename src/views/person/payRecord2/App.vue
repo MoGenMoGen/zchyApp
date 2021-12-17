@@ -83,7 +83,7 @@
 									<p>款项金额：</p>
 								</van-col>
 								<van-col span="18">
-									<p>￥{{item.fees}}</p>
+									<p>￥{{fmoney(item.fees)}}</p>
 								</van-col>
 
 							</van-row>
@@ -92,7 +92,7 @@
 									<p>订单总额：</p>
 								</van-col>
 								<van-col span="18">
-									<p>￥{{item.orderAmt}}</p>
+									<p>￥{{fmoney(item.orderAmt)}}</p>
 								</van-col>
 
 							</van-row>
@@ -101,7 +101,7 @@
 									<p>已付：</p>
 								</van-col>
 								<van-col span="18">
-									<p style="color: #E3393C">￥{{item.alFees}}</p>
+									<p style="color: #E3393C">￥{{fmoney(item.alFees)}}</p>
 								</van-col>
 
 							</van-row>
@@ -110,7 +110,7 @@
 									<p>未付：</p>
 								</van-col>
 								<van-col span="18">
-									<p style="color: #E3393C">￥{{item.orderAmt-item.alFees }}</p>
+									<p style="color: #E3393C">￥{{fmoney(item.orderAmt-item.alFees) }}</p>
 								</van-col>
 
 							</van-row>
@@ -157,7 +157,7 @@
 									<p>款项金额：</p>
 								</van-col>
 								<van-col span="18">
-									<p>￥{{item.fees}}</p>
+									<p>￥{{fmoney(item.fees)}}</p>
 								</van-col>
 							</van-row>
 							<van-row class="row" align="center" type="flex">
@@ -165,7 +165,7 @@
 									<p>订单总额：</p>
 								</van-col>
 								<van-col span="18">
-									<p>￥{{item.orderAmt}}</p>
+									<p>￥{{fmoney(item.orderAmt)}}</p>
 								</van-col>
 							</van-row>
 							<van-row class="row" align="center" type="flex">
@@ -173,7 +173,7 @@
 									<p>已收：</p>
 								</van-col>
 								<van-col span="18">
-									<p style="color: #E3393C">￥{{item.alFees}}</p>
+									<p style="color: #E3393C">￥{{fmoney(item.alFees)}}</p>
 								</van-col>
 							</van-row>
 							<van-row class="row" align="center" type="flex">
@@ -181,7 +181,7 @@
 									<p>未收：</p>
 								</van-col>
 								<van-col span="18">
-									<p style="color: #E3393C">￥{{item.orderAmt-item.alFees }}</p>
+									<p style="color: #E3393C">￥{{fmoney(item.orderAmt-item.alFees) }}</p>
 								</van-col>
 							</van-row>
 						</div>
@@ -332,6 +332,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice() {
 				console.log("=========== " + window.location.pathname + " ===========")

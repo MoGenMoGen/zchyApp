@@ -51,8 +51,8 @@
                     <div class="list-item" v-for="item in list" :key="item.id">
                         <van-row class="row" align="center" type="flex">
                             <van-col span="6"><p class="val">{{item.cd}}</p></van-col>
-                            <van-col span="6"><p class="val">￥{{item.amt}}</p></van-col>
-                            <van-col span="6"><p class="val">￥{{item.paid}}</p></van-col>
+                            <van-col span="6"><p class="val">￥{{fmoney(item.amt)}}</p></van-col>
+                            <van-col span="6"><p class="val">￥{{fmoney(item.paid)}}</p></van-col>
                             <van-col span="6"><p class="val">￥{{item.amt-item.paid | numFilter}}</p></van-col>
                         </van-row>
 
@@ -150,11 +150,21 @@
         },
         filters:{
             numFilter(value) {
-                const realVal = parseFloat(value).toFixed(2);
-                return realVal;
+                // const realVal = parseFloat(value).toFixed(2);
+                return this.fmoney(value);
             },
         },
         methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
             toChoose(item){
                 if(item.id!=this.tabId){
                     this.tabId=item.id

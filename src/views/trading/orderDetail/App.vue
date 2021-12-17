@@ -56,7 +56,7 @@
 					</div>
 					<div :class="info.ship=='1'?'shipBox':'proBox'">
 						<div v-for="(item,index) in goodList" :key="index">
-							<img :src="item.goodsImgUrl.split(',')[0]">
+							<img :src="item.goodsImgUrl.split(',')[0]" v-if="item.goodsImgUrl">
 							<div v-if="info.ship=='1'">
 								<p style="color: #303030;">{{item.goodsNm}}</p>
 								<p style="color: #666666;" v-if="item.leadTime">交货期：{{item.leadTime}}天</p>
@@ -228,9 +228,9 @@
 				  }else {
 				    this.payType = '其他'
 				  }
-					if(this.info.logiEntpCd&&this.info.logiCd){
-						this.getTrace()
-					}
+					// if(this.info.logiEntpCd&&this.info.logiCd){
+					// 	this.getTrace()
+					// }
 			},
 			//取消订单
 			toCancel(){
