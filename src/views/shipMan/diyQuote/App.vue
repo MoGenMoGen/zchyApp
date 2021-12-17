@@ -125,7 +125,7 @@
 			
 			<div class="priceBox">	
 				<span>整船价格约 :</span>
-				<p>{{totalPrice}}万</p>
+				<p>{{fmoney(totalPrice)}}万</p>
 			</div>
 		</div>
 		<div class="btnList">
@@ -216,6 +216,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )
