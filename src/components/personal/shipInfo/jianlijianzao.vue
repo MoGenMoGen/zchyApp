@@ -121,10 +121,10 @@
 				<div class="rich" v-if="item.show">
 					<!-- <div class="detail" v-if="item.description"  v-html="item.description"></div> -->
 					<div class="topBtn">
-						<div class="btnLeft"  @click="toDelete(item)">
+						<div class="btnLeft"  @click="toDelete(item)" v-if="item.audit != '2'&&currentRole.identityCd=='identity40'" >
 							删除
 						</div>
-						<div class="btnRight" @click="toModify(item)">
+						<div class="btnRight" @click="toModify(item)" v-if="item.audit != '2'&&currentRole.identityCd=='identity40'" >
 							修改
 						</div>
 					</div>
