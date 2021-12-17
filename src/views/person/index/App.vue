@@ -117,6 +117,26 @@
 					</p>
 				</div>
 			</div>
+			<!-- 未入驻 -->
+			<div class="whiteBox" style="padding: 30px 0;" v-if="!currentRole">
+				<p class="titleBorder">船舶订单</p>
+				<div class="listBox">
+					<p v-for="(item,index) in shipList" :key="index" @click="toOrder2(item)">
+						<img :src="item.img" alt="">
+						<span>{{item.nm}}</span>
+					</p>
+				</div>
+			</div>
+			<!-- 未入驻 -->
+			<div class="whiteBox" style="padding: 30px 0;" v-if="!currentRole">
+				<p class="titleBorder">产品订单</p>
+				<div class="listBox">
+					<p v-for="(item,index) in productList" :key="index" @click="toOrder1(item)">
+						<img :src="item.img" alt="">
+						<span>{{item.nm}}</span>
+					</p>
+				</div>
+			</div>
 			<div class="whiteBox" style="padding-top: 0.4rem;">
 				<div class="toolList">
 					<p v-for="(item,index) in toolList1" :key="index" @click="toPage(item.url)">
@@ -301,20 +321,20 @@
 				designList: [ //设计订单
 					{
 						img: order1,
-						nm: '待付款',
+						nm: '待收款',
 						url: '',
-						statusCd: '10',
+						statusCd: 'ORDER_STATUS.01',
 						id: 1
 					}, {
 						img: order6,
 						nm: '设计中',
 						url: '',
-						statusCd: '20',
+						statusCd: 'ORDER_STATUS.03',
 						id: 2
 					}, {
 						img: order4,
 						nm: '已完成',
-						statusCd: '50,90', //bt
+						statusCd: 'ORDER_STATUS.04', //bt
 						url: '',
 						id: 4
 					}, {
@@ -322,7 +342,7 @@
 						nm: '全部',
 						url: '',
 						id: 0,
-						statusCd: '01'
+						statusCd: '-1'
 					}
 				],
 				buildList: [ //建造订单
@@ -330,18 +350,18 @@
 						img: order1,
 						nm: '待付款',
 						url: '',
-						statusCd: '10',
+						statusCd: 'ORDER_STATUS.01',
 						id: 1
 					}, {
 						img: order7,
 						nm: '建造中',
 						url: '',
-						statusCd: '20',
+						statusCd: 'ORDER_STATUS.03',
 						id: 2
 					}, {
 						img: order4,
 						nm: '已完成',
-						statusCd: '50,90', //bt
+						statusCd: 'ORDER_STATUS.04', //bt
 						url: '',
 						id: 4
 					}, {

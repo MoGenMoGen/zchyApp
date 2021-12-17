@@ -63,7 +63,7 @@
 <!--                 商品列表   width: 90%;padding: 0.2rem 0;-->
                     <van-row class="row" align="center" >
                         <van-row   type="flex" v-for="j in item.itms" :key="j.id">
-                            <van-col span="8" ><img style="border-radius: 5px" :src="j.goodsImgUrl"></van-col>
+                            <van-col span="8" ><img style="border-radius: 5px" :src="j.goodsImgUrl.split(',')[0]"></van-col>
                             <van-col span="16" style="display: flex;flex-direction: column;box-sizing: border-box">
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left">{{j.goodsNm}}</p></van-col>
@@ -183,7 +183,10 @@
                         <van-col span="24" >
                             <div class="row-bottom">
                                 <p  @click.stop="toPay(item)" class="payButton" v-if="item.orderPrice!=0 ">去支付</p>
-
+								<p  class="commonButton" v-if="item.stageStatus==1" @click.stop>分期申请中</p>
+								<p  class="commonButton" v-if="item.stageStatus==3" @click.stop>分期申请未通过</p>
+								<p  class="commonButton" v-if="item.offlineStatus==1" @click.stop>线下付款申请中</p>
+								<p  class="commonButton" v-if="item.offlineStatus==3" @click.stop>线下付款申请未通过</p>
                                 <p  class="commonButton" @click.stop="toCancel(item)">取消订单</p>
                                 <p  class="commonButton2" @click.stop="toOrderDetail(item)">订单详情</p>
                             </div>
@@ -538,7 +541,9 @@
 
         },
         async mounted() {
-            this.identityCd=this.currentRole.identityCd
+			if(this.currentRole) {
+				this.identityCd=this.currentRole.identityCd
+			}
 		    this.orderType=this.until.getQueryString("orderType")
 
 		    if(this.orderType==1){
@@ -724,6 +729,7 @@
                 this.until.href("./express.html?item="+JSON.stringify(item))
             },
             toChoose(item){
+				console.log(item)
                 if(item.id!=this.tabId){
 
                     this.tabId=item.id

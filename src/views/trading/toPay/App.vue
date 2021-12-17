@@ -8,7 +8,7 @@
 				<div>
 					<p>订单编号：{{info.orderCd}}</p>
 					<p>商品名称：{{proNm}}</p>
-					<p>订单金额：￥{{info.orderPrice}}</p>
+					<p>订单金额：￥{{fmoney(info.orderPrice)}}</p>
 					<p>订单时间：{{info.crtTm}}</p>
 				</div>
 			</div>
@@ -25,7 +25,7 @@
 						</div>
 
 						<div v-if="item.id==selectId" class="money">
-							支付<span>{{info.orderPrice}}</span>元
+							支付<span>{{fmoney(info.orderPrice)}}</span>元
 						</div>
 					</div>
 					<div class="uploadImg"  v-if="item.id==4 && selectId==item.id ">
@@ -185,12 +185,22 @@
         async mounted() {
 			this.alipaySuccess();
             this.id = this.until.getQueryString('id');
-			this.info = await this.api.orderDetail(this.id)
 			let arr = []
-			this.info.itms.forEach(item=>{
-			    arr.push(item.goodsNm)
-			})
-			this.proNm = arr.join(',')
+			if(this.until.getQueryString('id')) {
+				this.info = await this.api.orderDetail(this.id)
+				this.info.itms.forEach(item=>{
+					arr.push(item.goodsNm)
+				})
+				this.proNm = arr.join(',')
+			} else {
+				this.proList = JSON.parse(this.until.seGet('orderPayList'))
+				this.info = this.proList[0]
+				this.id = this.info.id
+				this.info.itms.forEach(item=>{
+					arr.push(item.goodsNm)
+				})
+				this.proNm = arr.join(',')
+			}
 			console.log('进入时id',this.id)
 			this.changeDevice()
 			window.onresize = () => {
@@ -198,6 +208,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )
@@ -290,7 +310,7 @@
                         setTimeout(()=>{
                         	console.log('线下支付id',this.id)
                             // this.until.href('./paySuccess.html?id='+this.id)
-                            location.replace('./paySuccess.html?id='+this.id)
+                            location.replace('./orderDetail.html?id='+this.id)
                         },1500)
                     })
                 }else if (this.selectId == 5) { //分期

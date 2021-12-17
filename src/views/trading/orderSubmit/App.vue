@@ -40,15 +40,17 @@
 									:src="v.img"
 									fit="cover"
 									radius="10"
+									v-if="v.img"
 							/>
+							<div v-else style="width: 1.8rem;height: 1.8rem;border-radius: 0.1rem;border: 1px solid #969799;"></div>
 							<div class="content">
 								<p class="nm">{{v.goodsNm}}</p>
 								<p class="attr">{{v.attrDesc}}</p>
 								<p class="attr" v-if="v.leadTime">交货期：{{v.leadTime}}天</p>
 								<p class="price">
-									<span v-if="v.origPrice!=price">￥{{v.origPrice}}</span>
+									<span v-if="v.origPrice!=price">￥{{fmoney(v.origPrice)}}</span>
 									<span v-if="v.origPrice==price">价格面议</span>
-									{{v.qty}}</p>
+									x {{v.qty}}</p>
 							</div>
 						</li>
 					</ul>
@@ -57,17 +59,17 @@
 			</div>
 			<div class="common">
 				<div><p>订单总额</p>
-					<span class="red" v-if="orderPrice!=price">￥{{orderPrice}}</span>
+					<span class="red" v-if="orderPrice!=price">￥{{fmoney(orderPrice)}}</span>
 					<span class="red" v-else>价格面议</span>
 				</div>
-				<div><p>运费总额</p><span>￥{{shipPrice}}</span></div>
+				<div><p>运费总额</p><span>￥{{fmoney(shipPrice)}}</span></div>
 			</div>
 			<!--<div class="reMark">-->
 				<!--<p>备注</p><input v-model="reMark" placeholder="请输入备注"/>-->
 			<!--</div>-->
 		</div>
 		<div class="foot">
-			<p v-if="orderPrice!=price" >实际支付：￥{{payPrice}}</p>
+			<p v-if="orderPrice!=price" >实际支付：￥{{fmoney(payPrice)}}</p>
 			<p v-else>实际支付：价格面议</p>
 			<button @click="toPay">去付款</button>
 		</div>
@@ -133,6 +135,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )
@@ -283,12 +295,13 @@
                         if(flag>0){
                             this.$toast.success('提交成功，等待卖家修改价格,可在个人中心产品订单查询')
                             setTimeout(() => {
-                                location.replace('../person/index.html?id='+res.id)
+                                location.replace('../person/index.html')
                             })
                         }else {
                             this.$toast.success('提交成功')
+							this.until.seSave('orderPayList', JSON.stringify(res))
                             setTimeout(() => {
-                                location.replace('./toPay.html?id='+res.id)
+                                location.replace('./toPay.html')
                             }, 1500)
                         }
                     })
@@ -451,6 +464,7 @@
 							display: flex;
 							display: -webkit-flex;
 							flex-direction: column;
+							width: 4.6rem;
 							.nm{
 								display: -webkit-box;
 								-webkit-box-orient: vertical;

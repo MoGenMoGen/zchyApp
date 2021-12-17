@@ -57,7 +57,7 @@
 <!--					</div>-->
 					<div :class="info.ship=='1'?'shipBox':'proBox'">
 						<div v-for="(item,index) in goodList" :key="index">
-							<img :src="item.goodsImgUrl">
+							<img :src="item.goodsImgUrl.split(',')[0]">
 							<div v-if="info.ship=='1'">
 								<p style="color: #303030;">{{item.goodsNm}}</p>
 								<p style="color: #666666;">{{item.goodsSkuAttrNm}}</p>

@@ -430,7 +430,7 @@ class api {
 	quickOrderCreat(data) {
 		return new Promise(resolve => {
 			post('/ds/order/quickBuyNew', data, { "sinovat-token": window.localStorage.getItem("token") }).then(res => {
-				resolve(res.data)
+				resolve(res.data.list)
 			})
 		})
 	}

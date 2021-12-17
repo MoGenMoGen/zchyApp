@@ -7,7 +7,7 @@
 				<p><img :src="success"/>支付成功！</p>
 				<div class="info">
 					<p>商品名称：{{proNm}}</p>
-					<p>订单金额：￥{{info.orderPrice}}</p>
+					<p>订单金额：￥{{fmoney(info.orderPrice)}}</p>
 					<p>支付时间：{{info.payTm}}</p>
 				</div>
 				<div class="btnList">
@@ -74,6 +74,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )

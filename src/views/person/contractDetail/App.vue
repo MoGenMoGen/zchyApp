@@ -87,6 +87,26 @@
             >
           </van-row>
         </div>
+		<div class="list-item" v-if="billList.length>0">
+		  <van-row
+		    class="row2"
+		    type="flex"
+		    align="center"
+		    v-for="(item, index) in billList"
+		    :key="index"
+		  >
+		    <van-col span="6"
+		      ><p>发票附件{{ index + 1 }}:</p></van-col
+		    >
+		    <van-col span="2" offset="1"><img :src="item.img" /></van-col>
+		    <van-col span="10" offset="1"
+		      ><p>{{ item.fileNm }}</p></van-col
+		    >
+		    <van-col span="4"
+		      ><p class="btn" @click="toDown(item)">下载</p></van-col
+		    >
+		  </van-row>
+		</div>
       </div>
     </div>
   </div>
@@ -106,6 +126,7 @@ export default {
       word: "https://sinovat.oss-cn-shanghai.aliyuncs.com/6bb0f58d475c4f18ab606556eca76033_word.png",
       pdf: "https://sinovat.oss-cn-shanghai.aliyuncs.com/5df1549175c44b5ca0c1826d534a02fc_pdf.png",
       attachList: [], //附件列表
+	  billList: [], //发票列表
     };
   },
   components: {
@@ -167,11 +188,14 @@ export default {
       this.info = res.data;
       this.attachList = this.info.attachment.split(",");
       console.log(this.attachList);
+	  if(this.info.invoice) {
+		  this.billList = this.info.invoice.split(",")
+	  }
       let imgList = [];
       this.attachList.forEach((item) => {
         let type = item.split(".")[item.split(".").length - 1];
 
-        let nm = item.split(" ")[1];
+        let nm = item.split("_")[1];
         console.log(nm);
         if (type == "pdf") {
           imgList.push({ url: item, img: this.pdf, fileNm: nm });
@@ -186,6 +210,25 @@ export default {
         }
       });
       this.attachList = imgList;
+	  let imgList2 = [];
+	  this.billList.forEach((item) => {
+	    let type = item.split(".")[item.split(".").length - 1];
+	  
+	    let nm = item.split("_")[1];
+	    console.log(nm);
+	    if (type == "pdf") {
+	      imgList2.push({ url: item, img: this.pdf, fileNm: nm });
+	    } else if (type == "doc" || type == "docx") {
+	      imgList2.push({ url: item, img: this.word, fileNm: nm });
+	    } else if (type == "ppt" || type == "pptx") {
+	      imgList2.push({ url: item, img: this.ppt, fileNm: nm });
+	    } else if (type == "xls" || type == "xlsx") {
+	      imgList2.push({ url: item, img: this.excel, fileNm: nm });
+	    } else {
+	      imgList2.push({ url: item, img: item, fileNm: nm });
+	    }
+	  });
+	  this.billList = imgList2;
     },
   },
 };

@@ -52,7 +52,7 @@
                         <van-col span="2"></van-col>
                         <van-col span="6"><p>单价：</p></van-col>
                         <van-col span="16">
-                            <p v-if="item.origPrice !=0" style="color: #E53E41">￥{{item.origPrice}}</p>
+                            <p v-if="item.origPrice !=0" style="color: #E53E41">￥{{fmoney(item.origPrice)}}</p>
                             <p v-else>价格面议</p>
                         </van-col>
                     </van-row>
@@ -77,7 +77,7 @@
                         <van-col span="2"></van-col>
                         <van-col span="6"><p>合计：</p></van-col>
                         <van-col span="16">
-                            <p v-if="item.origPrice !=0" style="color: #E53E41">￥{{item.origPrice*item.num}}</p>
+                            <p v-if="item.origPrice !=0" style="color: #E53E41">￥{{fmoney(item.origPrice*item.num)}}</p>
                             <p v-else>价格面议</p></van-col>
                     </van-row>
                     <p  class="single"  @click="toSingleCheck(item)">
@@ -162,6 +162,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//切换设备
 			changeDevice(){
 				console.log("=========== "+window.location.pathname+" ===========" )
