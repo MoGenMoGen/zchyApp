@@ -73,24 +73,25 @@
         style="margin-top: 0.2rem; padding-bottom: 0.2rem"
         v-if="tab2Id == 20"
       >
-        <base-info11 v-if="tab2Id == 20" :info="shipBaseInfo1" :paraList="paraList"></base-info11>
+        <base-info11
+          v-if="tab2Id == 20"
+          :info="shipBaseInfo1"
+          :paraList="paraList"
+        ></base-info11>
       </div>
       <div
         class="list-cont"
         style="margin-top: 0.2rem; padding-bottom: 0.2rem"
         v-if="tab2Id == 20"
       >
-        <base-info12
-          v-if="tab2Id == 20"
-          :info="shipBaseInfo1"
-        ></base-info12>
+        <base-info12 v-if="tab2Id == 20" :info="shipBaseInfo1"></base-info12>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import penHeader from "../../../components/personal/penHeader";  
+import penHeader from "../../../components/personal/penHeader";
 import baseInfo1 from "../../../components/personal/shipInfo/baseInfo1";
 import baseInfo2 from "../../../components/personal/shipInfo/baseInfo2";
 import baseInfo11 from "../../../components/personal/shipInfo/baseInfo11";
@@ -142,16 +143,16 @@ export default {
         },
         {
           id: 3,
+          nm: "变更记录",
+        },
+        {
+          id: 4,
           nm: "维保记录",
         },
         // {
         //   id: 4,
         //   nm: "运行记录",
         // },
-		{
-		  id: 4,
-		  nm: "变更记录",
-		},
       ],
       tab21: [
         {
@@ -184,14 +185,14 @@ export default {
           id: 22,
           nm: "船舶检验证书",
         },
-		{
-		  id: 24,
-		  nm: "合同列表",
-		},
-		{
-		  id: 23,
-		  nm: "历史资料",
-		},
+        {
+          id: 24,
+          nm: "合同列表",
+        },
+        {
+          id: 23,
+          nm: "历史资料",
+        },
       ],
       tab23: [
         {
@@ -244,7 +245,7 @@ export default {
     baseInfo2,
     weibao,
     yunxing,
-	biangeng,
+    biangeng,
     shipEquip,
     fangansheji,
     shejiEdit,
@@ -330,12 +331,12 @@ export default {
           this.showYunXing = false;
         } else if (index == 3) {
           this.tab2Id = 0;
-          this.showWeiBao = true;
-          this.showYunXing = false;
-        } else if (index == 4) {
-          this.tab2Id = 0;
           this.showWeiBao = false;
           this.showYunXing = true;
+        } else if (index == 4) {
+          this.tab2Id = 0;
+          this.showWeiBao = true;
+          this.showYunXing = false;
         }
       }
     },
