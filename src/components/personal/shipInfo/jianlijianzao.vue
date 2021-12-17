@@ -1,7 +1,7 @@
 <template>
 	<!--  监理建造-->
 	<div class="jianlijianzao">
-		<van-overlay :show="show" @click="show = false">
+		<van-overlay :show="show" @click="closeMask">
 			<div class="wrapper" @click.stop>
 				<div class="block">
 					<p style="text-align: center;font-size: 0.3rem;margin-top: 0.2rem;">新增</p>
@@ -73,10 +73,10 @@
 						</van-cell-group>
 					</div>
 					<div class="bottomBtn">
-						<div class="leftBtn">
+						<div class="leftBtn" @click="cancel">
 							取消
 						</div>
-						<div class="rightBtn">
+						<div class="rightBtn" @click="save">
 							保存
 						</div>
 					</div>
@@ -120,6 +120,14 @@
 
 				<div class="rich" v-if="item.show">
 					<!-- <div class="detail" v-if="item.description"  v-html="item.description"></div> -->
+					<div class="topBtn">
+						<div class="btnLeft"  @click="toDelete(item)">
+							删除
+						</div>
+						<div class="btnRight" @click="toModify(item)">
+							修改
+						</div>
+					</div>
 					<p class="desc" v-show="catCd != 'DOCS_SURVEY_CYCLE.70'">期报：</p>
 					<div class="doc" v-show="catCd != 'DOCS_SURVEY_CYCLE.70'">
 						<p v-for="j in item.fileList" @click="toLink(j.url)">
@@ -160,6 +168,7 @@
 </template>
 
 <script>
+	import { Notify } from 'vant';
 	export default {
 		name: "fangansheji",
 		data() {
@@ -200,11 +209,12 @@
 				fileListOneUpd: [],
 				fileListTwo:[],
 				fileListTwoUpd:[],
-				
+				itemId:'',
+				modifyFlag:false,
+				listFile:[],
 			};
 		},
 		async mounted() {
-
 			this.currentRole = JSON.parse(this.until.loGet("currentRole"));
 			console.log(111, this.currentRole);
 			this.id = this.until.getQueryString("id");
@@ -231,7 +241,194 @@
 		},
 
 		methods: {
+			async getFile(info) {
+				this.listFile = []
+				let data = info
+				let data1 = []
+				let fileList2 = []
+				if (data.length > 0) {
+					data.forEach(v => {
+						let type = v.split('.')[v.split('.').length - 1]
+						let nmList = v.split('.com/') //分割出url后的内容
+						let nm = ""
+						nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+							if (z != 0) {
+								nm += j
+							}
+						})
+						nmList = nm.split('_') //分割随机字符后的内容
+						nm = ""
+						nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+							if (z != 0) {
+								nm += j
+							}
+						})
+						nm = nm.split('.' + type)[0]
+						if (type == 'pdf') {
+							fileList2.push({
+								url: v,
+								'fileNm': nm
+							})
+						} else if (type == 'doc' || type == 'docx') {
+							fileList2.push({
+								url: v,
+								'fileNm': nm
+							})
+						} else if (type == 'ppt' || type == 'pptx') {
+							fileList2.push({
+								url: v,
+								'fileNm': nm
+							})
+						} else if (type == 'xls' || type == 'xlsx') {
+							fileList2.push({
+								url: v,
+								'fileNm': nm
+							})
+						} else {
+							fileList2.push({
+								url: v,
+								img: v,
+								'fileNm': nm
+							})
+						}
+			
+					})
+				}
+				console.log(fileList2)
+				this.listFile = fileList2
+				console.log('151', this.list)
+			},
+			toDelete(item){
+				this.api.quaGuarDel(item.id).then(res=>{
+				   this.getInfo(this.catCd)
+				   Notify({ type: 'success', message: '删除成功' });
+				})
+			},
+			toModify(item){
+				this.modifyFlag=true
+				this.itemId=item.id
+				this.show=true
+				this.value=item.title
+				this.value1=item.nm
+				this.value1Cd=item.cd
+				this.value2=item.statusNm
+				this.value2Cd=item.statusCd
+				this.value3=item.description
+				this.value4=item.actDt
+				this.currentDate=new Date(item.actDt)
+				this.value5=item.rmks
+				this.imgListUpd=item.imgUrl.split(',')
+				this.fileListOneUpd=item.fileUrl.split(',')
+				this.fileListTwoUpd=item.attachment.split(',')
+				if(item.imgUrl){
+					let urlStr=item.imgUrl.split(",")
+					  urlStr.forEach(item1=> {
+					             let obj = new Object();
+					             obj.url = item1;
+					             this.imgList.push(obj)
+					           });
+					    console.log(11);
+				}
+				if(item.fileUrl){
+				  let modelList = item.fileUrl.split(',')
+				   this.getFile(modelList)
+				  					if (this.listFile.length>0) {
+				  						for (let i = 0; i < this.listFile.length; i++) {
+				  							this.fileListOne.push({
+												file : new File([], this.listFile[i].fileNm, {}),
+				  								url: this.listFile[i].url
+				  							})
+				  						}
+				
+				  					}
+				}
+				if(item.attachment){
+				  let modelListTwo = item.attachment.split(',')
+				   this.getFile(modelListTwo)
+				  					if (this.listFile.length>0) {
+				  						for (let i = 0; i < this.listFile.length; i++) {
+				  							this.fileListTwo.push({
+				  								file : new File([], this.listFile[i].fileNm, {}),
+				  								url: this.listFile[i].url
+				  							})
+				  						}
+				
+				  					}
+				}
+			},
+			closeMask(){
+				this.value=''
+				this.value1=''
+				this.value1Cd=''
+				this.value2=''
+				this.value2Cd=''
+				this.value3=''
+				this.value4=''
+				this.value5=''
+				this.imgList=[]
+				this.imgListUpd=[]
+				this.fileListOne=[]
+				this.fileListOneUpd=[]
+				this.fileListTwo=[]
+				this.fileListTwoUpd=[]
+				this.show=false
+				this.modifyFlag=false
+			},
+			 async save(){
+				 console.log(this.imgListUpd,this.fileListOneUpd,this.fileListTwoUpd);
+				 if(this.modifyFlag==false){
+					 let obj = {
+					   docsId: this.id,
+					   title: this.value,
+					   nm:this.value1,
+					   cd: this.value1Cd,
+					   statusNm:this.value2,
+					   statusCd:this.value2Cd,
+					   description: this.value3,
+					   actDt: this.value4,
+					   imgUrl: this.imgListUpd.join(','),
+					   fileUrl: this.fileListOneUpd.join(','),
+					   attachment: this.fileListTwoUpd.join(','),
+					   surveyId: this.currentRole.id,
+					   surveyNm: this.currentRole.company,
+					   rmks: this.value5,
+					 };
+					 this.api.quaGuarAdd(obj).then(res=>{
+					 	console.log(res);
+					 	this.getInfo(this.catCd)
+					 	this.closeMask()
+					 })
+				 }
+				 else{
+					 let obj = {
+						  id:this.itemId,
+					   docsId: this.id,
+					   title: this.value,
+					   nm:this.value1,
+					   cd: this.value1Cd,
+					   statusNm:this.value2,
+					   statusCd:this.value2Cd,
+					   description: this.value3,
+					   actDt: this.value4,
+					   imgUrl: this.imgListUpd.join(','),
+					   fileUrl: this.fileListOneUpd.join(','),
+					   attachment: this.fileListTwoUpd.join(','),
+					   surveyId: this.currentRole.id,
+					   surveyNm: this.currentRole.company,
+					   rmks: this.value5,
+					 };
+					 this.api.quaGuarUpd(obj).then(res=>{
+					 	this.getInfo(this.catCd)
+					 	this.closeMask()
+					 })
+				 }
+				
+			},
+			cancel(){
+					this.closeMask()
+			},
 			afterRead(file) {
+				
 				file.status = 'uploading';
 				file.message = '上传中...'
 				let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
@@ -250,6 +447,7 @@
 				console.log(this.imgListUpd);
 			},
 			afterReadFileOne(file) {
+					console.log(file);
 				file.status = 'uploading';
 				file.message = '上传中...'
 				let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
@@ -612,7 +810,33 @@
 
 	.rich {
 		padding: 24px 28px;
-
+		.topBtn{
+			display: flex;
+			justify-content: space-between;
+			padding:0 0.6rem 0.3rem;
+			.btnLeft{
+				width: 1.92rem;
+				height: 0.52rem;
+				background: rgba(245, 115, 19, 0);
+				border: 1px solid #C8C8C8;
+				border-radius: 0.26rem;
+				text-align: center;
+				line-height: 0.52rem;
+				font-size: 0.24rem;
+				color: #909090;
+			}
+			.btnRight{
+				width: 1.92rem;
+				height: 0.52rem;
+				background: rgba(245, 115, 19, 0);
+				border: 1px solid #2778BE;
+				border-radius: 0.26rem;
+				text-align: center;
+				line-height: 0.52rem;
+				font-size: 0.24rem;
+				color: #2778BE;
+			}
+		}
 		.detail {
 			margin-bottom: 0.2rem;
 		}

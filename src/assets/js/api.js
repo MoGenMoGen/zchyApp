@@ -296,6 +296,30 @@ class api {
 			})
 		})
 	}
+	//个人中心-品质保障新增
+	quaGuarAdd(data) {
+	  return new Promise(resolve => {
+	    post("/ship/docsSurvey/apis/add", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//个人中心-品质保障修改
+	quaGuarUpd(data) {
+	  return new Promise(resolve => {
+	    post("/ship/docsSurvey/apis/upd", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//个人中心-品质保障删除
+	quaGuarDel(id) {
+	  return new Promise(resolve => {
+	    get("/ship/docsSurvey/apis/del?ids=" + id).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
 	//选型记录复制
 	xuanxingCopy(id) {
 		return new Promise(resolve => {
@@ -682,7 +706,7 @@ class api {
 	//品质保障 不分页列表
 	qualityList(query) {
 		return new Promise((resolve, reject) => {
-			get("/ship/docsSurvey/apis/list?query=" + query).then(res => {
+			get("/ship/docsSurvey/api/listAll?query=" + query).then(res => {
 				resolve(res.data.list)
 			});
 		});
