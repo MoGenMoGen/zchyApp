@@ -51,7 +51,7 @@
 			</div> -->
 			<!-- 详细描述/船舶设备 -->
 			<div class="detailBox">
-				<pro-detail :info="info" ref="shipDetail" shipShow="true"></pro-detail>
+				<pro-detail :info="info" ref="shipDetail" shipShow="true" types="1"></pro-detail>
 			</div>
 		</div>
 		<div class="btnList">

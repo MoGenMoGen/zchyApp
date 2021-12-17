@@ -14,18 +14,20 @@
           <div class="infoParam" v-if="info.ship || type=='manage'">
              <p><span class="lineC"></span>船舶主要参数</p>
             <ul>
-              <li>船籍：{{param.registry}}</li><li>船舶类型：{{param.typesNm}}</li>
-              <li>航区：{{param.sailingAreaNm}}</li><li>船体材质：{{param.hullMaterialNm}}</li>
-              <li>船舶总长(M)：{{param.totalLen}}</li><li>公约船长(M)：{{param.pactLen}}</li>
-              <li>型宽(M)：{{param.width}}</li><li>型深(M)：{{param.deep}}</li>
-              <li>满载吃水(M)：{{param.loadDraught}}</li><li>满载排水量(T)：{{param.loadDisplacement}}</li>
-              <li>航速(KN)：{{param.speed}}</li><li>定员(P)：{{param.complement}}</li>
+              <li>船舶状态：{{param.statusNm}}</li><li>船舶证签发日期：{{param.signDate}}</li>
+              <li>船舶类型：{{param.typesNm}}</li><li>户籍：{{param.registry}}</li>
+              <li>船舶航区：{{param.sailingAreaNm}}</li><li>船舶总长(M)：{{param.totalLen}}</li>
+              <li>船体材质：{{param.hullMaterialNm}}</li><li>完工日期：{{param.completeDate}}</li>
+              <li>公约长度：{{param.lengthNm}}</li><li>公约船长(M)：{{param.pactLen}}</li>
               <li>主机品牌：{{param.hostBrand}}</li><li>主机功率(KW)：{{param.hostPower}}</li>
-              <li>齿轮箱品牌：{{param.gearBrand}}</li><li>齿轮箱型号：{{param.gearModel}}</li>
-              <li>发电机品牌：{{param.generatorSetBrand}}</li><li>发电机功率(KW)：{{param.generatorSetPower}}</li>
+              <li>主机型号：{{param.hostBrandModel}}</li><li>齿轮箱品牌：{{param.gearBrand}}</li>
+              <li>齿轮箱型号：{{param.gearModel}}</li><li>发电机组品牌：{{param.generatorSetBrand}}</li>
+              <li>发电机组功率(KW)：{{param.generatorSetPower}}</li><li>发电机组型号：{{param.generatorSetBrandModel}}</li>
               <li>制冷机组品牌：{{param.refrigeratorBrand}}</li><li>制冷机组功率(KW)：{{param.refrigeratorPower}}</li>
-              <li>总吨位：{{param.totalTon}}</li><li>净吨位：{{param.netTon}}</li>
-              <li>完工日期：{{param.completeDate}}</li>
+              <li>船舶型宽(M)：{{param.width}}</li><li>船舶型深(M)：{{param.deep}}</li>
+			  <li>满载排水(L)：{{param.loadDisplacement}}</li><li>满载吃水(L)：{{param.loadDraught}}</li>
+			  <li>船舶定员：{{param.complement}}</li><li>船舶航速(M/S)：{{param.speed}}</li>
+			  <li>总吨位(吨)：{{param.totalTon}}</li><li>净吨位(吨)：{{param.netTon}}</li>
               <li v-for="item in paramList">
                 {{item.colNm}}：{{item.value}}
               </li>
@@ -44,7 +46,7 @@
           <featured :list="proList" :type="type"  v-if="!shipShow" /> -->
         </div>
         <!--仅船舶产品和船舶方案有下面的设备-->
-        <ship-equip v-if="type ==='ship' || shipShow" v-show="currentType ==='equip'" :id="currentId"></ship-equip>
+        <ship-equip v-show="currentType ==='equip'" :id="currentId" :types="types"></ship-equip>
         <certificate v-if="currentType ==='certificate'"></certificate>
         <!--监理建造-->
         <jianlijianzao v-show="currentType ==='service1'" ref="jianlijianzao"></jianlijianzao>
@@ -63,7 +65,7 @@
   import jianlijianzao from './pinzhibaozhang' //监理建造
   import jianyanjiance from '../personal/shipInfo/jianyanjiance' //检验检测
     export default {
-      props:['info','shipShow'],
+      props:['info','shipShow','types'],
       data(){
           return{
             currentId:'',

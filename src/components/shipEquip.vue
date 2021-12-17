@@ -10,12 +10,14 @@
 				<p><span>{{i.nm}}</span><i class="iconfont iconarrdown"></i></p>
 				<div v-if="i.check" class="box">
 					<p><span style="flex: 1.5;">序号</span><span>图片</span><span style="flex: 5;">名称</span>
-						<span>型号</span><span>供应商</span><span>备注</span>
+						<span>型号</span><span>数量</span><span>单位</span><span>价格</span><span>金额</span>
+						<span>供应商</span>
 					</p>
 					<p v-for="(z,y) in i.tabList" :key="y">
 						<span style="flex: 1.5;">{{y+1}}</span><span><img :src="z.imgUrl"></span>
-						<span style="flex: 5;">{{z.nm}}</span><span>{{z.deviceType}}</span>
-						<span>{{z.deviceSupply}}</span><span>{{z.rmks?z.rmks:'-'}}</span>
+						<span style="flex: 5;">{{z.nm}}</span><span>{{z.model}}</span>
+						<span>{{z.num}}</span><span>{{z.unit}}</span><span>{{fmoney(z.price)}}</span>
+						<span>{{z.price?fmoney(z.price*z.num):''}}</span><span>{{z.supplierNm}}</span>
 					</p>
 				</div>
 			</div>
@@ -25,7 +27,7 @@
 
 <script>
 	export default {
-		props: ['id'],
+		props: ['id','types'],
 		data() {
 			return {
 				index: 0,
@@ -42,6 +44,16 @@
 			this.getClassify()
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			async toCheck(k) {
 				if (this.list[this.index].equipList[k].check) {
 					this.list[this.index].equipList[k].check = false
@@ -55,10 +67,29 @@
 					})
 
 					let qry = this.query.new()
-					this.query.toW(qry, 'solutionId', this.id, 'EQ')
-					this.query.toW(qry, 'cid2', this.list[this.index].equipList[k].id, 'LK')
-					this.list[this.index].equipList[k].tabList = await this.api.designGoodsList(this.query.toEncode(
-						qry))
+					if(this.types==1) {
+						// 船舶设计详情进入
+						// this.query.toW(qry, 'solutionId', this.id, 'EQ')
+						this.query.toW(qry, 'cids', this.list[this.index].equipList[k].id, 'LK')
+						this.list[this.index].equipList[k].tabList = await this.api.designGoodsList(this.query.toEncode(
+							qry))
+					} else if(this.types==2) {
+						// 装备在线船舶详情进入
+						let data = {
+							id:this.id,
+							cid:this.list[this.index].equipList[k].id+''
+						}
+						this.list[this.index].equipList[k].tabList = await this.api.shipDetailEqupList(this.query.toEncode(
+							qry),data)
+					} else {
+						// 个人中心船舶档案进入
+						this.query.toW(qry, 'cids', this.list[this.index].equipList[k].id+'', 'LK')
+						let data = {
+							docsId:this.id
+						}
+						this.list[this.index].equipList[k].tabList = await this.api.fileDeviceList2(this.query.toEncode(
+							qry),data)
+					}
 					this.list[this.index].equipList[k].tabList.forEach(item => {
 						item.nm = item.nm.split('[')[0]
 					})
@@ -192,8 +223,13 @@
 				}
 
 				.box {
-					width: 100%;
+					width: auto;
 					overflow-y: auto;
+					p {
+						width: 900px;
+						display: flex;
+						align-items: center;
+					}
 				}
 			}
 		}

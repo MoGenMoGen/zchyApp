@@ -81,7 +81,7 @@
 <script>
     import myHeader from '@/components/myHeader'
     import tab from '@/components/tab'
-    import chooseClassify from '@/components/trade/choose'
+    import chooseClassify from '@/components/trade/choose2'
 	import search from '@/assets/img/search.png'
     import choose from '@/assets/img/trading/筛选.png'
 	import Vr from '@/assets/img/Vr.png'
@@ -229,14 +229,27 @@
                 if(this.currentType==32){
                     this.query.toO(qry,'origPrice','asc')
                 }
+				console.log(this.checkList)
                 if(this.checkList.length==0){
                     this.query.toW(qry,'tid',this.$store.state.shipId,'EQ')
-                }else if(this.checkList.length==1){
+                }else if(this.checkList[0]){
                     console.log(this.checkList)
                     this.query.toW(qry,'sid',this.checkList[0],'EQ')
-				}else if(this.checkList.length==2){
+				}else if(this.checkList[1]){
                     this.query.toW(qry,'catId',this.checkList[1],'EQ')
                 }
+				if(this.checkList.length>=3){
+				    this.query.toW(qry,'sailingAreaCd',this.checkList[2],'EQ')
+				}
+				if(this.checkList.length>=4){
+				    this.query.toW(qry,'hullMaterialCd',this.checkList[3],'EQ')
+				}
+				if(this.checkList.length>=5){
+				    this.query.toW(qry,'typesCd',this.checkList[4],'EQ')
+				}
+				if(this.checkList.length==6){
+				    this.query.toW(qry,'lengthCd',this.checkList[5],'EQ')
+				}
                 this.query.toW(qry,'nm',this.searchNm,'LK')
 				// this.query.toO(qry,'seq','desc')
 				this.query.toP(qry,this.pageNo,4)

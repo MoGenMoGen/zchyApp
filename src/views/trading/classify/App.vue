@@ -15,7 +15,8 @@
 				<div v-for="(item,index) in classifyAll[currentIndex].children" :key="index">
 					<b>{{item.nm}}</b>
 					<ul>
-						<li v-for="(v,i) in item.children" :key="i" @click="toList(item,v)" v-show="v.imgUrl">
+						<!-- v-show="v.imgUrl" -->
+						<li v-for="(v,i) in item.children" :key="i" @click="toList(item,v)" >
 							<van-image
 									height="1rem"
 									fit="cover"

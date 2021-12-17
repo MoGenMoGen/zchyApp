@@ -77,7 +77,7 @@
 
 			<!-- 详细描述/船舶设备 -->
 			<div class="detailBox">
-				<pro-detail :info="info" ref="shipDetail"></pro-detail>
+				<pro-detail :info="info" ref="shipDetail" types="2"></pro-detail>
 			</div>
 			<!--店铺信息-->
 			<shop-info :info="info"></shop-info>

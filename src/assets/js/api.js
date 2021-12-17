@@ -357,10 +357,14 @@ class api {
 		});
 	}
 
-
-
-
-
+	//船舶分类
+	shipClassify() {
+	  return new Promise(resolve => {
+	    get('/ds/open/goodsShipCat').then(res => {
+	      resolve(res.data)
+	    })
+	  })
+	}
 
 	//重点推荐商品列表
 	shopRecomdPro() {
@@ -949,9 +953,9 @@ class api {
 		});
 	}
 	//船舶详情的设备列表
-	shipDetailEqupList(param) {
+	shipDetailEqupList(query,param) {
 		return new Promise((resolve, reject) => {
-			get("/ds/open/shipDevice", param).then(res => {
+			get("/ds/open/shipDevice?query=" + query, param).then(res => {
 				resolve(res.data.list)
 			});
 		});
@@ -1000,6 +1004,14 @@ class api {
 	fileDeviceList(query, data) {
 		return new Promise(resolve => {
 			get("/ship/docsDevice/apis/pageShopDeviceNew?query=" + query, data).then(res => {
+				resolve(res.data.list)
+			})
+		})
+	}
+	//船舶设计方案  设备列表
+	fileDeviceList2(query,data) {
+		return new Promise(resolve => {
+			get("/ship/docsDevice/listTreeNode?query=" + query,data).then(res => {
 				resolve(res.data.list)
 			})
 		})
