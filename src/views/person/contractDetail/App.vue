@@ -39,7 +39,7 @@
           </van-row>
 
           <van-row class="row" type="flex">
-            <van-col span="6"><p>付款分期:</p></van-col>
+            <van-col span="6"><p>分期付款:</p></van-col>
             <van-col span="18"
               ><p>{{ info.installment }}</p></van-col
             >
@@ -80,7 +80,7 @@
             >
             <van-col span="2" offset="1"><img :src="item.img" /></van-col>
             <van-col span="10" offset="1"
-              ><p>{{ item.fileNm }}</p></van-col
+              ><p style="word-break: break-word;">{{ item.fileNm }}</p></van-col
             >
             <van-col span="4"
               ><p class="btn" @click="toDown(item)">下载</p></van-col
@@ -100,7 +100,7 @@
 		    >
 		    <van-col span="2" offset="1"><img :src="item.img" /></van-col>
 		    <van-col span="10" offset="1"
-		      ><p>{{ item.fileNm }}</p></van-col
+		      ><p style="word-break: break-word;">{{ item.fileNm }}</p></van-col
 		    >
 		    <van-col span="4"
 		      ><p class="btn" @click="toDown(item)">下载</p></van-col
@@ -195,7 +195,7 @@ export default {
       this.attachList.forEach((item) => {
         let type = item.split(".")[item.split(".").length - 1];
 
-        let nm = item.split("_")[1];
+        let nm = item.split("_")[1].split('.'+type)[0];
         console.log(nm);
         if (type == "pdf") {
           imgList.push({ url: item, img: this.pdf, fileNm: nm });
@@ -214,7 +214,7 @@ export default {
 	  this.billList.forEach((item) => {
 	    let type = item.split(".")[item.split(".").length - 1];
 	  
-	    let nm = item.split("_")[1];
+	    let nm = item.split("_")[1].split('.'+type)[0];
 	    console.log(nm);
 	    if (type == "pdf") {
 	      imgList2.push({ url: item, img: this.pdf, fileNm: nm });

@@ -656,6 +656,7 @@
 					this.toolList1.push(...this.toolList12)
 				} else if (this.currentRole.identityCd == 'identity40') { //监理监造机构
 					this.toolList1.push(...this.toolList13)
+					this.toolList1.splice(1,1)
 				} else if (this.currentRole.identityCd == 'identity50') { //检验检测机构
 					this.toolList1.push(...this.toolList14)
 				} else if (this.currentRole.identityCd == 'identity60') { //供应商

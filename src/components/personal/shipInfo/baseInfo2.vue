@@ -47,16 +47,16 @@
 
     <van-row class="row" type="flex" align="center">
       <van-col span="10" > <p class="row-img"><img class="icon" :src="zizhizhengshu">设计资质证书:</p></van-col>
-      <van-col span="14" ><img class="pre" :src="info.qualification"></van-col>
+      <van-col span="14" v-show="info.qualification"><img class="pre" :src="info.qualification"></van-col>
 
     </van-row>
 
-    <van-row class="row" type="flex" align="center">
+    <!-- <van-row class="row" type="flex" align="center">
       <van-col span="10" > <p class="row-img"><img class="icon" :src="shenfenzheng">法人身份证:</p></van-col>
       <van-col span="6" ><img class="pre2" :src="info.idCard"></van-col>
       <van-col span="6" ><img class="pre2" :src="info.idCardReverse"></van-col>
 
-    </van-row>
+    </van-row> -->
 
 
 
