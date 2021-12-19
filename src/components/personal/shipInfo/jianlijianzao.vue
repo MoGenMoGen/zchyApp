@@ -33,10 +33,10 @@
 						</van-cell-group>
 					</div>
 					<div class="list">
-						<van-field readonly clickable label="监理时间" :value="value4" placeholder="选择监理时间"
+						<van-field readonly clickable label="时间" :value="value4" placeholder="选择时间"
 							@click="showPickerFour = true" />
 						<van-popup v-model="showPickerFour" round position="bottom">
-							<van-datetime-picker v-model="currentDate" type="datetime" title="选择监理时间"
+							<van-datetime-picker v-model="currentDate" type="datetime" title="选择时间"
 								@confirm='confirmTime' @cancel='cancelTime' />
 						</van-popup>
 					</div>

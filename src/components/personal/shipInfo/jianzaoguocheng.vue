@@ -1,7 +1,74 @@
 <template>
 <!--  建造流程-->
   <div>
-
+<van-overlay :show="show" @click="closeMask">
+			<div class="wrapper" @click.stop>
+				<div class="block">
+					<p style="text-align: center;font-size: 0.3rem;margin-top: 0.2rem;">新增</p>
+					<div class="list">
+						<van-field readonly clickable label="分类" :value="value1" placeholder="选择分类"
+							@click="showPickerOne = true" />
+						<van-popup v-model="showPickerOne" round position="bottom">
+							<van-picker show-toolbar :columns="tabList" @cancel="showPickerOne = false"
+								@confirm="onConfirmOne" value-key='nm' />
+						</van-popup>
+					</div>
+					<div class="list">
+						<van-field readonly clickable label="建造过程" :value="value2" placeholder="选择分类"
+							@click="showPickerTwo = true" />
+						<van-popup v-model="showPickerTwo" round position="bottom">
+							<van-picker show-toolbar :columns="tabListTwo" @cancel="showPickerTwo = false"
+								@confirm="onConfirmTwo" value-key='nm' />
+						</van-popup>
+					</div>
+					<div class="list">
+						<van-cell-group>
+							<van-field v-model="value3" label="标题" placeholder="请输入标题" />
+						</van-cell-group>
+					</div>
+					<div class="list">
+						<van-field readonly clickable label="建造单位" :value="value4" placeholder="选择分类"
+							@click="showPickerFour = true" />
+						<van-popup v-model="showPickerFour" round position="bottom">
+							<van-picker show-toolbar :columns="tabListTwo" @cancel="showPickerFour = false"
+								@confirm="onConfirmFour" value-key='nm' />
+						</van-popup>
+					</div>
+					<div class="list">
+						<van-field readonly clickable label="时间" :value="value5" placeholder="选择时间"
+							@click="showPickerFive = true" />
+						<van-popup v-model="showPickerFive" round position="bottom">
+							<van-datetime-picker v-model="currentDate" type="datetime" title="选择时间"
+								@confirm='confirmTime' @cancel='cancelTime' />
+						</van-popup>
+					</div>
+					<div class="list" style="display: flex; margin: 0.2rem 0;">
+										<div class="listTitle" style="margin-left: 0.3rem;
+					width: 6.7em;">上传图片</div>
+										<van-uploader v-model="imgList" :after-read="afterRead" :before-delete="deleteImg" />
+					</div>
+					<div class="list" style="display: flex; margin: 0.2rem 0;">
+						<div class="listTitle" style="margin-left: 0.3rem;
+					width: 6.7em;">上传文档</div>
+						<van-uploader v-model="fileList" :after-read="afterReadFile"
+							:before-delete="deleteFile">
+							<div
+								style="width:1.6rem; height:0.6rem; background-color:#2778be;text-align: center;line-height: 0.6rem;color: #ffffff;">
+								选择文档
+							</div>
+						</van-uploader>
+					</div>
+					<div class="bottomBtn">
+						<div class="leftBtn" @click="cancel">
+							取消
+						</div>
+						<div class="rightBtn" @click="save">
+							保存
+						</div>
+					</div>
+				</div>
+			</div>
+</van-overlay>
     <ul class="tab">
       <li v-for="item in tabList" :key="item.id" @click="toChoose(item)" >
         <p :class="{tabAct:tabId==item.id}">{{item.nm}}</p>
@@ -43,7 +110,9 @@
       </div>
 
     </div>
-
+<!-- <div class="addNew" v-if="currentRole.identityCd=='identity40'" @click="addNew">
+			新增
+		</div> -->
   </div>
 
 </template>
@@ -53,7 +122,7 @@
         name: "fangansheji",
         data(){
             return{
-
+			show:false,
               excel:'https://sinovat.oss-cn-shanghai.aliyuncs.com/d7d5b731fcd64503a193bb8f0a8aab12_excel.png',
               ppt: 'https://sinovat.oss-cn-shanghai.aliyuncs.com/62b4c359ffb345a49fcadaffc98b9987_ppt.png',
               word:'https://sinovat.oss-cn-shanghai.aliyuncs.com/6bb0f58d475c4f18ab606556eca76033_word.png',
@@ -65,6 +134,19 @@
               tabList:[],
               tabId:'',
               catCd:'',
+			  value1:'',
+			  value1Cd:'',
+			  showPickerOne:false,
+			  value2:'',
+			  value2Cd:'',
+			  showPickerTwo:false,
+			  tabListTwo:[],
+			  value3:'',
+			  value4:'',
+			  value4Cd:'',
+			  showPickerFour:false,
+			  
+			  
             }
         },
         mounted() {
@@ -79,6 +161,28 @@
           }
         },
         methods:{
+			onConfirmOne(val) {
+				this.value1 = val.nm
+				this.value1Cd = val.cd
+				this.showPickerOne = false
+			},
+			onConfirmTwo(val){
+				this.value2 = val.nm
+				this.value2Cd = val.cd
+				this.showPickerTwo = false
+			},
+			cancel(){
+				this.closeMask()
+			},
+			save(){
+				this.closeMask()
+			},
+			closeMask(){
+				this.show=false
+			},
+			addNew() {
+				this.show = true
+			},
           toChoose(item){
             if(item.id!=this.tabId){
               this.tabId=item.id
@@ -118,9 +222,75 @@
 
     }
 </script>
+<style lang="less">
+	.van-cell {
+		margin-top: 0.2rem;
+	}
 
+	.van-cell::after {
+		border-bottom: 0;
+	}
+
+	.van-hairline--top-bottom::after,
+	.van-hairline-unset--top-bottom::after {
+		border-width: 0
+	}
+
+	.van-uploader__wrapper {
+		max-width: 4rem;
+	}
+</style>
 <style scoped lang="less">
-
+.addNew {
+		width: 100%;
+		height: 1rem;
+		background-color: #2778BE;
+		text-align: center;
+		line-height: 1rem;
+		font-size: 0.28rem;
+		color: #FFFFFF;
+		position: fixed;
+		bottom: 0;
+	}
+		.wrapper {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 1.5rem auto;
+		
+			width: 80%;
+			height: 80%;
+		
+			.block {
+				width: 100%;
+				height: 100%;
+				background-color: #fff;
+				overflow: scroll;
+				.bottomBtn{
+					margin-top: 0.4rem;
+					padding-bottom: 0.6rem;
+					display: flex;
+					width: 100%;
+					justify-content: space-around;
+					.leftBtn{
+						width: 1.2rem;
+						height: 0.8rem;
+						text-align: center;
+						line-height: 0.8rem;
+						background-color: #ffffff;
+						border: 1px solid #cccccc;
+					}
+					.rightBtn{
+						width: 1.2rem;
+						height: 0.8rem;
+						text-align: center;
+						line-height: 0.8rem;
+						background-color: #2778BE;
+						color: #ffffff;
+					}
+				}
+			}
+		}
 
   .tab{
     display: flex;
