@@ -63,7 +63,7 @@
 <!--                 商品列表   width: 90%;padding: 0.2rem 0;-->
                     <van-row class="row" align="center" >
                         <van-row   type="flex" v-for="j in item.itms" :key="j.id">
-                            <van-col span="8" ><img style="border-radius: 5px" :src="j.goodsImgUrl.split(',')[0]"></van-col>
+                            <van-col span="8" ><img style="border-radius: 5px" :src="j.goodsImgUrl.split(',')[0]" v-if="j.goodsImgUrl"></van-col>
                             <van-col span="16" style="display: flex;flex-direction: column;box-sizing: border-box">
                                 <van-row class="row" align="center" justify="space-between" type="flex">
                                     <van-col span="16"><p style="text-align: left">{{j.goodsNm}}</p></van-col>
