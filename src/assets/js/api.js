@@ -2425,6 +2425,22 @@ class api {
 		})
 	  })
 	}
+	//个人中心-建造流程删除
+	buildDeptDel(id) {
+	  return new Promise(resolve => {
+	    get("/ship/docsBuild/apis/del?ids=" + id).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
+	//个人中心-建造流程修改
+	buildDeptUpd(data) {
+	  return new Promise(resolve => {
+	    post("/ship/docsBuild/apis/upd", data).then(res => {
+	      resolve(res)
+	    })
+	  })
+	}
 }
 
 

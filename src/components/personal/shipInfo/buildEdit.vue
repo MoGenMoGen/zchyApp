@@ -19,6 +19,21 @@
 			</div>
 			<div class="rich" v-if="item.show">
 				<!-- <p v-html="item.attachment"></p> -->
+				<div class="topBtn" v-if="item.audit==2">
+					<div>审核已通过</div>
+				</div>
+				<div class="topBtn" v-if="item.audit==1">
+					<div>待审核</div>
+					<div class="btnLeft"  @click="toDelete(item)">
+						删除
+					</div>
+					<div class="btnRight" @click="toModify(item)">
+						修改
+					</div>
+				</div>
+				<div class="topBtn" v-if="item.audit==3">
+					<div>未通过</div>
+				</div>
 				<p>{{item.nm}}报告：</p>
 				<div class="imgBox">
 					<img :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1">
@@ -35,13 +50,13 @@
 		<van-overlay :show="show" @click="closeMask">
 			<div class="wrapper" @click.stop>
 				<div class="block">
-					<p style="text-align: center;font-size: 0.3rem;margin-top: 0.2rem;">新增</p>
+					<p style="text-align: center;font-size: 0.3rem;margin-top: 0.2rem;">{{flag}}</p>
 					<van-row class="row" align="center" type="flex">
 						<van-col span="7">
 							<p>文件类型：</p>
 						</van-col>
 						<van-col span="17">
-							<mob-select text="nm" :list="tabList" @change="chooseActCd"></mob-select>
+							<mob-select ref="mobSelect" :list="tabList" @change="chooseActCd"></mob-select>
 						</van-col>
 					</van-row>
 					<van-row class="row" align="center" type="flex">
@@ -49,25 +64,25 @@
 							<p>过程选择：</p>
 						</van-col>
 						<van-col span="17">
-							<mob-select text="nm" :list="progressList" @change="choosePos"></mob-select>
+							<mob-select ref="mobSelect1" text="nm" :list="progressList" @change="choosePos"></mob-select>
 						</van-col>
 					</van-row>
 
-					<van-row class="row" type="flex">
+					<!-- <van-row class="row" type="flex">
 						<van-col span="7">
 							<p>过程说明：</p>
 						</van-col>
 						<van-col span="17">
 							<textarea v-model="form.description" placeholder="请输入过程说明"></textarea>
 						</van-col>
-					</van-row>
+					</van-row> -->
 
 					<van-row class="row" align="center" type="flex">
 						<van-col span="7">
 							<p>完成时间：</p>
 						</van-col>
 						<van-col span="17">
-							<cal-common @change="getCal"></cal-common>
+							<cal-common ref="calCommon" @change="getCal"></cal-common>
 						</van-col>
 					</van-row>
 
@@ -76,7 +91,7 @@
 							<p>上传图片：</p>
 						</van-col>
 						<van-col span="17">
-							<van-uploader v-model="imgList" multiple :after-read="afterRead1" />
+							<van-uploader v-model="imgList" multiple :after-read="afterRead1" :before-delete="deleteImg"/>
 						</van-col>
 					</van-row>
 
@@ -85,17 +100,17 @@
 							<p>上传文件：</p>
 						</van-col>
 						<van-col span="17">
-							<van-uploader v-model="fileList" multiple :after-read="afterRead2" />
+							<van-uploader v-model="fileList" multiple :after-read="afterRead2" :before-delete="deleteFile"/>
 						</van-col>
 					</van-row>
-					<van-row class="row" type="flex" align="center">
+					<!-- <van-row class="row" type="flex" align="center">
 						<van-col span="24">
 							<p v-for="j in info.fileList" class="fileList">
 								<img :src="j.img">
 								<span>{{j.fileNm}}</span>
 							</p>
 						</van-col>
-					</van-row>
+					</van-row> -->
 
 					<van-row class="row" type="flex">
 						<van-col span="24">
@@ -115,6 +130,7 @@
 </template>
 
 <script>
+	import { Notify } from 'vant';
 	import calCommon from "../calCommon";
 	import mobSelect from "../../../components/personal/shipInfo/mobSelect";
 	import {
@@ -168,7 +184,10 @@
 				tabId: '',
 				catCd: '',
 				show:false,
-
+				flag: '',
+				formId: '',
+				fileListUpd: [],
+				imgListUpd: []
 			}
 		},
 		watch: {
@@ -207,7 +226,13 @@
 				this.form.shipyardId=""
 				this.form.shipyardNm=""
 				this.form.seq=""
+				this.imgList = []
+				this.fileList = []
+				this.$refs.calCommon.text = ''
+				this.$refs.mobSelect.name = ''
+				this.$refs.mobSelect1.name = ''
 				this.show = true
+				this.flag = '新增'
 			},
 			async getList(cd) {
 				this.currentRole = JSON.parse(this.until.loGet('currentRole'))
@@ -308,69 +333,114 @@
 				this.form.shipyardNm = this.currentRole.company
 				this.form.fileUrl = ''
 				this.form.imgUrl = ''
-				if (this.fileList.length > 0) {
-					this.fileList.forEach(item => {
-						this.form.fileUrl = this.form.fileUrl + item.url + ","
-					})
-					this.form.fileUrl = this.form.fileUrl.substring(0, this.form.fileUrl.lastIndexOf(','));
-				} else {
-					this.form.fileUrl = ''
+				console.log(this.fileListUpd,this.imgListUpd)
+				if (this.fileListUpd.length > 0) {
+					this.form.fileUrl = this.fileListUpd.join(",")
 				}
 
-				if (this.imgList.length > 0) {
-					this.imgList.forEach(item => {
-						this.form.imgUrl = this.form.imgUrl + item.url + ","
-					})
-					this.form.imgUrl = this.form.imgUrl.substring(0, this.form.imgUrl.lastIndexOf(','));
-				} else {
-					this.form.imgUrl = ''
+				if (this.imgListUpd.length > 0) {
+					this.form.imgUrl = this.imgListUpd.join(",")
 				}
 				console.log(this.form)
-				this.api.buildDeptAdd(this.form).then((res) => {
-					this.show=false
-					Toast("操作成功")
-
-					setTimeout(() => {
-						this.getList(this.catCd) //刷新数据
-					}, 1500)
-
-				})
-
-
+				if(this.flag=='新增') {
+					this.api.buildDeptAdd(this.form).then((res) => {
+						this.show=false
+						Toast("操作成功")
+						setTimeout(() => {
+							this.getList(this.catCd) //刷新数据
+						}, 1500)
+					})
+				} else if (this.flag == '修改') {
+					this.form.id = this.formId
+					this.api.buildDeptUpd(this.form).then((res) => {
+						this.show=false
+						Toast("操作成功")
+						setTimeout(() => {
+							this.getList(this.catCd) //刷新数据
+						}, 1500)
+					})
+				}
 			},
-
+			toDelete(item) {
+				this.api.buildDeptDel(item.id).then(res=>{
+				   this.getList(this.catCd)
+				   Notify({ type: 'success', message: '删除成功' });
+				})
+			},
+			deleteImg(file, detail) {
+				this.imgListUpd.splice(detail.index, 1);
+				this.imgList.splice(detail.index, 1);
+				console.log(this.imgListUpd);
+			},
+			deleteFile(file, detail) {
+				this.fileListUpd.splice(detail.index, 1);
+				this.fileList.splice(detail.index, 1);
+				console.log(this.fileListUpd);
+			},
+			toModify(item) {
+				console.log(item)
+				this.imgList = []
+				this.fileList = []
+				this.show = true
+				this.flag = '修改'
+				this.form.nm=item.nm
+				this.form.docsId=item.docsId
+				this.form.catCd=item.catCd
+				this.form.cd=item.cd
+				this.form.actDt=item.actDt
+				this.form.shipyardId=item.shipyardId
+				this.form.shipyardNm=item.shipyardNm
+				this.form.seq=item.seq
+				this.$refs.calCommon.text = item.actDt
+				this.$refs.mobSelect.name = item.catNm
+				this.$refs.mobSelect1.name = item.nm
+				this.formId = item.id
+				this.imgListUpd = []
+				this.fileListUpd = []
+				if(item.imgUrl.length>0) {
+					item.imgUrl.forEach(item1=> {
+						let obj = new Object();
+						obj.url = item1;
+						this.imgList.push(obj)
+					});
+					this.imgListUpd = item.imgUrl
+				}
+				if(item.fileUrl.length>0){
+					item.fileUrl.forEach(item1 => {
+						this.fileList.push({
+							file : new File([], item1.fileNm, {}),
+							url: item1.url
+						})
+						this.fileListUpd.push(item1.url)
+					})
+				}
+			},
 			//上传图片，一张图片返回对象，多张图片返回数组
-			afterRead1(e) {
-				console.log(e)
-				this.imgList.forEach(item => {
-					if (item.status != "done") {
-						item.status = "uploading"
-						this.api.uploadImg2(item.file).then(res => {
-							item.status = "done"
-							item.url = res
-							console.log("上传成功返回")
-							console.log(res)
-						})
-					}
-
-				})
-
+			afterRead1(file) {
+				file.status = 'uploading';
+				file.message = '上传中...'
+				let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+				formData.append("file", file.file); //接口需要传的参数
+				this.api.uploadImg4(formData).then((res) => {
+					console.log(res, 111111);
+					file.status = 'success';
+					file.message = '上传成功'
+					this.imgListUpd.push(res);
+					console.log(this.imgListUpd)
+				});
 			},
-			afterRead2(e) {
-				console.log(e)
-				this.fileList.forEach(item => {
-					if (item.status != "done") {
-						item.status = "uploading"
-						this.api.uploadImg2(item.file).then(res => {
-							item.status = "done"
-							item.url = res
-							console.log("上传成功返回")
-							console.log(res)
-						})
-					}
-
-				})
-
+			afterRead2(file) {
+				file.status = 'uploading';
+				file.message = '上传中...'
+				let formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+				formData.append("file", file.file); //接口需要传的参数
+				this.api.uploadImg4(formData).then((res) => {
+					console.log(res, 111111);
+					file.status = 'success';
+					file.message = '上传成功'
+					this.fileListUpd.push(res);
+					console.log(this.fileListUpd)
+				});
 			},
 			async getDic() {
 				this.progressList = await this.api.dataDictionary('DOCS_BUILD_SHIP_PROCESS')
@@ -594,7 +664,34 @@
 
 		.rich {
 			padding: 24px 28px;
-
+			.topBtn{
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding:0 0.6rem 0.3rem;
+				.btnLeft{
+					width: 1rem;
+					height: 0.52rem;
+					background: rgba(245, 115, 19, 0);
+					border: 1px solid #C8C8C8;
+					border-radius: 0.26rem;
+					text-align: center;
+					line-height: 0.52rem;
+					font-size: 0.24rem;
+					color: #909090;
+				}
+				.btnRight{
+					width: 1rem;
+					height: 0.52rem;
+					background: rgba(245, 115, 19, 0);
+					border: 1px solid #2778BE;
+					border-radius: 0.26rem;
+					text-align: center;
+					line-height: 0.52rem;
+					font-size: 0.24rem;
+					color: #2778BE;
+				}
+			}
 			.desc {
 				color: #666666;
 			}
