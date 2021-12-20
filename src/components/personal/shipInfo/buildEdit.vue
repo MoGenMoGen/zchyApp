@@ -18,12 +18,15 @@
 
 			</div>
 			<div class="rich" v-if="item.show">
-				<p v-html="item.attachment"></p>
+				<!-- <p v-html="item.attachment"></p> -->
 				<p>{{item.nm}}报告：</p>
 				<div class="imgBox">
 					<img :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1">
 				</div>
-
+				<div v-for="(item1,index1) in item.fileUrl" class="fileList">
+					<img :src="item1.img" :key="index1">
+					<span>{{item1.fileNm}}</span>
+				</div>
 			</div>
 
 		</div>
@@ -33,7 +36,14 @@
 			<div class="wrapper" @click.stop>
 				<div class="block">
 					<p style="text-align: center;font-size: 0.3rem;margin-top: 0.2rem;">新增</p>
-
+					<van-row class="row" align="center" type="flex">
+						<van-col span="7">
+							<p>文件类型：</p>
+						</van-col>
+						<van-col span="17">
+							<mob-select text="nm" :list="tabList" @change="chooseActCd"></mob-select>
+						</van-col>
+					</van-row>
 					<van-row class="row" align="center" type="flex">
 						<van-col span="7">
 							<p>过程选择：</p>
@@ -63,7 +73,7 @@
 
 					<van-row class="row" type="flex">
 						<van-col span="7">
-							<p>上传附件：</p>
+							<p>上传图片：</p>
 						</van-col>
 						<van-col span="17">
 							<van-uploader v-model="imgList" multiple :after-read="afterRead1" />
@@ -115,12 +125,12 @@
 		props: {
 			title: {
 				type: String,
-				default: '设计'
+				default: '建造'
 			},
-			flowCd: {
-				type: Number,
-				default: 1
-			},
+			// flowCd: {
+			// 	type: Number,
+			// 	default: 1
+			// },
 		},
 		components: {
 			calCommon,
@@ -137,18 +147,16 @@
 				currentRole: {},
 				progressList: [], //过程列表
 				form: {
-					cd: '',
-					id: '',
+					nm:"",
 					docsId: "",
-					designFlowCd: "",
-					description: "",
+					catCd:"",
+					cd:"",
+					actDt:"",
 					imgUrl: "",
-					attachment: "",
+					fileUrl: "",
 					shipyardId: "",
 					shipyardNm: "",
-					completeTm: '',
-					seq: "",
-					nm: "",
+					seq:"",
 				},
 				info: {},
 				list: [],
@@ -164,14 +172,14 @@
 			}
 		},
 		watch: {
-			flowCd: {
-				handler(newVal) {
-					this.getInfo()
-				},
+			// flowCd: {
+			// 	handler(newVal) {
+			// 		this.getInfo()
+			// 	},
 
-				deep: true,
-				immediate: true,
-			},
+			// 	deep: true,
+			// 	immediate: true,
+			// },
 			catCd(newVal, oldVal) {
 				console.log("监听变化。。" + newVal)
 				this.listInfo = []
@@ -187,17 +195,18 @@
 		methods: {
 			closeMask(){
 				this.show=false
-				this.form.designFlowCd=''
-				this.form.description=''
-				this.form.imgUrl=''
-				this.form.attachment=''
-				this.form.shipyardId=''
-				this.form.shipyardNm=''
-				this.form.seq=''
-				this.form.nm=''
-				
 			},
 			addNew() {
+				this.form.nm=""
+				this.form.docsId=""
+				this.form.catCd=""
+				this.form.cd=""
+				this.form.actDt=""
+				this.form.imgUrl=""
+				this.form.fileUrl=""
+				this.form.shipyardId=""
+				this.form.shipyardNm=""
+				this.form.seq=""
 				this.show = true
 			},
 			async getList(cd) {
@@ -211,9 +220,62 @@
 					if (item.imgUrl) {
 						item.imgUrl = item.imgUrl.split(',')
 					}
-					if (item.attachment) {
-						item.attachment = this.until.imgTagAddStyle(item.attachment)
+					// if (item.attachment) {
+					// 	item.attachment = this.until.imgTagAddStyle(item.attachment)
+					// }
+					let fileList2 = []
+					if (item.fileUrl) {
+						item.fileUrl.split(",").forEach(v => {
+							let type = v.split('.')[v.split('.').length - 1]
+							// let nmList = v.split('.com/') //分割出url后的内容
+							let nm = ""
+							// nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+							// 	if (z != 0) {
+							// 		nm += j
+							// 	}
+							// })
+							let nmList = v.split('_') //分割随机字符后的内容
+							nmList.forEach((j, z) => { //防止文件名中有 - 所以循环
+								if (z != 0) {
+									nm += j
+								}
+							})
+							nm = nm.split('.' + type)[0]
+							console.log(nm)
+							if (type == 'pdf') {
+								fileList2.push({
+									url: v,
+									img: this.pdf,
+									'fileNm': nm
+								})
+							} else if (type == 'doc' || type == 'docx') {
+								fileList2.push({
+									url: v,
+									img: this.word,
+									'fileNm': nm
+								})
+							} else if (type == 'ppt' || type == 'pptx') {
+								fileList2.push({
+									url: v,
+									img: this.ppt,
+									'fileNm': nm
+								})
+							} else if (type == 'xls' || type == 'xlsx') {
+								fileList2.push({
+									url: v,
+									img: this.excel,
+									'fileNm': nm
+								})
+							} else {
+								fileList2.push({
+									url: v,
+									img: v,
+									'fileNm': nm
+								})
+							}
+						})
 					}
+					item.fileUrl = fileList2
 				})
 				console.log(data)
 				this.listInfo = data
@@ -234,22 +296,25 @@
 			choosePos(e) {
 				this.form.cd = e.cd
 				this.form.nm = e.nm
-
+				this.form.seq = e.busSeq
+			},
+			chooseActCd(e) {
+				this.form.catCd = e.cd
 			},
 			//提交
 			submit() {
 				this.form.docsId = this.until.getQueryString('id')
 				this.form.shipyardId = this.currentRole.id
 				this.form.shipyardNm = this.currentRole.company
-				this.form.attachment = ''
+				this.form.fileUrl = ''
 				this.form.imgUrl = ''
 				if (this.fileList.length > 0) {
 					this.fileList.forEach(item => {
-						this.form.attachment = this.form.attachment + item.url + ","
+						this.form.fileUrl = this.form.fileUrl + item.url + ","
 					})
-					this.form.attachment = this.form.attachment.substring(0, this.form.attachment.lastIndexOf(','));
+					this.form.fileUrl = this.form.fileUrl.substring(0, this.form.fileUrl.lastIndexOf(','));
 				} else {
-					this.form.attachment = ''
+					this.form.fileUrl = ''
 				}
 
 				if (this.imgList.length > 0) {
@@ -262,10 +327,11 @@
 				}
 				console.log(this.form)
 				this.api.buildDeptAdd(this.form).then((res) => {
-					Toast("修改成功")
+					this.show=false
+					Toast("操作成功")
 
 					setTimeout(() => {
-						this.getInfo() //刷新数据
+						this.getList(this.catCd) //刷新数据
 					}, 1500)
 
 				})
@@ -440,7 +506,6 @@
 <style scoped lang="less">
 	.baseInfo2 {
 		padding: 0 0.2rem;
-
 		.addNew {
 			width: 100%;
 			height: 1rem;
@@ -498,7 +563,7 @@
 			font-size: 0.24rem;
 			height: 40px;
 			color: #666666;
-			padding: 0 28px;
+			padding: 0 0.1rem;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -532,6 +597,17 @@
 
 			.desc {
 				color: #666666;
+			}
+			.fileList {
+				display: flex;
+				align-items: center;
+				margin-bottom: 0.2rem;
+			
+				img {
+					width: 0.4rem;
+					margin-right: 0.2rem;
+			
+				}
 			}
 		}
 

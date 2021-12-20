@@ -29,7 +29,7 @@
         this.getEditConts(html)
       }
 
-      let baseUrl='https://www.sinovatocean.com'
+      let baseUrl='https://www.ship88.cn'
       this.editor.customConfig.uploadImgServer = `${baseUrl}/general/oss/upload`
       // let baseUrl = process.env.NODE_ENV !== 'production'  ? '/api/' : config.serverUrl
 
@@ -71,30 +71,30 @@
        */
 
 
-      this.editor.customConfig.lang = {
-        '设置标题': 'title',
-        '正文': 'p',
-        '链接文字': 'link text',
-        '链接': 'link',
-        '上传图片': 'upload image',
-        '上传': 'upload',
-        '创建': 'init',
-        '网络图片':'network picture',
-        '对齐方式':'Alignment mode',
-        '靠左':'left',
-        '居中':'center',
-        '靠右':'right',
-        '插入表格':'Insert form',
-        '插入视频':'Insert video',
-        '插入':'insert',//插入要放在插入视频后边，否则会转换不全
-        '背景色':'background',
-        '文字颜色':'font color',
-        '设置列表':'Set list',
-        '有序列表':'Ordered list',
-        '无序列表':'Unordered list',
+      // this.editor.customConfig.lang = {
+      //   '设置标题': 'title',
+      //   '正文': 'p',
+      //   '链接文字': 'link text',
+      //   '链接': 'link',
+      //   '上传图片': 'upload image',
+      //   '上传': 'upload',
+      //   '创建': 'init',
+      //   '网络图片':'network picture',
+      //   '对齐方式':'Alignment mode',
+      //   '靠左':'left',
+      //   '居中':'center',
+      //   '靠右':'right',
+      //   '插入表格':'Insert form',
+      //   '插入视频':'Insert video',
+      //   '插入':'insert',//插入要放在插入视频后边，否则会转换不全
+      //   '背景色':'background',
+      //   '文字颜色':'font color',
+      //   '设置列表':'Set list',
+      //   '有序列表':'Ordered list',
+      //   '无序列表':'Unordered list',
 
-        // 还可自定添加更多
-      }
+      //   // 还可自定添加更多
+      // }
 
 
 

@@ -110,7 +110,7 @@
 
 			<div v-for="(item, index) in list" :key="index">
 				<div class="title" @click="item.show = !item.show">
-					<span>{{ item.title }}（ 时间 : {{ item.actDt }} ）</span>
+					<span style="max-width: 70%;display: block;">{{ item.title }}（ 时间 : {{ item.actDt }} ）</span>
 					<p>
 						<span style="color: #2778be; font-weight: bold">检验完成</span>
 						<img :src="arrowDown" v-if="item.show" />
@@ -796,14 +796,12 @@
 		&:hover {
 			cursor: pointer;
 		}
-
 		p:nth-of-type(1) {
 			display: flex;
 			align-items: center;
-
 			img {
-				width: 12px;
-				margin-left: 25px;
+				width: 0.24rem;
+				margin-left: 0.25rem;
 			}
 		}
 	}

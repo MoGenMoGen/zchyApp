@@ -149,9 +149,7 @@
     padding:  0 0.2rem;
     .rich-cont{
       width: 100%;
-
-
-
+	  overflow: auto;
     }
     .row{
       font-size: 0.29rem;

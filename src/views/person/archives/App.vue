@@ -30,7 +30,7 @@
           <biangeng />
         </div>
 
-        <div style="padding-bottom: 0.2rem" v-if="!showWeiBao && !showYunXing">
+        <div style="padding-bottom: 0.2rem;margin-bottom: 1rem;" v-if="!showWeiBao && !showYunXing">
           <base-info1 v-if="tab2Id == 20" :info="shipBaseInfo1"></base-info1>
           <ship-equip :id="id" v-if="tab2Id == 21"></ship-equip>
           <certificate v-if="tab2Id == 22"></certificate>
