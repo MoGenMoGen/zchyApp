@@ -207,7 +207,7 @@
 
 
                         <div class="row-bottom">
-
+							<p  class="commonButton3" @click.stop="confirmGoods(item)">确认收货</p>
                             <p  class="commonButton" @click.stop="trace(item)">查看物流</p>
                             <p  class="commonButton2" @click.stop="toOrderDetail(item)">订单详情</p>
                         </div>

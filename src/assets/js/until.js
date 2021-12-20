@@ -329,7 +329,8 @@ class until{
     let hour = myDate.getHours();
     let minute = myDate.getMinutes();
     let second = myDate.getSeconds();
-    return year + "-" + this.formatTen(month) + "-" + this.formatTen(day);
+    return year + "-" + this.formatTen(month) + "-" + this.formatTen(day) + " " + this.formatTen(hour) + ":" + this.formatTen(minute) +
+      ":" + this.formatTen(second);
   }
   formatTimeTwo() {
     let myDate = new Date()

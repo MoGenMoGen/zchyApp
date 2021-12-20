@@ -151,9 +151,11 @@
 				
 			},
 			getData(){
+			  let nowTm = this.until.formatTime(new Date())
 			  let qry = this.query.new()
 			  this.query.toW(qry,'bidId',this.id,'EQ')
 			  this.query.toO(qry,'afficheTypeCd','esc')
+			  this.query.toW(qry, 'releTm', nowTm, 'LT')
 			  this.api.getBidAfficheList2(this.query.toEncode(qry)).then(res => {
 			    res.data.list.forEach(item => {
 			      item.releTmTwo= item.releTm.substring(0,10)

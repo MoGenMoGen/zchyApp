@@ -164,6 +164,10 @@
 </script>
 
 <style>
+	div * {
+	  user-select: text;
+	  -webkit-user-select:text;
+	}
   /*适配移动端*/
   .w-e-toolbar{
     flex-wrap: wrap;
