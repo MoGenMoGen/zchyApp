@@ -56,7 +56,7 @@
 							<p>文件类型：</p>
 						</van-col>
 						<van-col span="17">
-							<mob-select ref="mobSelect" :list="tabList" @change="chooseActCd"></mob-select>
+							<mob-select ref="mobSelect" text="nm" :list="tabList" @change="chooseActCd"></mob-select>
 						</van-col>
 					</van-row>
 					<van-row class="row" align="center" type="flex">
