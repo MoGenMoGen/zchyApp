@@ -151,12 +151,11 @@
         watch:{
             currentSku() {
                 this.currentInfo = this.info.skus.find(item => item.skuId == this.currentSku)
-					if (this.currentInfo && this.currentInfo.shipId) {
-						console.log('一级')
-
-						this.$refs.shipDetail.getInfo(this.currentInfo.shipId)
-					}
-                },
+				if (this.currentInfo && this.currentInfo.shipId) {
+					console.log('一级')
+					this.$refs.shipDetail.getInfo(this.currentInfo.shipId)
+				}
+			},
         },
         created(){
         },
@@ -212,7 +211,11 @@
 				let currentData = this.info.skus.find(item=>{
 				    return item.stock && item.stock>0
 				})
-                this.currentSku = currentData.skuId
+				if(currentData) {
+					this.currentSku = currentData.skuId
+				} else {
+					this.currentSku = this.info.skus[0].skuId
+				}
 
                 this.specs = this.info.attrs
 				if(!this.info.ship){

@@ -14,11 +14,11 @@
 	  >
 		  <!--自定义价格-->
 		  <template #sku-header-price="props">
-			  <div class="van-sku__goods-price"  v-show="props.price!=price">
+			  <div class="van-sku__goods-price"  v-show="props.price&&props.price!=price">
 				  <span class="van-sku__price-symbol">￥</span>
 				  <span class="van-sku__price-num">{{ fmoney(props.price) }}</span>
 			  </div>
-			  <div class="van-sku__goods-price"  v-show="props.price==price">
+			  <div class="van-sku__goods-price"  v-show="!props.price||props.price==price">
 				  价格面议
 			  </div>
 		  </template>
@@ -249,6 +249,7 @@
 
     },
 	  created(){
+		  console.log(this.props.price,this.price)
         this.$store.commit('cartNum',this.until.seGet('cartNum'))
 	  },
     mounted(){

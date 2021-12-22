@@ -90,7 +90,7 @@
       <div class="rich" v-if="item.show">
 
         <p v-html="item.attachment"></p>
-		<p>{{item.nm}}报告：</p>
+		<p>报告：{{item.nm}}</p>
 		<div class="imgBox" >
 			
 		<img :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1" >
