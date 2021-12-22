@@ -45,7 +45,7 @@
                             <p  style="color: #FF3F3F;display: none"  @click="showPop2(item)">节点通知</p>
                         </van-col>
                     </van-row>
-					<img :src="Vr" v-if="item.vrUrl" @click.stop="toUrl(item.id)" style="width: 1.38rem; height: 0.43rem;position: absolute;right:0.3rem; bottom: 0.3rem;">
+					<!-- <img :src="Vr" v-if="item.vrUrl" @click.stop="toUrl(item.id)" style="width: 1.38rem; height: 0.43rem;position: absolute;right:0.3rem; bottom: 0.3rem;"> -->
 				</div>
             </van-list>
 
