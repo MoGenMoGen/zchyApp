@@ -505,7 +505,7 @@
 						item.show = false
 						if(item.validUntil)
 						{
-							item.validUntil=item.validUntil.substring(1,10)
+							item.validUntil=item.validUntil.substring(0,10)
 						}
 					})
 					this.listOne = res.data.list
@@ -533,7 +533,7 @@
 							item.show = false
 							if(item.validUntil)
 							{
-								item.validUntil=item.validUntil.substring(1,10)
+								item.validUntil=item.validUntil.substring(0,10)
 							}
 						})
 						this.listTwo = res.data.list
@@ -555,7 +555,7 @@
 							item.show = false
 							if(item.validUntil)
 							{
-								item.validUntil=item.validUntil.substring(1,10)
+								item.validUntil=item.validUntil.substring(0,10)
 							}
 						})
 						this.listTwo = res.data.list
