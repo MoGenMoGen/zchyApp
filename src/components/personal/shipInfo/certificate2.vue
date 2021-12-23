@@ -60,7 +60,7 @@
 				</div>
 				<div class="listContainer" v-if="item.show">
 					<div class="imgBox">
-						<img :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1">
+						<img  style="object-fit: cover;":src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1" @click="viewImg(item.imgUrl,index1)">
 					</div>
 					<div class="fileBox">
 						<div class="fileList" v-for="(item1,index1) in item.attachment" :key="index1"
@@ -86,13 +86,13 @@
 						<img :src="arrowDown" v-if="item.show" />
 						<img :src="arrowUp" v-else />
 					</div>
-					<div class="bottom" style="font-size: 0.22rem; color:#236CAB;" v-if="item.audit==2">
+					<div class="bottom" style="font-size: 0.22rem; color:#236CAB;" v-if="item.audit==2&&currentRole.identityCd=='identity50'">
 						审核通过
 					</div>
-					<div class="bottom" style="font-size: 0.22rem; color: red;" v-if="item.audit==3">
+					<div class="bottom" style="font-size: 0.22rem; color: red;" v-if="item.audit==3&&currentRole.identityCd=='identity50'">
 						审核未通过
 					</div>
-					<div class="bottom" style="font-size: 0.22rem; color: red;" v-if="item.audit==1">
+					<div class="bottom" style="font-size: 0.22rem; color: red;" v-if="item.audit==1&&currentRole.identityCd=='identity50'">
 						未审核
 					</div>
 
@@ -109,7 +109,7 @@
 						</div>
 					</div>
 					<div class="imgBox">
-						<img :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1">
+						<img style="object-fit: cover;" :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1" @click="viewImg(item.imgUrl,index1)">
 					</div>
 					<div class="fileBox">
 						<div class="fileList" v-for="(item1,index1) in item.attachment" :key="index1"
@@ -120,7 +120,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="addBtn" @click="show=true">
+			<div class="addBtn" @click="show=true" v-if="currentRole.identityCd=='identity50'" >
 				<img :src="add">
 				<p>新增</p>
 			</div>
@@ -138,6 +138,7 @@
 	import {
 		Notify
 	} from 'vant';
+	import { ImagePreview } from 'vant';
 	import add from "../img/addPhone.png"
 	import arrLeft from "../img/arrLeft.png"
 	import arrRight from "../img/arrRight.png"
@@ -230,6 +231,7 @@
 				totalTwo: '',
 				modifyFlag: false, //是否为修改
 				formId: '',
+				currentRole:{},
 			}
 		},
 		computed: {
@@ -262,6 +264,12 @@
 			this.getInfoTwo()
 		},
 		methods: {
+			viewImg(item,index){
+			  	ImagePreview({
+					images: item,
+					 startPosition: index,
+				})
+			},
 			toModify(item) {
 				this.show = true
 				this.modifyFlag = true
