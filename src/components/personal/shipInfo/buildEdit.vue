@@ -34,7 +34,7 @@
 				<div class="topBtn" v-if="item.audit==3">
 					<div>未通过</div>
 				</div>
-				<p>{{item.nm}}报告：</p>
+				<p>报告：{{item.nm}}</p>
 				<div class="imgBox">
 					<img :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1">
 				</div>
