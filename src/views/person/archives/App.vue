@@ -96,7 +96,7 @@ import baseInfo1 from "../../../components/personal/shipInfo/baseInfo1";
 import baseInfo2 from "../../../components/personal/shipInfo/baseInfo2";
 import baseInfo11 from "../../../components/personal/shipInfo/baseInfo11";
 import baseInfo12 from "../../../components/personal/shipInfo/baseInfo12";
-import certificate from "../../../components/personal/shipInfo/certificate";
+import certificate from "../../../components/personal/shipInfo/certificate2";
 import historyPic from "../../../components/personal/shipInfo/historyPic";
 import contract from "../../../components/personal/shipInfo/contract";
 import baseInfo3 from "../../../components/personal/shipInfo/baseInfo3";
@@ -183,7 +183,7 @@ export default {
         },
         {
           id: 22,
-          nm: "船舶检验证书",
+          nm: "各类证书",
         },
         {
           id: 24,

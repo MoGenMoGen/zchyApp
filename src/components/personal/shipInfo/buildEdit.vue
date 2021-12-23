@@ -24,7 +24,7 @@
 				</div>
 				<div class="topBtn" v-if="item.audit==1">
 					<div>待审核</div>
-					<div class="btnLeft"  @click="toDelete(item)">
+					<div class="btnLeft" @click="toDelete(item)">
 						删除
 					</div>
 					<div class="btnRight" @click="toModify(item)">
@@ -59,15 +59,25 @@
 							<mob-select ref="mobSelect" text="nm" :list="tabList" @change="chooseActCd"></mob-select>
 						</van-col>
 					</van-row>
-					<van-row class="row" align="center" type="flex">
+					<!-- 	<van-row class="row" align="center" type="flex">
 						<van-col span="7">
 							<p>过程选择：</p>
 						</van-col>
 						<van-col span="17">
 							<mob-select ref="mobSelect1" text="nm" :list="progressList" @change="choosePos"></mob-select>
 						</van-col>
+					</van-row> -->
+					<van-row class="row" type="flex">
+						<van-col span="7">
+							<p>标题：</p>
+						</van-col>
+						<van-col span="17">
+							<input v-model="form.nm" style="width: 88%;
+    height: 0.2rem;
+    border: 1px solid #DDDDDD;
+    padding: 0.2rem;" placeholder="请输入标题"></input>
+						</van-col>
 					</van-row>
-
 					<!-- <van-row class="row" type="flex">
 						<van-col span="7">
 							<p>过程说明：</p>
@@ -91,7 +101,8 @@
 							<p>上传图片：</p>
 						</van-col>
 						<van-col span="17">
-							<van-uploader v-model="imgList" multiple :after-read="afterRead1" :before-delete="deleteImg"/>
+							<van-uploader v-model="imgList" multiple :after-read="afterRead1"
+								:before-delete="deleteImg" />
 						</van-col>
 					</van-row>
 
@@ -100,7 +111,8 @@
 							<p>上传文件：</p>
 						</van-col>
 						<van-col span="17">
-							<van-uploader v-model="fileList" multiple :after-read="afterRead2" :before-delete="deleteFile"/>
+							<van-uploader v-model="fileList" multiple :after-read="afterRead2"
+								:before-delete="deleteFile" />
 						</van-col>
 					</van-row>
 					<!-- <van-row class="row" type="flex" align="center">
@@ -130,7 +142,9 @@
 </template>
 
 <script>
-	import { Notify } from 'vant';
+	import {
+		Notify
+	} from 'vant';
 	import calCommon from "../calCommon";
 	import mobSelect from "../../../components/personal/shipInfo/mobSelect";
 	import {
@@ -163,16 +177,16 @@
 				currentRole: {},
 				progressList: [], //过程列表
 				form: {
-					nm:"",
+					nm: "",
 					docsId: "",
-					catCd:"",
-					cd:"",
-					actDt:"",
+					catCd: "",
+					cd: "",
+					actDt: "",
 					imgUrl: "",
 					fileUrl: "",
 					shipyardId: "",
 					shipyardNm: "",
-					seq:"",
+					seq: "",
 				},
 				info: {},
 				list: [],
@@ -183,7 +197,7 @@
 				tabList: [],
 				tabId: '',
 				catCd: '',
-				show:false,
+				show: false,
 				flag: '',
 				formId: '',
 				fileListUpd: [],
@@ -212,25 +226,25 @@
 			this.getTab()
 		},
 		methods: {
-			closeMask(){
-				this.show=false
+			closeMask() {
+				this.show = false
 			},
 			addNew() {
-				this.form.nm=""
-				this.form.docsId=""
-				this.form.catCd=""
-				this.form.cd=""
-				this.form.actDt=""
-				this.form.imgUrl=""
-				this.form.fileUrl=""
-				this.form.shipyardId=""
-				this.form.shipyardNm=""
-				this.form.seq=""
+				this.form.nm = ""
+				this.form.docsId = ""
+				this.form.catCd = ""
+				this.form.cd = ""
+				this.form.actDt = ""
+				this.form.imgUrl = ""
+				this.form.fileUrl = ""
+				this.form.shipyardId = ""
+				this.form.shipyardNm = ""
+				this.form.seq = ""
 				this.imgList = []
 				this.fileList = []
 				this.$refs.calCommon.text = ''
 				this.$refs.mobSelect.name = ''
-				this.$refs.mobSelect1.name = ''
+				// this.$refs.mobSelect1.name = ''
 				this.show = true
 				this.flag = '新增'
 			},
@@ -333,7 +347,7 @@
 				this.form.shipyardNm = this.currentRole.company
 				this.form.fileUrl = ''
 				this.form.imgUrl = ''
-				console.log(this.fileListUpd,this.imgListUpd)
+				console.log(this.fileListUpd, this.imgListUpd)
 				if (this.fileListUpd.length > 0) {
 					this.form.fileUrl = this.fileListUpd.join(",")
 				}
@@ -342,9 +356,9 @@
 					this.form.imgUrl = this.imgListUpd.join(",")
 				}
 				console.log(this.form)
-				if(this.flag=='新增') {
+				if (this.flag == '新增') {
 					this.api.buildDeptAdd(this.form).then((res) => {
-						this.show=false
+						this.show = false
 						Toast("操作成功")
 						setTimeout(() => {
 							this.getList(this.catCd) //刷新数据
@@ -353,7 +367,7 @@
 				} else if (this.flag == '修改') {
 					this.form.id = this.formId
 					this.api.buildDeptUpd(this.form).then((res) => {
-						this.show=false
+						this.show = false
 						Toast("操作成功")
 						setTimeout(() => {
 							this.getList(this.catCd) //刷新数据
@@ -362,9 +376,12 @@
 				}
 			},
 			toDelete(item) {
-				this.api.buildDeptDel(item.id).then(res=>{
-				   this.getList(this.catCd)
-				   Notify({ type: 'success', message: '删除成功' });
+				this.api.buildDeptDel(item.id).then(res => {
+					this.getList(this.catCd)
+					Notify({
+						type: 'success',
+						message: '删除成功'
+					});
 				})
 			},
 			deleteImg(file, detail) {
@@ -383,32 +400,32 @@
 				this.fileList = []
 				this.show = true
 				this.flag = '修改'
-				this.form.nm=item.nm
-				this.form.docsId=item.docsId
-				this.form.catCd=item.catCd
-				this.form.cd=item.cd
-				this.form.actDt=item.actDt
-				this.form.shipyardId=item.shipyardId
-				this.form.shipyardNm=item.shipyardNm
-				this.form.seq=item.seq
+				this.form.nm = item.nm
+				this.form.docsId = item.docsId
+				this.form.catCd = item.catCd
+				this.form.cd = item.cd
+				this.form.actDt = item.actDt
+				this.form.shipyardId = item.shipyardId
+				this.form.shipyardNm = item.shipyardNm
+				this.form.seq = item.seq
 				this.$refs.calCommon.text = item.actDt
 				this.$refs.mobSelect.name = item.catNm
-				this.$refs.mobSelect1.name = item.nm
+				// this.$refs.mobSelect1.name = item.nm
 				this.formId = item.id
 				this.imgListUpd = []
 				this.fileListUpd = []
-				if(item.imgUrl.length>0) {
-					item.imgUrl.forEach(item1=> {
+				if (item.imgUrl.length > 0) {
+					item.imgUrl.forEach(item1 => {
 						let obj = new Object();
 						obj.url = item1;
 						this.imgList.push(obj)
 					});
 					this.imgListUpd = item.imgUrl
 				}
-				if(item.fileUrl.length>0){
+				if (item.fileUrl.length > 0) {
 					item.fileUrl.forEach(item1 => {
 						this.fileList.push({
-							file : new File([], item1.fileNm, {}),
+							file: new File([], item1.fileNm, {}),
 							url: item1.url
 						})
 						this.fileListUpd.push(item1.url)
@@ -568,7 +585,6 @@
 	}
 </script>
 <style lang="less">
-	
 	.van-uploader__wrapper {
 		max-width: 4rem;
 	}
@@ -576,6 +592,7 @@
 <style scoped lang="less">
 	.baseInfo2 {
 		padding: 0 0.2rem;
+
 		.addNew {
 			width: 100%;
 			height: 1rem;
@@ -588,27 +605,30 @@
 			bottom: 0;
 			margin-left: -0.4rem;
 		}
+
 		.wrapper {
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			margin: 1.5rem auto;
-		
+
 			width: 80%;
 			height: 80%;
-		
+
 			.block {
 				width: 100%;
 				height: 100%;
 				background-color: #fff;
 				overflow: scroll;
-				.bottomBtn{
+
+				.bottomBtn {
 					margin-top: 0.4rem;
 					padding-bottom: 0.6rem;
 					display: flex;
 					width: 100%;
 					justify-content: space-around;
-					.leftBtn{
+
+					.leftBtn {
 						width: 1.2rem;
 						height: 0.8rem;
 						text-align: center;
@@ -616,7 +636,8 @@
 						background-color: #ffffff;
 						border: 1px solid #cccccc;
 					}
-					.rightBtn{
+
+					.rightBtn {
 						width: 1.2rem;
 						height: 0.8rem;
 						text-align: center;
@@ -664,12 +685,14 @@
 
 		.rich {
 			padding: 24px 28px;
-			.topBtn{
+
+			.topBtn {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				padding:0 0.6rem 0.3rem;
-				.btnLeft{
+				padding: 0 0.6rem 0.3rem;
+
+				.btnLeft {
 					width: 1rem;
 					height: 0.52rem;
 					background: rgba(245, 115, 19, 0);
@@ -680,7 +703,8 @@
 					font-size: 0.24rem;
 					color: #909090;
 				}
-				.btnRight{
+
+				.btnRight {
 					width: 1rem;
 					height: 0.52rem;
 					background: rgba(245, 115, 19, 0);
@@ -692,18 +716,20 @@
 					color: #2778BE;
 				}
 			}
+
 			.desc {
 				color: #666666;
 			}
+
 			.fileList {
 				display: flex;
 				align-items: center;
 				margin-bottom: 0.2rem;
-			
+
 				img {
 					width: 0.4rem;
 					margin-right: 0.2rem;
-			
+
 				}
 			}
 		}
@@ -780,6 +806,9 @@
 			}
 
 			textarea::-webkit-input-placeholder {
+				color: #B8B8B8;
+			}
+			input::placeholder {
 				color: #B8B8B8;
 			}
 

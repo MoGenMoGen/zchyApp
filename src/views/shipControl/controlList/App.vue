@@ -77,6 +77,7 @@
         async mounted() {
             console.log('角色信息')
 		    console.log(this.currentRole)
+			
             if(this.currentRole.identityCd=='identity50'){
             //    检验机构
                 this.title='检测船舶'
@@ -103,7 +104,8 @@
 		    //查看详情，跳转到船舶档案页面
             toDetail(item){
                 console.log("查看详情")
-                this.until.href("../person/archives.html?id="+item.id+"&shipCd="+item.cd+"&shipStatus="+item.statusNm);
+				let flag=this.until.getQueryString('flag')
+                this.until.href("../person/archives.html?id="+item.id+"&shipCd="+item.cd+"&shipStatus="+item.statusNm+'&flag='+flag);
             },
             //新增
             toAdd(item){

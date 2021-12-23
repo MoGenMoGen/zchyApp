@@ -729,6 +729,38 @@ class api {
 			});
 		});
 	}
+	//船舶资料——检测证书(全状态)
+	certificateAll(query) {
+		return new Promise((resolve, reject) => {
+			get("/ship/docsCertificate/apis/pageAll?query=" + query).then(res => {
+				resolve(res)
+			});
+		});
+	}
+	//检验证书修改
+	inspectUpd(data) {
+	    return new Promise(resolve => {
+	      post("/ship/docsCertificate/apis/upd", data).then(res => {
+	        resolve(res)
+	      })
+	    })
+	  }
+	  //检验证书上传
+	  inspectAdd(data) {
+	      return new Promise(resolve => {
+	        post("/ship/docsCertificate/apis/add", data).then(res => {
+	          resolve(res)
+	        })
+	      })
+	    }
+		//检验证书删除
+		inspectDel(id) {
+		    return new Promise(resolve => {
+		      get("/ship/docsCertificate/apis/del?ids=" + id).then(res => {
+		        resolve(res)
+		      })
+		    })
+		  }
 	//建造过程 不分页列表
 	buildStep(query) {
 		return new Promise((resolve, reject) => {

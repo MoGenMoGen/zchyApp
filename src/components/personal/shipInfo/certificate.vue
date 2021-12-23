@@ -1,6 +1,6 @@
 <template>
 <!--   检验建议证书-->
-    <!-- <div class="certificate">
+    <div class="certificate">
 
         <van-row  class="row" type="flex" align="center">
             <van-col span="5"> <p class="title1"><img  src="https://sinovat.oss-cn-shanghai.aliyuncs.com/24a95d69424142928170eb313bca4ffe_检验证书.png" ></p></van-col>
@@ -43,8 +43,8 @@
 
             </li>
         </ul>
-    </div> -->
-	<div class="container">
+    </div>
+	<!-- <div class="container">
 		<div class="topPage">
 			<img :src="arrLeft" class="imgLeft" >
 			<img :src="arrRight" class="imgRight" >
@@ -97,14 +97,15 @@
 				</div>
 			</div>
 			<div class="addBtn">
-				
+				<img :src="add" >
 			</div>
 		</div>
-	</div>
+	</div> -->
 </template>
 
 <script>
   import {mapState} from "vuex";
+  import add from "../img/addPhone.png"
   import arrLeft from "../img/arrLeft.png"
   import arrRight from "../img/arrRight.png"
     export default {
@@ -114,6 +115,7 @@
           return{
 			  arrLeft,
 			  arrRight,
+			  add,
 			  excel: "https://sinovat.oss-cn-shanghai.aliyuncs.com/d7d5b731fcd64503a193bb8f0a8aab12_excel.png",
 			  ppt: "https://sinovat.oss-cn-shanghai.aliyuncs.com/62b4c359ffb345a49fcadaffc98b9987_ppt.png",
 			  word: "https://sinovat.oss-cn-shanghai.aliyuncs.com/6bb0f58d475c4f18ab606556eca76033_word.png",
@@ -227,204 +229,205 @@
       },
       mounted() {
         this.id= this.until.getQueryString('id')
-        this.getInfoOne()
-		this.getInfoTwo()
+		this.getInfo()
+  //       this.getInfoOne()
+		// this.getInfoTwo()
       },
       methods:{
 		  toFile(url){
 			window.open(url)  
 		  },
-		  getInfoOne(){
-			  let qry=this.query.new()
-			   this.query.toW(qry,'docsId',this.id,'EQ')
-			   this.query.toW(qry,'types',0,'EQ')
-			   this.query.toP(qry,this.pageOne,this.PageNumOne)
-			   this.api.certificate(this.query.toEncode(qry)).then(res=>{
-				    this.total=res.page.total
-					res.data.list.forEach(item=>{
-						if(item.attachment){
-							item.attachment=item.attachment.split(",")
-							this.getFile(item.attachment)
-							item.attachment=this.listFile
-						}
-						if(item.imgUrl){
-							item.imgUrl=item.imgUrl.split(",")
-						}
-						item.show=false
-					})
-					this.listOne=res.data.list
+		 //  getInfoOne(){
+			//   let qry=this.query.new()
+			//    this.query.toW(qry,'docsId',this.id,'EQ')
+			//    this.query.toW(qry,'types',0,'EQ')
+			//    this.query.toP(qry,this.pageOne,this.PageNumOne)
+			//    this.api.certificate(this.query.toEncode(qry)).then(res=>{
+			// 	    this.total=res.page.total
+			// 		res.data.list.forEach(item=>{
+			// 			if(item.attachment){
+			// 				item.attachment=item.attachment.split(",")
+			// 				this.getFile(item.attachment)
+			// 				item.attachment=this.listFile
+			// 			}
+			// 			if(item.imgUrl){
+			// 				item.imgUrl=item.imgUrl.split(",")
+			// 			}
+			// 			item.show=false
+			// 		})
+			// 		this.listOne=res.data.list
 			
-					console.log(1213,this.listOne);
-			   })
-		  },
-		  getInfoTwo(){
-		  			  let qry=this.query.new()
-		  			   this.query.toW(qry,'docsId',this.id,'EQ')
-		  			   this.query.toW(qry,'types',1,'EQ')
-		  			   this.query.toP(qry,this.pageTwo,this.PageNumTwo)
-		  			   this.api.certificate(this.query.toEncode(qry)).then(res=>{
-		  				    this.totalTwo=res.page.total
-		  					res.data.list.forEach(item=>{
-		  						if(item.attachment){
-		  							item.attachment=item.attachment.split(",")
-		  							this.getFile(item.attachment)
-		  							item.attachment=this.listFile
-		  						}
-		  						if(item.imgUrl){
-		  							item.imgUrl=item.imgUrl.split(",")
-		  						}
-		  						item.show=false
-		  					})
-		  					this.listTwo=res.data.list
+			// 		console.log(1213,this.listOne);
+			//    })
+		 //  },
+		 //  getInfoTwo(){
+		 //  			  let qry=this.query.new()
+		 //  			   this.query.toW(qry,'docsId',this.id,'EQ')
+		 //  			   this.query.toW(qry,'types',1,'EQ')
+		 //  			   this.query.toP(qry,this.pageTwo,this.PageNumTwo)
+		 //  			   this.api.certificate(this.query.toEncode(qry)).then(res=>{
+		 //  				    this.totalTwo=res.page.total
+		 //  					res.data.list.forEach(item=>{
+		 //  						if(item.attachment){
+		 //  							item.attachment=item.attachment.split(",")
+		 //  							this.getFile(item.attachment)
+		 //  							item.attachment=this.listFile
+		 //  						}
+		 //  						if(item.imgUrl){
+		 //  							item.imgUrl=item.imgUrl.split(",")
+		 //  						}
+		 //  						item.show=false
+		 //  					})
+		 //  					this.listTwo=res.data.list
 		  			
-		  					console.log(1213,this.listTwo);
-		  			   })
-		  },
-			 getFile(info) {
-			  	this.listFile = []
-			  	let data = info
-			  	let data1 = []
-			  	let fileList2 = []
-			  	if (data.length > 0) {
-			  		data.forEach(v => {
-			  			let type = v.split('.')[v.split('.').length - 1]
-			  			let nmList = v.split('.com/') //分割出url后的内容
-			  			let nm = ""
-			  			nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
-			  				if (z != 0) {
-			  					nm += j
-			  				}
-			  			})
-			  			nmList = nm.split('_') //分割随机字符后的内容
-			  			nm = ""
-			  			nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
-			  				if (z != 0) {
-			  					nm += j
-			  				}
-			  			})
-			  			nm = nm.split('.' + type)[0]
-			  			if (type == 'pdf') {
-			  				fileList2.push({
-			  					url: v,
-								img: this.pdf,
-			  					'fileNm': nm
-			  				})
-			  			} else if (type == 'doc' || type == 'docx') {
-			  				fileList2.push({
-			  					url: v,
-								img:this.word,
-			  					'fileNm': nm
-			  				})
-			  			} else if (type == 'ppt' || type == 'pptx') {
-			  				fileList2.push({
-			  					url: v,
-								img:this.ppt,
-			  					'fileNm': nm
-			  				})
-			  			} else if (type == 'xls' || type == 'xlsx') {
-			  				fileList2.push({
-			  					url: v,
-								img:this.excel,
-			  					'fileNm': nm
-			  				})
-			  			} else {
-			  				fileList2.push({
-			  					url: v,
-			  					img: v,
-			  					'fileNm': nm
-			  				})
-			  			}
+		 //  					console.log(1213,this.listTwo);
+		 //  			   })
+		 //  },
+			//  getFile(info) {
+			//   	this.listFile = []
+			//   	let data = info
+			//   	let data1 = []
+			//   	let fileList2 = []
+			//   	if (data.length > 0) {
+			//   		data.forEach(v => {
+			//   			let type = v.split('.')[v.split('.').length - 1]
+			//   			let nmList = v.split('.com/') //分割出url后的内容
+			//   			let nm = ""
+			//   			nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+			//   				if (z != 0) {
+			//   					nm += j
+			//   				}
+			//   			})
+			//   			nmList = nm.split('_') //分割随机字符后的内容
+			//   			nm = ""
+			//   			nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+			//   				if (z != 0) {
+			//   					nm += j
+			//   				}
+			//   			})
+			//   			nm = nm.split('.' + type)[0]
+			//   			if (type == 'pdf') {
+			//   				fileList2.push({
+			//   					url: v,
+			// 					img: this.pdf,
+			//   					'fileNm': nm
+			//   				})
+			//   			} else if (type == 'doc' || type == 'docx') {
+			//   				fileList2.push({
+			//   					url: v,
+			// 					img:this.word,
+			//   					'fileNm': nm
+			//   				})
+			//   			} else if (type == 'ppt' || type == 'pptx') {
+			//   				fileList2.push({
+			//   					url: v,
+			// 					img:this.ppt,
+			//   					'fileNm': nm
+			//   				})
+			//   			} else if (type == 'xls' || type == 'xlsx') {
+			//   				fileList2.push({
+			//   					url: v,
+			// 					img:this.excel,
+			//   					'fileNm': nm
+			//   				})
+			//   			} else {
+			//   				fileList2.push({
+			//   					url: v,
+			//   					img: v,
+			//   					'fileNm': nm
+			//   				})
+			//   			}
 			  
-			  		})
-			  	}
-			  	this.listFile = fileList2
-			  },
+			//   		})
+			//   	}
+			//   	this.listFile = fileList2
+			//   },
 		  
-    //     async getInfo(){
-    //       this.certificateList=[]
-    //       let qry = this.query.new()
-    //       // this.currentRole=JSON.parse(this.until.seGet('currentRole'))
-    //       this.query.toW(qry,'docsId',this.id,'EQ')
-		  // this.query.toW(qry,'types',0,'EQ')
-    //       this.query.toP(qry,'1','100')
-    //       let data=await this.api.certificate(this.query.toEncode(qry))
-    //       this.total=data.page.total
-    //       this.certificateList.push(...data.data.list)
-    //       console.log(this.certificateList)
-    //       this.certificateList.forEach(item=>{
-    //           if(item.validUntil){
-    //               item.validUntil=item.validUntil.split(' ')[0]
-    //           }
+        async getInfo(){
+          this.certificateList=[]
+          let qry = this.query.new()
+          // this.currentRole=JSON.parse(this.until.seGet('currentRole'))
+          this.query.toW(qry,'docsId',this.id,'EQ')
+		  this.query.toW(qry,'types',0,'EQ')
+          this.query.toP(qry,'1','100')
+          let data=await this.api.certificate(this.query.toEncode(qry))
+          this.total=data.page.total
+          this.certificateList.push(...data.data.list)
+          console.log(this.certificateList)
+          this.certificateList.forEach(item=>{
+              if(item.validUntil){
+                  item.validUntil=item.validUntil.split(' ')[0]
+              }
 
-    //         if(item.types==0){
-    //           this.list1.push(item)
-			 //  this.list1.forEach(item=>{
-				//   if(item.attachment){
-				// 	  item.attachment=item.attachment.split(',')
-				// 	  item.file=[]
-				// 	  item.attachment.forEach(item1=>{
-				// 		  let fileObj={}
-				// 		  fileObj.url=item1
-				// 		  fileObj.nm=item1.substring(item1.indexOf('_')+1,item1.length)
-				// 		  item.file.push(fileObj)
-				// 	  })
-				//   }
-				//   console.log(123, this.list1);
+            if(item.types==0){
+              this.list1.push(item)
+			  this.list1.forEach(item=>{
+				  if(item.attachment){
+					  item.attachment=item.attachment.split(',')
+					  item.file=[]
+					  item.attachment.forEach(item1=>{
+						  let fileObj={}
+						  fileObj.url=item1
+						  fileObj.nm=item1.substring(item1.indexOf('_')+1,item1.length)
+						  item.file.push(fileObj)
+					  })
+				  }
+				  console.log(123, this.list1);
 				  
-			 //  })
-    //         }else {
-    //           this.list2.push(item)
-    //         }
-    //       })
-    //     },
+			  })
+            }else {
+              this.list2.push(item)
+            }
+          })
+        },
       }
     }
 </script>
 
 <style lang="less" scoped>
 
-    // .certificate{
-    //     padding: 0 0.4rem;
+    .certificate{
+        padding: 0 0.4rem;
 
-    //     .row{
-    //         padding: 0.09rem 0;
-    //         .title1{
-    //             width: 100%;
-    //         }
-    //     }
-    //     ul{
-    //         display: flex;
-    //         flex-wrap: wrap;
-    //         justify-content: space-between;
-    //         li{
+        .row{
+            padding: 0.09rem 0;
+            .title1{
+                width: 100%;
+            }
+        }
+        ul{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            li{
 
-    //             flex-shrink: 0;
-    //             width: 1.8rem;
-    //             .imgCont{
-    //                 width: 1.8rem;
-    //                 height: 1.8rem;
-    //                 background: #E7E7E7;
-    //                 display: flex;
-    //                 align-items: center;
-    //                 justify-content: center;
-    //             }
-    //             p:nth-of-type(1){
-    //                 margin-top: 0.05rem;
-    //                 color: #333333;
-    //                 font-size: 0.26rem;
-    //             }
-    //             p:nth-of-type(2){
-    //                 color: #999999;
-    //                 font-size: 0.17rem;
-    //             }
-    //             p:nth-of-type(3){
-    //                 color: #999999;
-    //                 font-size: 0.17rem;
-    //             }
-    //         }
-    //     }
+                flex-shrink: 0;
+                width: 1.8rem;
+                .imgCont{
+                    width: 1.8rem;
+                    height: 1.8rem;
+                    background: #E7E7E7;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                p:nth-of-type(1){
+                    margin-top: 0.05rem;
+                    color: #333333;
+                    font-size: 0.26rem;
+                }
+                p:nth-of-type(2){
+                    color: #999999;
+                    font-size: 0.17rem;
+                }
+                p:nth-of-type(3){
+                    color: #999999;
+                    font-size: 0.17rem;
+                }
+            }
+        }
 
-    // }
+    }
 	.container{
 		.topPage{
 			height: 0.96rem;
@@ -524,7 +527,14 @@
 				}
 			}
 			.addBtn{
-				
+				width: 1.3rem;
+				height: 0.5rem;
+				background: #2778BE;
+				margin-top: 0.35rem;
+				display: flex;
+				text-align: center;
+				line-height: 0.5rem;
+				margin: 0 auto;
 			}
 		}
 	}

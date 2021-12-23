@@ -509,8 +509,8 @@
 						url: '../person/isbid.html',
 					}, {
 						img: person16,
-						nm: '管控船舶',
-						url: '../shipControl/controlList.html',
+						nm: '检测船舶',
+						url: `../shipControl/controlList.html?flag=jiance`,
 					}, {
 						img: person15,
 						nm: '子账户维护',
@@ -659,6 +659,7 @@
 					this.toolList1.splice(1,1)
 				} else if (this.currentRole.identityCd == 'identity50') { //检验检测机构
 					this.toolList1.push(...this.toolList14)
+					this.toolList1.splice(1,1)
 				} else if (this.currentRole.identityCd == 'identity60') { //供应商
 					this.toolList1.push(...this.toolList15)
 					this.toolList1.splice(2,1)
