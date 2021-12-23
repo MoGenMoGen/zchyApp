@@ -459,7 +459,7 @@
 				if (minute >= 0 && minute <= 9) {
 					minute = `0${minute}`
 				}
-				this.validUntil = `${year}-${month}-${day} ${hour}:${minute}`
+				this.validUntil = `${year}-${month}-${day}`
 				this.showPicker = false
 			},
 			cancelTime() {
