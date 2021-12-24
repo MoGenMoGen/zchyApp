@@ -46,8 +46,8 @@
 			</div>
 		</van-overlay>
 		<div class="topPage">
-			<img :src="arrLeft" class="imgLeft" @click="lastPageNum">
-			<img :src="arrRight" class="imgRight" @click="nextPageNum">
+			<!-- <img :src="arrLeft" class="imgLeft" @click="lastPageNum">
+			<img :src="arrRight" class="imgRight" @click="nextPageNum"> -->
 			<p>船舶证书</p>
 		</div>
 		<div class="bodyList">
@@ -73,8 +73,12 @@
 			</div>
 		</div>
 		<div class="topPage">
-			<img :src="arrLeft" class="imgLeft" @click="lastPageNum2">
-			<img :src="arrRight" class="imgRight" @click="nextPageNum2">
+			<!-- <img :src="arrLeft" class="imgLeft" @click="lastPageNum2">
+			<img :src="arrRight" class="imgRight" @click="nextPageNum2"> -->
+			<div class="addBtn" @click="show=true" v-if="currentRole.identityCd=='identity50'" >
+				<img :src="add">
+				<p>新增</p>
+			</div>
 			<p>设备证书</p>
 		</div>
 		<div class="bodyList">
@@ -120,14 +124,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="addBtn" @click="show=true" v-if="currentRole.identityCd=='identity50'" >
-				<img :src="add">
-				<p>新增</p>
-			</div>
+			
 		</div>
 		<div class="topPage">
-			<img :src="arrLeft" class="imgLeft" @click="lastPageNum3">
-			<img :src="arrRight" class="imgRight" @click="nextPageNum3">
+			<!-- <img :src="arrLeft" class="imgLeft" @click="lastPageNum3">
+			<img :src="arrRight" class="imgRight" @click="nextPageNum3"> -->
 			<p>产品说明书</p>
 		</div>
 		<div class="bodyList">
@@ -244,11 +245,11 @@
 				list2: [],
 				certificateList: [],
 				pageOne: 1,
-				PageNumOne: 3,
+				PageNumOne: 999999,
 				pageTwo: 1,
-				PageNumTwo: 3,
+				PageNumTwo: 999999,
 				pageThree:1,
-				PageNumThree:3,
+				PageNumThree:9999999,
 				show: false,
 				showPicker: false,
 				currentDate: new Date(),
@@ -810,7 +811,28 @@
 			line-height: 0.96rem;
 			border-bottom: 1px solid #2778BE;
 			position: relative;
-
+			.addBtn {
+				width: 1.3rem;
+				height: 0.5rem;
+				background: #2778BE;
+				position: absolute;
+				right: 0.2rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0.35rem auto;
+			
+				img {
+					width: 0.27rem;
+					height: 0.27rem;
+				}
+			
+				p {
+					font-size: 0.24rem;
+					color: #FFFFFF;
+					margin-left: 0.1rem;
+				}
+			}
 			p {
 				font-size: 0.24rem;
 				font-weight: bold;
@@ -843,7 +865,7 @@
 				.listTop {
 					display: flex;
 					flex-wrap: wrap;
-					padding: 0.1rem 0.3rem;
+					padding: 0.2rem 0.3rem;
 					background: #F7F7F7;
 					border: 0.01px solid #EEEEEE;
 					position: relative;
@@ -984,26 +1006,7 @@
 				}
 			}
 
-			.addBtn {
-				width: 1.3rem;
-				height: 0.5rem;
-				background: #2778BE;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				margin: 0.35rem auto;
-
-				img {
-					width: 0.27rem;
-					height: 0.27rem;
-				}
-
-				p {
-					font-size: 0.24rem;
-					color: #FFFFFF;
-					margin-left: 0.1rem;
-				}
-			}
+		
 		}
 
 		.wrapper {
