@@ -16,8 +16,8 @@
 					<p v-for="(z,y) in i.tabList" :key="y">
 						<span style="flex: 1.5;">{{y+1}}</span><span><img :src="z.imgUrl"></span>
 						<span style="flex: 5;">{{z.nm}}</span><span>{{z.model}}</span>
-						<span>{{z.num}}</span><span>{{z.unit}}</span><span>{{fmoney(z.price)}}</span>
-						<span>{{z.price?fmoney(z.price*z.num):''}}</span><span>{{z.supplierNm}}</span>
+						<span>{{z.num}}</span><span>{{z.unit}}</span><span>{{z.price?fmoney(z.price):'0.00'}}</span>
+						<span>{{z.price?fmoney(z.price*z.num):'0.00'}}</span><span>{{z.supplierNm}}</span>
 					</p>
 				</div>
 			</div>

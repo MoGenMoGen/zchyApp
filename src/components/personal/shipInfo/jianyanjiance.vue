@@ -13,10 +13,10 @@
       </div>
     </div>
 
-    <div class="certificate">
+    <div class="certificate" style="background-color: #fff;">
       <!-- <div class="title">检验检测证书</div> -->
-      <div v-for="(item,index) in list" :key="index">
-        <div class="title" @click="item.show=!item.show">
+      <div v-for="(item,index) in list" :key="index" style="margin-bottom: 0.2rem;background-color: #cccccc;">
+        <div class="title" @click="item.show=!item.show" style="background-color: #cccccc;">
           <span>{{item.nm}}</span>
           <p>
             <span>{{item.validUntil}}</span>
@@ -24,7 +24,7 @@
             <img :src="arrowUp" v-else>
           </p>
         </div>
-        <div class="rich" v-if="item.show">
+        <div class="rich" v-if="item.show" style="background-color: #fff;">
           <div class="imgBox">
             <p v-for="j in item.imgList">
               <img :src="j" @click="toLink(j)">
@@ -95,7 +95,7 @@
             }else {
               this.query.toW(qry,'docsId',this.id,'EQ')
             }
-            this.query.toW(qry,'types','1','EQ')
+            this.query.toW(qry,'types','2','EQ')
             this.query.toP(qry,'1','999')
             // console.log('路由')
             // console.log(window.location.href.indexOf('personal')>-1)
@@ -192,6 +192,7 @@
 
 
     .certificate{
+		
       .title{
         margin-bottom: 10px;
 		box-sizing: border-box;

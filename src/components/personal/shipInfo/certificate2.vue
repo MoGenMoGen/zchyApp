@@ -1,7 +1,7 @@
 <template>
 	<!--   检验建议证书-->
 	<div class="container">
-		<van-overlay :show="show" @click="closeMask">
+		<div class="mask"  v-if="show" @click="closeMask()">
 			<div class="wrapper" @click.stop>
 				<div class="block">
 					<p style="text-align: center;font-size: 0.3rem;margin-top: 0.2rem;">新增</p>
@@ -19,11 +19,11 @@
 								@cancel='cancelTime' />
 						</van-popup>
 					</div>
-					<div class="list" style="display: flex; margin: 0.3rem 0;">
+					<!-- <div class="list" style="display: flex; margin: 0.3rem 0;">
 						<div class="listTitle" style="margin-left: 0.3rem;
 					width: 6.7em;">上传图片</div>
 						<van-uploader v-model="imgList" :after-read="afterRead" :before-delete="deleteImg" />
-					</div>
+					</div> -->
 					<div class="list" style="display: flex; margin: 0.2rem 0;">
 						<div class="listTitle" style="margin-left: 0.3rem;
 					width: 6.7em;">上传文件</div>
@@ -44,7 +44,7 @@
 					</div>
 				</div>
 			</div>
-		</van-overlay>
+		</div>
 		<div class="topPage">
 			<!-- <img :src="arrLeft" class="imgLeft" @click="lastPageNum">
 			<img :src="arrRight" class="imgRight" @click="nextPageNum"> -->
@@ -59,9 +59,9 @@
 					<img :src="arrowUp" v-else />
 				</div>
 				<div class="listContainer" v-if="item.show">
-					<div class="imgBox">
+					<!-- <div class="imgBox">
 						<img  style="object-fit: cover;":src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1" @click="viewImg(item.imgUrl,index1)">
-					</div>
+					</div> -->
 					<div class="fileBox">
 						<div class="fileList" v-for="(item1,index1) in item.attachment" :key="index1"
 							@click="toFile(item1.url)">
@@ -112,9 +112,9 @@
 							修改
 						</div>
 					</div>
-					<div class="imgBox">
+				<!-- 	<div class="imgBox">
 						<img style="object-fit: cover;" :src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1" @click="viewImg(item.imgUrl,index1)">
-					</div>
+					</div> -->
 					<div class="fileBox">
 						<div class="fileList" v-for="(item1,index1) in item.attachment" :key="index1"
 							@click="toFile(item1.url)">
@@ -140,9 +140,9 @@
 					<img :src="arrowUp" v-else />
 				</div>
 				<div class="listContainer" v-if="item.show">
-					<div class="imgBox">
+					<!-- <div class="imgBox">
 						<img  style="object-fit: cover;":src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1" @click="viewImg(item.imgUrl,index1)">
-					</div>
+					</div> -->
 					<div class="fileBox">
 						<div class="fileList" v-for="(item1,index1) in item.attachment" :key="index1"
 							@click="toFile(item1.url)">
@@ -539,7 +539,7 @@
 			getInfoOne() {
 				let qry = this.query.new()
 				this.query.toW(qry, 'docsId', this.id, 'EQ')
-				this.query.toW(qry, 'types', 0, 'EQ')
+				this.query.toW(qry, 'types', '0', 'EQ')
 				this.query.toP(qry, this.pageOne, this.PageNumOne)
 				this.api.certificate(this.query.toEncode(qry)).then(res => {
 					this.total = res.page.total
@@ -618,7 +618,7 @@
 			getInfoThree(){
 				let qry = this.query.new()
 				this.query.toW(qry, 'docsId', this.id, 'EQ')
-				this.query.toW(qry, 'types', 2, 'EQ')
+				this.query.toW(qry, 'types', 3, 'EQ')
 				this.query.toP(qry, this.pageThree, this.PageNumThree)
 				this.api.certificate(this.query.toEncode(qry)).then(res => {
 					this.totalThree = res.page.total
@@ -1008,47 +1008,56 @@
 
 		
 		}
-
-		.wrapper {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin: 1.5rem auto;
-			width: 80%;
-			height: 70%;
-
-			.block {
+			.mask{
+				background-color: rgba(0,0,0,0.5);
 				width: 100%;
 				height: 100%;
-				background-color: #fff;
-				overflow: scroll;
-
-				.bottomBtn {
-					margin-top: 0.8rem;
-					padding-bottom: 0.6rem;
+				position: fixed;
+				z-index: 10;
+				top: 0;
+				left: 0;
+				.wrapper {
 					display: flex;
-					width: 100%;
-					justify-content: space-around;
-
-					.leftBtn {
-						width: 1.2rem;
-						height: 0.8rem;
-						text-align: center;
-						line-height: 0.8rem;
-						background-color: #ffffff;
-						border: 1px solid #cccccc;
-					}
-
-					.rightBtn {
-						width: 1.2rem;
-						height: 0.8rem;
-						text-align: center;
-						line-height: 0.8rem;
-						background-color: #2778BE;
-						color: #ffffff;
+					align-items: center;
+					justify-content: center;
+					margin: 1.5rem auto;
+					width: 80%;
+					height: 70%;
+					.block {
+						width: 100%;
+						height: 100%;
+						background-color: #fff;
+						overflow:scroll;
+						-webkit-overflow-scrolling: touch;
+						z-index: 50;
+						.bottomBtn {
+							margin-top: 0.8rem;
+							padding-bottom: 0.6rem;
+							display: flex;
+							width: 100%;
+							justify-content: space-around;
+				
+							.leftBtn {
+								width: 1.2rem;
+								height: 0.8rem;
+								text-align: center;
+								line-height: 0.8rem;
+								background-color: #ffffff;
+								border: 1px solid #cccccc;
+							}
+				
+							.rightBtn {
+								width: 1.2rem;
+								height: 0.8rem;
+								text-align: center;
+								line-height: 0.8rem;
+								background-color: #2778BE;
+								color: #ffffff;
+							}
+						}
 					}
 				}
 			}
-		}
+	
 	}
 </style>
