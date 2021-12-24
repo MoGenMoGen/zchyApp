@@ -125,6 +125,33 @@
 				<p>新增</p>
 			</div>
 		</div>
+		<div class="topPage">
+			<img :src="arrLeft" class="imgLeft" @click="lastPageNum3">
+			<img :src="arrRight" class="imgRight" @click="nextPageNum3">
+			<p>产品说明书</p>
+		</div>
+		<div class="bodyList">
+			<div class="list" v-for="(item,index) in listThree" :key='index'>
+				<div class="listTop" @click="item.show=!item.show">
+					<p class="pOne">{{item.nm}}</p>
+					<p style="margin-left:0.2rem ;">证件有效期：{{item.validUntil}}</p>
+					<img :src="arrowDown" v-if="item.show" />
+					<img :src="arrowUp" v-else />
+				</div>
+				<div class="listContainer" v-if="item.show">
+					<div class="imgBox">
+						<img  style="object-fit: cover;":src="item1" v-for="(item1,index1) in item.imgUrl" :key="index1" @click="viewImg(item.imgUrl,index1)">
+					</div>
+					<div class="fileBox">
+						<div class="fileList" v-for="(item1,index1) in item.attachment" :key="index1"
+							@click="toFile(item1.url)">
+							<img :src="item1.img">
+							<p style="word-break:break-word">{{item1.fileNm}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -162,8 +189,10 @@
 					time: '2026-10-28 00:00:00',
 					show: true,
 					imgUrl: [],
-					fileUrl: []
+					fileUrl: [],
+					
 				}],
+				listThree:[],
 				listTwo: [],
 				listp: [{
 						id: 1,
@@ -218,6 +247,8 @@
 				PageNumOne: 3,
 				pageTwo: 1,
 				PageNumTwo: 3,
+				pageThree:1,
+				PageNumThree:3,
 				show: false,
 				showPicker: false,
 				currentDate: new Date(),
@@ -229,6 +260,7 @@
 				fileListUpd: [],
 				total: '',
 				totalTwo: '',
+				totalThree:'',
 				modifyFlag: false, //是否为修改
 				formId: '',
 				currentRole:{},
@@ -262,6 +294,7 @@
 			this.id = this.until.getQueryString('id')
 			this.getInfoOne()
 			this.getInfoTwo()
+			this.getInfoThree()
 		},
 		methods: {
 			viewImg(item,index){
@@ -353,6 +386,22 @@
 					this.pageTwo++
 					this.getInfoTwo()
 				}
+			},
+			lastPageNum3(){
+				if (this.pageThree == 1) {
+					return
+				} else {
+					this.pageThree--
+					this.getInfoThree()
+				}
+			},
+			nextPageNum3(){
+				 if (this.pageThree * this.PageNumThree >= this.totalThree) {
+				 	return
+				 } else {
+				 	this.pageThree++
+				 	this.getInfoThree()
+				 }
 			},
 			cancel() {
 				this.closeMask()
@@ -565,6 +614,32 @@
 				}
 
 			},
+			getInfoThree(){
+				let qry = this.query.new()
+				this.query.toW(qry, 'docsId', this.id, 'EQ')
+				this.query.toW(qry, 'types', 2, 'EQ')
+				this.query.toP(qry, this.pageThree, this.PageNumThree)
+				this.api.certificate(this.query.toEncode(qry)).then(res => {
+					this.totalThree = res.page.total
+					res.data.list.forEach(item => {
+						if (item.attachment) {
+							item.attachment = item.attachment.split(",")
+							this.getFile(item.attachment)
+							item.attachment = this.listFile
+						}
+						if (item.imgUrl) {
+							item.imgUrl = item.imgUrl.split(",")
+						}
+						item.show = false
+						if(item.validUntil)
+						{
+							item.validUntil=item.validUntil.substring(0,10)
+						}
+					})
+					this.listThree = res.data.list
+				})
+			},
+			
 			getFile(info) {
 				this.listFile = []
 				let data = info
