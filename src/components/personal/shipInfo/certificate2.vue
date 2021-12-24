@@ -343,7 +343,7 @@
 					return
 				} else {
 					this.pageTwo--
-					this.getInfoTwo()()
+					this.getInfoTwo()
 				}
 			},
 			nextPageNum2() {
@@ -351,7 +351,7 @@
 					return
 				} else {
 					this.pageTwo++
-					this.getInfoTwo()()
+					this.getInfoTwo()
 				}
 			},
 			cancel() {
