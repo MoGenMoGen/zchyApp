@@ -128,7 +128,7 @@
           <div class="listLeft">整改要求：</div>
           <div
             class="listRight"
-            style="white-space: pre-line; margin-top: -0.2rem"
+            style="white-space: pre-line; margin-top: -0.38rem"
           >
             {{ info.rectifyDemand }}
           </div>
@@ -137,7 +137,7 @@
 
       <div class="bodyContent">
         <div class="contentList" style="display: flex; flex-direction: column">
-          <div class="listLeft">隐患图片:</div>
+          <div class="listLeft">隐患图片：</div>
           <div class="listRightImg">
             <img
               :src="item"
@@ -191,7 +191,7 @@
             <div class="listLeft">整改上报：</div>
             <div
               class="listRight"
-              style="white-space: pre-line; margin-top: -0.2rem"
+              style="white-space: pre-line; margin-top: -0.38rem"
             >
               {{ info.rectifyReport }}
             </div>
@@ -202,7 +202,7 @@
             class="contentList"
             style="display: flex; flex-direction: column"
           >
-            <div class="listLeft">执行图片</div>
+            <div class="listLeft">执行图片：</div>
             <div class="listRightImg">
               <img
                 rel="noreferrer"
@@ -225,7 +225,7 @@
         </div>
         <div class="bodyContent">
           <div class="contentList">
-            <div class="listLeft">整改日期:</div>
+            <div class="listLeft">整改日期：</div>
             <div class="listRight" v-if="info.rectifyTm">
               {{ info.rectifyTm.slice(0, 10) }}
             </div>
@@ -297,7 +297,7 @@
               class="listLeft"
               style="padding-left: 0.08rem; box-sizing: border-box"
             >
-              <span style="color: red">*</span>图片:
+              <span style="color: red">*</span>图片：
             </div>
             <div class="listRightImg">
               <van-uploader
@@ -400,10 +400,10 @@
 
             <div class="bodyContent">
               <div class="contentList">
-                <div class="listLeft">整改要求:</div>
+                <div class="listLeft">整改要求：</div>
                 <div
                   class="listRight"
-                  style="white-space: pre-line; margin-top: -0.2rem"
+                  style="white-space: pre-line; margin-top: -0.38rem"
                 >
                   {{ item.rectifyDemand }}
                 </div>
@@ -412,7 +412,7 @@
                 class="contentList"
                 style="display: flex; flex-direction: column"
               >
-                <div class="listLeft">隐患图片:</div>
+                <div class="listLeft">隐患图片：</div>
                 <div class="listRightImg">
                   <img
                     :src="item1"
@@ -493,7 +493,7 @@
                 <div class="listLeft">整改上报：</div>
                 <div
                   class="listRight"
-                  style="white-space: pre-line; margin-top: -0.2rem"
+                  style="white-space: pre-line; margin-top: -0.38rem"
                 >
                   {{ item.rectifyReport }}
                 </div>
@@ -502,7 +502,7 @@
                 class="contentList"
                 style="display: flex; flex-direction: column"
               >
-                <div class="listLeft">执行图片:</div>
+                <div class="listLeft">执行图片：</div>
                 <div class="listRightImg">
                   <img
                     :src="item2"
@@ -1132,10 +1132,10 @@ export default {
       margin-top: 0.36rem;
       font-size: 0.28rem;
       .smallcontent {
-        margin-right: 0.3rem;
+        margin-right: 0.2rem;
         background: #2778be;
         width: 0.08rem;
-        height: 0.4rem;
+        height: 0.32rem;
       }
     }
     .bodyContent {
@@ -1185,10 +1185,10 @@ export default {
           display: flex;
           flex-wrap: wrap;
           position: relative;
-          padding: 0.1rem 0.6rem;
+          padding: 0.1rem 0rem;
           img {
             width: 1.5rem;
-            height: 1.5rem;
+            height: 1rem;
             margin-right: 0.2rem;
             margin-bottom: 0.2rem;
           }
