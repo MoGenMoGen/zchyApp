@@ -1,7 +1,7 @@
 <template>
 <!--  建造流程-->
   <div>
-<van-overlay :show="show" @click="closeMask">
+<div class="mask" v-if="show" @click="closeMask">
 			<div class="wrapper" @click.stop>
 				<div class="block">
 					<p style="text-align: center;font-size: 0.3rem;margin-top: 0.2rem;">新增</p>
@@ -68,7 +68,7 @@
 					</div>
 				</div>
 			</div>
-</van-overlay>
+</div >
     <ul class="tab">
       <li v-for="item in tabList" :key="item.id" @click="toChoose(item)" >
         <p :class="{tabAct:tabId==item.id}">{{item.nm}}</p>
@@ -252,20 +252,28 @@
 		position: fixed;
 		bottom: 0;
 	}
+	.mask{
+		background-color: rgba(0,0,0,0.5);
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		left: 0;
 		.wrapper {
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			margin: 1.5rem auto;
-		
 			width: 80%;
 			height: 80%;
-		
 			.block {
 				width: 100%;
 				height: 100%;
 				background-color: #fff;
 				overflow: scroll;
+				-webkit-overflow-scrolling: touch;
+				z-index: 50;
 				.bottomBtn{
 					margin-top: 0.4rem;
 					padding-bottom: 0.6rem;
@@ -291,6 +299,8 @@
 				}
 			}
 		}
+	}
+		
 
   .tab{
     display: flex;

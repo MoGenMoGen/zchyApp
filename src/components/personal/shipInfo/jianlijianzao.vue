@@ -1,7 +1,7 @@
 <template>
 	<!--  监理建造-->
 	<div class="jianlijianzao">
-		<van-overlay :show="show" @click="closeMask">
+		<div class="mask" v-if="show" @click="closeMask">
 			<div class="wrapper" @click.stop>
 				<div class="block">
 					<p style="text-align: center;font-size: 0.3rem;margin-top: 0.2rem;">新增</p>
@@ -82,7 +82,7 @@
 					</div>
 				</div>
 			</div>
-		</van-overlay>
+		</div>
 		<!--    船舶信息-->
 		<div class="info">
 			<img :src="info.logo" />
@@ -720,45 +720,56 @@
 </style>
 <style scoped lang="less">
 	.jianlijianzao {
-		.wrapper {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin: 1.5rem auto;
-
-			width: 80%;
-			height: 80%;
-
-			.block {
-				width: 100%;
-				height: 100%;
-				background-color: #fff;
-				overflow: scroll;
-				.bottomBtn{
-					margin-top: 0.4rem;
-					padding-bottom: 0.6rem;
-					display: flex;
+		.mask{
+			background-color: rgba(0,0,0,0.5);
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			z-index: 10;
+			top: 0;
+			left: 0;
+			.wrapper {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin: 1.5rem auto;
+				width: 80%;
+				height: 80%;
+			
+				.block {
 					width: 100%;
-					justify-content: space-around;
-					.leftBtn{
-						width: 1.2rem;
-						height: 0.8rem;
-						text-align: center;
-						line-height: 0.8rem;
-						background-color: #ffffff;
-						border: 1px solid #cccccc;
-					}
-					.rightBtn{
-						width: 1.2rem;
-						height: 0.8rem;
-						text-align: center;
-						line-height: 0.8rem;
-						background-color: #2778BE;
-						color: #ffffff;
+					height: 100%;
+					background-color: #fff;
+					overflow: scroll;
+					-webkit-overflow-scrolling: touch;
+					z-index: 50;
+					.bottomBtn{
+						margin-top: 0.4rem;
+						padding-bottom: 0.6rem;
+						display: flex;
+						width: 100%;
+						justify-content: space-around;
+						.leftBtn{
+							width: 1.2rem;
+							height: 0.8rem;
+							text-align: center;
+							line-height: 0.8rem;
+							background-color: #ffffff;
+							border: 1px solid #cccccc;
+						}
+						.rightBtn{
+							width: 1.2rem;
+							height: 0.8rem;
+							text-align: center;
+							line-height: 0.8rem;
+							background-color: #2778BE;
+							color: #ffffff;
+						}
 					}
 				}
 			}
 		}
+		
 	}
 
 	.info {
