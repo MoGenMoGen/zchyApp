@@ -25,7 +25,7 @@
           <div class="uploadBox">
             <div
               class="listLeft"
-              style="padding-left: 6px; box-sizing: border-box"
+              style="padding-left: 0.06rem; box-sizing: border-box"
             >
               <span style="color: red">*</span>下发图片:
             </div>
@@ -58,9 +58,11 @@
         <p>最新整改情况</p>
         <img :src="tradingR" />
       </div>
-      <div style="font-size: 14px; font-weight: 700; text-align: center;margin-top:18px;">
+      <div class="smalltitle">
+        <div class="smallcontent"></div>
         下发内容
       </div>
+
       <div class="bodyContent">
         <div class="contentList">
           <div class="listLeft">整改单号：</div>
@@ -126,7 +128,7 @@
           <div class="listLeft">整改要求：</div>
           <div
             class="listRight"
-            style="white-space: pre-line; margin-top: -20px"
+            style="white-space: pre-line; margin-top: -0.2rem"
           >
             {{ info.rectifyDemand }}
           </div>
@@ -176,8 +178,12 @@
           </div>
         </div>
       </div>
-      <div v-if="info.rectifyReport" style="padding-bottom: 10px">
-        <div style="font-size: 14px; font-weight: 700; text-align: center">
+      <div v-if="info.rectifyReport" style="padding-bottom: 0.1rem">
+        <!-- <div style="font-size: 0.14rem; font-weight: 700; text-align: center">
+          整改上报内容
+        </div> -->
+        <div class="smalltitle">
+          <div class="smallcontent"></div>
           整改上报内容
         </div>
         <div class="bodyContent">
@@ -185,7 +191,7 @@
             <div class="listLeft">整改上报：</div>
             <div
               class="listRight"
-              style="white-space: pre-line; margin-top: -20px"
+              style="white-space: pre-line; margin-top: -0.2rem"
             >
               {{ info.rectifyReport }}
             </div>
@@ -238,7 +244,7 @@
     待结案、完成：展示内容
     待结案多一个待结案状态 -->
 
-    <div class="containerBody">
+    <div class="containerBody" style="padding-bottom:.4rem;">
       <div class="bodyTitle">
         <img :src="tradingL" />
         <p>整改执行情况</p>
@@ -289,7 +295,7 @@
           >
             <div
               class="listLeft"
-              style="padding-left: 8px; box-sizing: border-box"
+              style="padding-left: 0.08rem; box-sizing: border-box"
             >
               <span style="color: red">*</span>图片:
             </div>
@@ -335,7 +341,7 @@
           )
         " -->
       <div
-        style="background: #efefef"
+        style="background: #fff"
         :style="{
           'padding-top':
             currentRole &&
@@ -350,9 +356,45 @@
           :key="index"
           style="background: #fff; margin-bottom: 0.12rem"
         >
+          <div
+            style="
+              background: #f7f7f7;
+              height: .6rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 0 0.2rem;
+              width:100%;
+              margin-left:-.2rem;
+            "
+            @click="item.isshow = !item.isshow"
+          >
+            <div style="display: flex">
+              <div style="margin-right: 0.6rem; color: #303030">
+                {{ index + 1 }}次整改
+              </div>
+              <div v-if="item.rectifyTm">
+                <div style="color: #303030">整改日期：{{ item.rectifyTm.slice(0, 10) }}</div>
+              </div>
+            </div>
+            <img
+              :class="{
+                arrowTransform: !item.isshow,
+                arrowTransformReturn: item.isshow,
+              }"
+              :src="Darrow"
+              style="
+                width: 0.24rem;
+                height: 0.14rem;
+                object-fit: fill;
+                margin: 0.1rem 0;
+              "
+            />
+          </div>
           <!-- 第一次下发 -->
           <div v-show="item.isshow">
-            <div style="font-size: 14px; font-weight: 700; text-align: center;margin-top:18px;">
+            <div class="smalltitle">
+              <div class="smallcontent"></div>
               下发内容
             </div>
 
@@ -361,7 +403,7 @@
                 <div class="listLeft">整改要求:</div>
                 <div
                   class="listRight"
-                  style="white-space: pre-line; margin-top: -20px"
+                  style="white-space: pre-line; margin-top: -0.2rem"
                 >
                   {{ item.rectifyDemand }}
                 </div>
@@ -399,7 +441,7 @@
           </div>
           <!-- 二次下发 -->
           <!-- <div v-show="item.isshow && index > 0">
-            <div style="font-size: 14px; font-weight: 700; text-align: center">
+            <div style="font-size: .14rem; font-weight: 700; text-align: center">
               再次下发内容
             </div>
             <div class="bodyContent">
@@ -407,7 +449,7 @@
                 <div class="listLeft">下发说明:</div>
                 <div
                   class="listRight"
-                  style="white-space: pre-line; margin-top: -20px"
+                  style="white-space: pre-line; margin-top: -.2rem"
                 >
                   {{ item.rectifyDemand }}
                 </div>
@@ -436,7 +478,13 @@
             </div>
           </div> -->
           <div v-show="item.isshow && item.rectifyReport">
-            <div style="font-size: 14px; font-weight: 700; text-align: center">
+            <!-- <div
+              style="font-size: 0.14rem; font-weight: 700; text-align: center"
+            >
+              整改上报内容
+            </div> -->
+            <div class="smalltitle">
+              <div class="smallcontent"></div>
               整改上报内容
             </div>
 
@@ -445,7 +493,7 @@
                 <div class="listLeft">整改上报：</div>
                 <div
                   class="listRight"
-                  style="white-space: pre-line; margin-top: -20px"
+                  style="white-space: pre-line; margin-top: -0.2rem"
                 >
                   {{ item.rectifyReport }}
                 </div>
@@ -472,16 +520,16 @@
                 </div>
               </div>
             </div>
-            <div class="bodyContent">
+            <!-- <div class="bodyContent">
               <div class="contentList">
                 <div class="listLeft">整改日期：</div>
                 <div class="listRight" v-if="item.rectifyTm">
                   {{ item.rectifyTm.slice(0, 10) }}
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
-          <div style="display: flex; justify-content: center">
+          <!-- <div style="display: flex; justify-content: center">
             <img
               :src="Dfolder"
               style="
@@ -504,7 +552,8 @@
               v-show="item.isshow"
               @click="item.isshow = !item.isshow"
             />
-          </div>
+          </div> -->
+
           <!-- <div class="bodyContent">
           <div class="contentList">
             <div class="listLeft">确认人：</div>
@@ -657,6 +706,7 @@ import tradingL from "@/assets/img/tradingL.png";
 import tradingR from "@/assets/img/tradingR.png";
 import Dfolder from "@/assets/img/person/down_folder.png";
 import Ufolder from "@/assets/img/person/up_folder.png";
+import Darrow from "@/assets/img/person/down_arrow.png";
 
 export default {
   mixins: [mixins],
@@ -666,6 +716,7 @@ export default {
       tradingR,
       Dfolder,
       Ufolder,
+      Darrow,
       currentRole: "",
       // 再次下发列表
       reissueList: [],
@@ -942,6 +993,18 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.arrowTransform {
+  transition: 0.2s;
+  transform-origin: center;
+  transform: rotateZ(180deg);
+}
+.arrowTransformReturn {
+  transition: 0.2s;
+  transform-origin: center;
+  transform: rotateZ(0deg);
+}
+</style>
+<style lang="less" scoped>
 @import url("../../../assets/css/mobile.less");
 #container {
   padding-bottom: 2rem;
@@ -1059,6 +1122,20 @@ export default {
       }
       p {
         margin: 0 0.3rem;
+      }
+    }
+    .smalltitle {
+      display: flex;
+      align-items: center;
+      padding-bottom: 0.2rem;
+      font-weight: bold;
+      margin-top: 0.36rem;
+      font-size: 0.28rem;
+      .smallcontent {
+        margin-right: 0.3rem;
+        background: #2778be;
+        width: 0.08rem;
+        height: 0.4rem;
       }
     }
     .bodyContent {
