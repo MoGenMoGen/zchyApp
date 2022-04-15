@@ -1,6 +1,6 @@
 ## 使用前注意事项
 
-1、直接使用 `cnpm`可能会导致依赖不正确。强烈建议给 `npm` 设置 taobao 的 registry。
+1、直接使用  `cnpm`可能会导致依赖不正确。强烈建议给 `npm` 设置 taobao 的 registry。
 
 `npm install --registry=https://registry.npm.taobao.org`
 
@@ -95,11 +95,11 @@ webpack
              |---calendarApp.vue		 
 ......
      
-  ```
+```
 此次2.0版本也优化也可以自定义模块的名称，1.0版时，无法自定义模块名。
 
 例如 http:// localhost:8091/`views`/home/list.html，`views`就是我们线上的模块名，如需修改请到项目目录文件config/index.js修改`moduleName`参数，修改这里的配置的同时，也要同时重命名`/src/views`的这个文件夹名称，是否会报错的。
-  
+
   从目录结构上，各种组件、页面模块、资源等都按类新建了文件夹，方便我们储存文件。其实我们所有的文件，最主要都是放在`views`文件夹里，以文件夹名为html的名称。
 例如
 
